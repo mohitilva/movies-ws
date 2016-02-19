@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("posterpath", moviesArrayList.get(position).posterPath);
+                        bundle.putString("backdropPath", moviesArrayList.get(position).backdropPath);
                         bundle.putString("overview", moviesArrayList.get(position).overview);
                         bundle.putString("title", moviesArrayList.get(position).title);
                         bundle.putLong("id", id);
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return moviesList;
     }
-
 
     class NetworkOperation extends AsyncTask<String, Void, Void>{
 
