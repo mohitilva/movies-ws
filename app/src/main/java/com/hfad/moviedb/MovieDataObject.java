@@ -11,12 +11,12 @@ public class MovieDataObject {
     String posterPath;
     String backdropPath;
 
-    public  MovieDataObject(Long l, String overview, String title, String posterPath, String backdropPath){
+    public  MovieDataObject(Long l, String overview, String title, String posterPath, String backdrop){
         this.overview = overview;
         this.id = l;
         this.title = title;
         this.posterPath = posterPath;
-        this.backdropPath = backdropPath;
+        this.backdropPath = backdrop;
     }
 
 

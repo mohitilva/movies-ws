@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -19,11 +17,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -36,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     AsyncTaskCompleteListener asyncTaskCompleteListener;
     LoadMoreTaskListener loadMoreTaskListener;
     ArrayList<MovieDataObject> moviesArrayList = new ArrayList<MovieDataObject>();
-    String[] backdropUrl;
+
     MoviesDataAdapter adapter;
     int page=1;
     String url;
@@ -94,11 +89,51 @@ public class MainActivity extends AppCompatActivity {
         });
 
         networkOperation.execute(url);
+
     }
+
+    protected List<MovieDataObject> getList(String url){
+
+        JSONObject movieObj;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        ArrayList<MovieDataObject> moviesList = new ArrayList<>();
+
+        try {
+            //This is synchronous call. In case you need async call use enqueue()
+            Response response = client.newCall(request).execute();
+            String responseStr =response.body().string();
+            jsonRespObj = new JSONObject(responseStr);
+            JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
+
+
+            for(int i=0; i<resultsArray.length();i++){
+
+                movieObj =resultsArray.getJSONObject(i);
+                Long id = movieObj.getLong("id");
+                String title = movieObj.getString("title");
+                String overview = movieObj.getString("overview");
+                String backdropUrl = movieObj.getString("backdrop_path");
+                String posterUrl = movieObj.getString("poster_path");
+                MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropUrl);
+                movieDataObject.id = id;
+                moviesList.add(movieDataObject);
+
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return moviesList;
+    }
+
 
     class NetworkOperation extends AsyncTask<String, Void, Void>{
 
-        JSONObject movieObj;
+
         public NetworkOperation(AsyncTaskCompleteListener listener) {
             asyncTaskCompleteListener = listener;
         }
@@ -107,39 +142,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = params[0];
-
-
-            Request request = new Request.Builder()
-                .url(url)
-                    .build();
-
-            try {
-                //This is synchronous call. In case you need async call use enqueue()
-                Response response = client.newCall(request).execute();
-                String responseStr =response.body().string();
-                jsonRespObj = new JSONObject(responseStr);
-                JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
-
-                backdropUrl = new String[resultsArray.length()];
-                for(int i=0; i<resultsArray.length();i++){
-
-                    movieObj =resultsArray.getJSONObject(i);
-                    backdropUrl[i] = movieObj.getString("backdrop_path");
-                    Long id = movieObj.getLong("id");
-                    String title = movieObj.getString("title");
-                    String overview = movieObj.getString("overview");
-                    String backdropurl = backdropUrl[i];
-                    String posterUrl = movieObj.getString("poster_path");
-                    MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropurl);
-                    movieDataObject.id = id;
-                    moviesArrayList.add(movieDataObject);
-                    }
-                } catch (JSONException e1) {
-                e1.printStackTrace();
-                } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            moviesArrayList = (ArrayList) getList(url);
             adapter = new MoviesDataAdapter(MainActivity.this, moviesArrayList);
 
         return null;
@@ -150,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             asyncTaskCompleteListener.taskComplete();
 
         }
+
+
     }
 
     class LoadMore extends AsyncTask<String, Void, Void>{
@@ -163,38 +168,11 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(String... params) {
 
             String url = params[0];
-            extendedlist = new ArrayList<MovieDataObject>();
+
+            extendedlist = (ArrayList) getList(url);
             Request request = new Request.Builder()
                     .url(url)
                     .build();
-
-            try {
-                //This is synchronous call. In case you need async call use enqueue()
-                Response response = client.newCall(request).execute();
-                String responseStr =response.body().string();
-                jsonRespObj = new JSONObject(responseStr);
-                JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
-
-                backdropUrl = new String[resultsArray.length()];
-                extendedlist.clear();
-                for(int i=0; i<resultsArray.length();i++){
-
-                    movieObj =resultsArray.getJSONObject(i);
-                    backdropUrl[i] = movieObj.getString("backdrop_path");
-                    Long id = movieObj.getLong("id");
-                    String title = movieObj.getString("title");
-                    String overview = movieObj.getString("overview");
-                    String backdropurl = backdropUrl[i];
-                    String posterUrl = movieObj.getString("poster_path");
-                    MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropurl);
-                    movieDataObject.id = id;
-                    extendedlist.add(movieDataObject);
-                }
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             return null;
         }
