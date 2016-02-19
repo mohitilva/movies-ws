@@ -1,0 +1,208 @@
+package com.hfad.moviedb;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class MainActivity extends AppCompatActivity {
+
+    ListView movieListView;
+    OkHttpClient client = new OkHttpClient();
+    JSONObject jsonRespObj;
+    AsyncTaskCompleteListener asyncTaskCompleteListener;
+    LoadMoreTaskListener loadMoreTaskListener;
+    ArrayList<MovieDataObject> moviesArrayList = new ArrayList<MovieDataObject>();
+    String[] backdropUrl;
+    MoviesDataAdapter adapter;
+    int page=1;
+    String url;
+    ArrayList<MovieDataObject> extendedlist;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        movieListView = (ListView) findViewById(R.id.moviesListView);
+        url = getResources().getText(R.string.popular_movies_url) + "&" + getResources().getText(R.string.api_key_movies_db);
+
+        LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View loadMore =  inflater.inflate(R.layout.load_more,null);
+        movieListView.addFooterView(loadMore, null, true);
+        loadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LoadMore loadMore1 = new LoadMore(new LoadMoreTaskListener() {
+                    @Override
+                    public void loadMoreTaskComplete() {
+                        adapter.addItems(extendedlist);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+                loadMore1.execute(url + "&page="+String.valueOf(++page));
+            }
+        });
+
+        NetworkOperation networkOperation = new NetworkOperation(new AsyncTaskCompleteListener(){
+
+
+            @Override
+            public void taskComplete() {
+
+                movieListView.setAdapter(adapter);
+                movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("posterpath", moviesArrayList.get(position).posterPath);
+                        bundle.putString("overview", moviesArrayList.get(position).overview);
+                        bundle.putString("title", moviesArrayList.get(position).title);
+                        bundle.putLong("id", id);
+                        movieIntent.putExtras(bundle);
+                        startActivity(movieIntent);
+
+                    }
+                });
+            }
+        });
+
+        networkOperation.execute(url);
+    }
+
+    class NetworkOperation extends AsyncTask<String, Void, Void>{
+
+        JSONObject movieObj;
+        public NetworkOperation(AsyncTaskCompleteListener listener) {
+            asyncTaskCompleteListener = listener;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            String url = params[0];
+
+
+            Request request = new Request.Builder()
+                .url(url)
+                    .build();
+
+            try {
+                //This is synchronous call. In case you need async call use enqueue()
+                Response response = client.newCall(request).execute();
+                String responseStr =response.body().string();
+                jsonRespObj = new JSONObject(responseStr);
+                JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
+
+                backdropUrl = new String[resultsArray.length()];
+                for(int i=0; i<resultsArray.length();i++){
+
+                    movieObj =resultsArray.getJSONObject(i);
+                    backdropUrl[i] = movieObj.getString("backdrop_path");
+                    Long id = movieObj.getLong("id");
+                    String title = movieObj.getString("title");
+                    String overview = movieObj.getString("overview");
+                    String backdropurl = backdropUrl[i];
+                    String posterUrl = movieObj.getString("poster_path");
+                    MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropurl);
+                    movieDataObject.id = id;
+                    moviesArrayList.add(movieDataObject);
+                    }
+                } catch (JSONException e1) {
+                e1.printStackTrace();
+                } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            adapter = new MoviesDataAdapter(MainActivity.this, moviesArrayList);
+
+        return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v){
+            asyncTaskCompleteListener.taskComplete();
+
+        }
+    }
+
+    class LoadMore extends AsyncTask<String, Void, Void>{
+
+        JSONObject movieObj;
+        public LoadMore(LoadMoreTaskListener listener) {
+            loadMoreTaskListener = listener;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            String url = params[0];
+            extendedlist = new ArrayList<MovieDataObject>();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try {
+                //This is synchronous call. In case you need async call use enqueue()
+                Response response = client.newCall(request).execute();
+                String responseStr =response.body().string();
+                jsonRespObj = new JSONObject(responseStr);
+                JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
+
+                backdropUrl = new String[resultsArray.length()];
+                extendedlist.clear();
+                for(int i=0; i<resultsArray.length();i++){
+
+                    movieObj =resultsArray.getJSONObject(i);
+                    backdropUrl[i] = movieObj.getString("backdrop_path");
+                    Long id = movieObj.getLong("id");
+                    String title = movieObj.getString("title");
+                    String overview = movieObj.getString("overview");
+                    String backdropurl = backdropUrl[i];
+                    String posterUrl = movieObj.getString("poster_path");
+                    MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropurl);
+                    movieDataObject.id = id;
+                    extendedlist.add(movieDataObject);
+                }
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void v){
+            loadMoreTaskListener.loadMoreTaskComplete();
+
+        }
+    }
+}

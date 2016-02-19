@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="150dp"
+android:clickable="false"
+
+              android:descendantFocusability="blocksDescendants"
+              android:id="@+id/movieItemLinearLayout">
+
+
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="Description"
+            android:id="@+id/movieIconImageView"
+
+            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+
+            android:focusable="false"
+            android:paddingLeft="@dimen/fab_margin">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:id="@+id/movie_title_textview"
+
+                android:textStyle="bold"
+
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/release_date"
+
+                />
+        </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MovieDB</string>
+    <string name="title_activity_movies_adapter">MoviesAdapter</string>
+    <string name="popular_movies_url">https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc</string>
+    <string name="api_key_movies_db">api_key=4eec6698891c4b89358a3779d7f2d212</string>
+    <string name="poster_prefix_path">http://image.tmdb.org/t/p/w500/</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
