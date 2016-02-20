@@ -10,6 +10,8 @@ public class MovieDataObject {
     String title;
     String posterPath;
     String backdropPath;
+    String releaseDate;
+    int popularity;
 
     public  MovieDataObject(Long l, String overview, String title, String posterPath, String backdrop){
         this.overview = overview;

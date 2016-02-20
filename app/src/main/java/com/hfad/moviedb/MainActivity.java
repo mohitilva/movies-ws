@@ -117,8 +117,13 @@ public class MainActivity extends AppCompatActivity {
                 String overview = movieObj.getString("overview");
                 String backdropUrl = movieObj.getString("backdrop_path");
                 String posterUrl = movieObj.getString("poster_path");
+                String release_date = movieObj.getString("release_date");
                 MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropUrl);
                 movieDataObject.id = id;
+                movieDataObject.releaseDate = release_date;
+
+                Double popularity      = movieObj.getDouble("popularity");
+                movieDataObject.popularity = popularity.intValue();
                 moviesList.add(movieDataObject);
 
             }

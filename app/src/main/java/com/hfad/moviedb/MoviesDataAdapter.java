@@ -1,11 +1,13 @@
 package com.hfad.moviedb;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -95,6 +97,7 @@ public class MoviesDataAdapter extends BaseAdapter{
         View view;
         TextView titleView;
         TextView releaseDateView;
+        RatingBar ratingBar;
 
         if(convertView==null) {
             view = inflater.inflate(R.layout.movie_list_iem,null);
@@ -109,17 +112,29 @@ public class MoviesDataAdapter extends BaseAdapter{
                 + "&" + mContext.getResources().getText(R.string.api_key_movies_db);
         Picasso.with(mContext)
                 .load(fullImageUrl)
+
                 .into(imageView);
 
+
+        MovieDataObject currentMovieObj = moviesArrayList.get(position);
+
+        ratingBar = (RatingBar) view.findViewById(R.id.rating_bar_main_page);
         titleView = (TextView) view.findViewById(R.id.movie_title_textview);
-        String title = moviesArrayList.get(position).title;
-        titleView.setText(title);
         releaseDateView = (TextView) view.findViewById(R.id.release_date);
-        String overview = moviesArrayList.get(position).overview;
-        if(overview!=null && overview.length()>51)
-            releaseDateView.setText(overview.substring(0,50) + "...");
-        else
-            releaseDateView.setText(overview);
+
+
+
+
+        String title = currentMovieObj.title;
+        int popularity = currentMovieObj.popularity;
+        popularity = popularity / 20;
+        ratingBar.setRating(popularity);
+
+
+
+
+        titleView.setText(title);
+        releaseDateView.setText(currentMovieObj.releaseDate);
 
         return view;
     }

@@ -4,43 +4,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="horizontal"
 android:layout_width="match_parent"
-android:layout_height="150dp"
+android:layout_height="match_parent"
 android:clickable="false"
-
-              android:descendantFocusability="blocksDescendants"
-              android:id="@+id/movieItemLinearLayout">
+android:background="@color/light_grey"
+android:id="@+id/movieItemLinearLayout">
 
 
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="75dp"
+            android:layout_height="100dp"
             android:contentDescription="Description"
-            android:id="@+id/movieIconImageView"
+            android:id="@+id/movieIconImageView"/>
 
-            />
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:orientation="vertical"
 
             android:focusable="false"
-            android:paddingLeft="@dimen/fab_margin">
+            android:paddingLeft="@dimen/abc_button_padding_horizontal_material">
+
+
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="20dp"
                 android:id="@+id/movie_title_textview"
-
+                android:textColor="@color/black"
                 android:textStyle="bold"
 
                 />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/release_date"
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="20dip"
+                                android:paddingRight="8dp"
+                                android:textColor="@color/dark_grey"
+                                android:text="@string/popularity"
 
-                />
+
+                                android:gravity="left"/>
+
+                            <RatingBar android:id="@+id/rating_bar_main_page"
+                                       style="?android:attr/ratingBarStyleSmall"
+                                        android:stepSize="0.5"
+                                       android:layout_gravity="center_horizontal"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="20dip"
+
+                                       android:numStars="5"
+                                       />
+
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="20dip"
+                                android:paddingRight="8dp"
+                                android:textColor="@color/dark_grey"
+                                android:text="@string/release_date"
+
+                                android:gravity="left"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/dark_grey"
+                                    android:id="@+id/release_date"/>
+            </LinearLayout>
+
         </LinearLayout>
 
 
