@@ -22,16 +22,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     ImageView img;
     TextView titleView;
     TextView overviewView;
-
-    Button button;
     ImageView favoriteIcon;
     boolean isFav = false;
-    RatingBar ratingBar;
     TextView homePage;
     Set<String> setFavorites;
     SharedPreferences favorites;
+
     public static final String FAVORITE_PREFERENCES = "FAV_PREF";
     public static final String ITEM_CAT_MOVIES = "movies";
+     String favStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,24 +43,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Intent receivedIntent= getIntent();
         Bundle bundle = receivedIntent.getExtras();
 
-
-
-
-
-
         String backdropPath = bundle.getString("backdropPath");
         String overview =  bundle.getString("overview");
         final String title = bundle.getString("title");
-        Long id = bundle.getLong("id");
-        String imageUrl = getResources().getString(R.string.poster_prefix_path) + backdropPath + "?"
+        final Long id = bundle.getLong("id");
+        final String imageUrl = getResources().getString(R.string.poster_prefix_path) + backdropPath + "?"
                 + getResources().getString(R.string.api_key_movies_db);
 
         favoriteIcon = (ImageView) findViewById(R.id.imageView);
 
         favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
+        favStr  = String.valueOf(id) + "|" + title + "|" + imageUrl;
 
-        if(setFavorites.contains(title)){
+        if(setFavorites.contains(String.valueOf(favStr))){
             isFav = true;
             favoriteIcon.setImageResource(R.drawable.ic_favorite_black__heart_24dp);
 
@@ -70,17 +65,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_heart_24dp);
         }
 
-
-
-
         Picasso.with(MovieDetailsActivity.this).load(imageUrl).into(img);
         titleView.setText(title);
         overviewView.setText(overview);
-
-
-
-
-        //ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         homePage = (TextView) findViewById(R.id.homepage_textbox);
         homePage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -89,32 +76,36 @@ public class MovieDetailsActivity extends AppCompatActivity {
         favoriteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(!isFav)
-                {
-                    isFav = true;
-
-                    favoriteIcon.setImageResource(R.drawable.ic_favorite_black__heart_24dp);
-                    setFavorites.add(title);
-
-                }
-                else{
-
-                    isFav = false;
-                    favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_heart_24dp);
-                    setFavorites.remove(title);
-
-                }
-
-                SharedPreferences.Editor editor = favorites.edit();
-                editor.putStringSet("movies", setFavorites);
-                editor.commit();
-
-                favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
-                setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-                Toast.makeText(MovieDetailsActivity.this,  setFavorites.toString(), Toast.LENGTH_SHORT).show();
+                editFavIcon();
             }
         });
+
+    }
+
+    public void editFavIcon(){
+
+        if(!isFav){
+            isFav = true;
+            favoriteIcon.setImageResource(R.drawable.ic_favorite_black__heart_24dp);
+            setFavorites.add(String.valueOf(favStr));
+
+        }
+        else{
+
+            isFav = false;
+            favoriteIcon.setImageResource(R.drawable.ic_favorite_border_black_heart_24dp);
+            setFavorites.remove(String.valueOf(favStr));
+
+        }
+
+        SharedPreferences.Editor editor = favorites.edit();
+        editor.putStringSet("movies", setFavorites);
+        editor.commit();
+
+
+        favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
+        setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
+        Toast.makeText(MovieDetailsActivity.this,  setFavorites.toString(), Toast.LENGTH_SHORT).show();
 
     }
 

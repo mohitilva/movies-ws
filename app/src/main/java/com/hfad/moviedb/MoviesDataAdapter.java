@@ -69,7 +69,7 @@ public class MoviesDataAdapter extends BaseAdapter{
      */
     @Override
     public long getItemId(int position) {
-        return position;
+        return moviesArrayList.get(position).id;
     }
 
     /**
@@ -90,8 +90,11 @@ public class MoviesDataAdapter extends BaseAdapter{
      * @param parent      The parent that this view will eventually be attached to
      * @return A View corresponding to the data at the specified position.
      */
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ImageView imageView;
         View view;
@@ -122,16 +125,10 @@ public class MoviesDataAdapter extends BaseAdapter{
         titleView = (TextView) view.findViewById(R.id.movie_title_textview);
         releaseDateView = (TextView) view.findViewById(R.id.release_date);
 
-
-
-
         String title = currentMovieObj.title;
         int popularity = currentMovieObj.popularity;
         popularity = popularity / 20;
         ratingBar.setRating(popularity);
-
-
-
 
         titleView.setText(title);
         releaseDateView.setText(currentMovieObj.releaseDate);

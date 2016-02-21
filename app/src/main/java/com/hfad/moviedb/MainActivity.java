@@ -2,6 +2,7 @@ package com.hfad.moviedb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +18,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import static com.hfad.moviedb.MovieDetailsActivity.FAVORITE_PREFERENCES;
+import static com.hfad.moviedb.MovieDetailsActivity.ITEM_CAT_MOVIES;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     AsyncTaskCompleteListener asyncTaskCompleteListener;
     LoadMoreTaskListener loadMoreTaskListener;
     ArrayList<MovieDataObject> moviesArrayList = new ArrayList<MovieDataObject>();
-
+    View favoriteBar;
     MoviesDataAdapter adapter;
     int page=1;
     String url;
@@ -59,12 +64,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                loadMore1.execute(url + "&page="+String.valueOf(++page));
+                loadMore1.execute(url + "&page=" + String.valueOf(++page));
+            }
+        });
+
+        favoriteBar = inflater.inflate(R.layout.favorite_bar,null);
+        movieListView.addHeaderView(favoriteBar);
+
+        favoriteBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent favIntent = new Intent(MainActivity.this, FavoriteMovies.class);
+                startActivity(favIntent);
+
+
             }
         });
 
         NetworkOperation networkOperation = new NetworkOperation(new AsyncTaskCompleteListener(){
-
 
             @Override
             public void taskComplete() {
@@ -73,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                        --position;
                         Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("backdropPath", moviesArrayList.get(position).backdropPath);
