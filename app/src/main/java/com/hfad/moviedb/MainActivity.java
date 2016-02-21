@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     int page=1;
     String url;
     ArrayList<MovieDataObject> extendedlist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         loadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 LoadMore loadMore1 = new LoadMore(new LoadMoreTaskListener() {
                     @Override
                     public void loadMoreTaskComplete() {
@@ -63,10 +63,8 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                     }
                 });
-
                 loadMore1.execute(url + "&page=" + String.valueOf(++page));
-            }
-        });
+            }});
 
         favoriteBar = inflater.inflate(R.layout.favorite_bar,null);
         movieListView.addHeaderView(favoriteBar);
@@ -74,12 +72,8 @@ public class MainActivity extends AppCompatActivity {
         favoriteBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent favIntent = new Intent(MainActivity.this, FavoriteMovies.class);
                 startActivity(favIntent);
-
-
             }
         });
 
@@ -96,9 +90,8 @@ public class MainActivity extends AppCompatActivity {
                         Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("backdropPath", moviesArrayList.get(position).backdropPath);
-                        bundle.putString("overview", moviesArrayList.get(position).overview);
-                        bundle.putString("title", moviesArrayList.get(position).title);
                         bundle.putLong("id", id);
+                        bundle.putString("title",moviesArrayList.get(position).title);
                         movieIntent.putExtras(bundle);
                         startActivity(movieIntent);
 

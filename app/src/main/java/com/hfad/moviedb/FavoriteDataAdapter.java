@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -82,12 +83,12 @@ public class FavoriteDataAdapter extends BaseAdapter{
         favView = (ImageView)view.findViewById(R.id.fav_icon);
 
 
-        HashMap<Integer, String> tags = new HashMap<>();
-        tags.put(0, "true");
-        tags.put(1,listCombined.get(position));
+        HashMap<Integer, String> favIconTag = new HashMap<>();
+        favIconTag.put(0, "true");
+        favIconTag.put(1, listCombined.get(position));
 
-        favView.setTag(tags);
-        favView.setImageResource(R.drawable.ic_favorite_black__heart_24dp);
+        favView.setTag(favIconTag);
+        favView.setImageResource(android.R.drawable.star_on);
 
 
         titleView = (TextView)view.findViewById(R.id.fav_movie_title_textview);
@@ -95,9 +96,13 @@ public class FavoriteDataAdapter extends BaseAdapter{
         Picasso.with(mContext)
                 .load(listIconUrls.get(position))
                 .into(iconView);
+
         titleView.setText(listTitles.get(position));
 
-        view.setTag(listCombined.get(position));
+        iconView.setTag(listCombined.get(position));
+        titleView.setTag(listCombined.get(position));
+
+        System.out.println("Tags set:" + listCombined.get(position));
         return view;
 
     }

@@ -1,11 +1,13 @@
 package com.hfad.moviedb;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,19 +32,19 @@ public class FavoriteMovies extends AppCompatActivity {
 
         favListView = (ListView)findViewById(R.id.favoriteMoviesListView);
 
-        Set<String> setFavMovieIds;
+        Set<String> setFavMovieDetails;
 
         favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
-        setFavMovieIds = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        ArrayList<String> favMovieArrayList = new ArrayList<>();
-        favMovieArrayList.addAll(setFavMovieIds);
+        setFavMovieDetails = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
+        ArrayList<String> favMovieDetailsArrayList = new ArrayList<>();
+        favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
         favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
 
-        favoriteDataAdapter = new FavoriteDataAdapter(this, favMovieArrayList);
-
+        favoriteDataAdapter = new FavoriteDataAdapter(this, favMovieDetailsArrayList);
         favListView.setAdapter(favoriteDataAdapter);
+
 
     }
 
@@ -55,7 +57,7 @@ public class FavoriteMovies extends AppCompatActivity {
         if((Boolean.valueOf(tags.get(0)))){
 
             //unfavoriting the item
-            ((ImageView) view).setImageResource(R.drawable.ic_favorite_border_black_heart_24dp);
+            ((ImageView) view).setImageResource(android.R.drawable.star_off);
             setFavorites.remove(String.valueOf(combinedString));
             tags.put(0, "false");
 
@@ -63,7 +65,7 @@ public class FavoriteMovies extends AppCompatActivity {
         }else{
 
             //favoriting the item
-            ((ImageView) view).setImageResource(R.drawable.ic_favorite_black__heart_24dp);
+            ((ImageView) view).setImageResource(android.R.drawable.star_on);
             setFavorites.add(String.valueOf(combinedString));
             tags.put(0,"true");
         }
@@ -71,6 +73,24 @@ public class FavoriteMovies extends AppCompatActivity {
         SharedPreferences.Editor editor = favorites.edit();
         editor.putStringSet("movies", setFavorites);
         editor.commit();
+
+    }
+
+    public void onFavItemClick(View view) {
+
+        String favItems = (String) view.getTag();
+        String[] favItemsArray = favItems.split("\\|");
+        String movieId = favItemsArray[0];
+        String title = favItemsArray[1];
+        String picUrl = favItemsArray[2];
+        Intent detailsIntent = new Intent(FavoriteMovies.this, MovieDetailsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("title",title);
+        bundle.putString("backdropPath",picUrl);
+        bundle.putLong("id",Long.parseLong(movieId));
+        bundle.putBoolean("isFav",true);
+        detailsIntent.putExtras(bundle);
+        startActivity(detailsIntent);
 
     }
 }
