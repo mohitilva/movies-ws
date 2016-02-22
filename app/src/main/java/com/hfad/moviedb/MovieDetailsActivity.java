@@ -68,11 +68,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Bundle bundle = receivedIntent.getExtras();
 
         String backdropPath = bundle.getString("backdropPath");
+        String posterPath = bundle.getString("posterPath");
         final Long id = bundle.getLong("id");
         title = bundle.getString("title");
 
         final String imageUrl = getResources().getString(R.string.poster_prefix_path) + backdropPath + "?"
                 + getResources().getString(R.string.api_key_movies_db);
+
 
         Request request = new Request.Builder()
                 .url("https://api.themoviedb.org/3/movie/" + String.valueOf(id) + "?api_key=4eec6698891c4b89358a3779d7f2d212")
@@ -116,11 +118,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        favStr  = String.valueOf(id) + "|" + title + "|" + imageUrl;
+        favStr  = String.valueOf(id) + "|" + title + "|" + posterPath;
 
-        boolean isFavBundle = bundle.getBoolean("isFav");
 
-        if(setFavorites.contains(String.valueOf(favStr)) || isFavBundle){
+
+        if(setFavorites.contains(String.valueOf(favStr))){
             isFav = true;
             favoriteIcon.setImageResource(android.R.drawable.star_on);
 

@@ -93,8 +93,13 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
         titleView = (TextView)view.findViewById(R.id.fav_movie_title_textview);
 
+        String fullIconUrl = mContext.getResources().getString(R.string.image_path)
+                + mContext.getResources().getString(R.string.image_size_w300)
+                + listIconUrls.get(position) + "?"
+                + mContext.getResources().getString(R.string.api_key_movies_db);
+
         Picasso.with(mContext)
-                .load(listIconUrls.get(position))
+                .load(fullIconUrl)
                 .into(iconView);
 
         titleView.setText(listTitles.get(position));

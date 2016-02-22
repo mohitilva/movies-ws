@@ -86,9 +86,9 @@ public class FavoriteMovies extends AppCompatActivity {
         Intent detailsIntent = new Intent(FavoriteMovies.this, MovieDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("title",title);
-        bundle.putString("backdropPath",picUrl);
+        bundle.putString("posterPath",picUrl);
         bundle.putLong("id",Long.parseLong(movieId));
-        bundle.putBoolean("isFav",true);
+
         detailsIntent.putExtras(bundle);
         startActivity(detailsIntent);
 

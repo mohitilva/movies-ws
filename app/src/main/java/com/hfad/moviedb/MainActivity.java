@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("backdropPath", moviesArrayList.get(position).backdropPath);
+                        bundle.putString("posterPath",moviesArrayList.get(position).posterPath);
                         bundle.putLong("id", id);
                         bundle.putString("title",moviesArrayList.get(position).title);
                         movieIntent.putExtras(bundle);
