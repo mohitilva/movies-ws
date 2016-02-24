@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -56,9 +58,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.moviebackdrop_details);
         titleView = (TextView) findViewById(R.id.title_details);
         overviewView = (TextView) findViewById(R.id.overview_details);
-
         favoriteIcon = (ImageView) findViewById(R.id.imageView);
-
         homePage = (TextView) findViewById(R.id.homepage_textbox);
         homePage.setMovementMethod(LinkMovementMethod.getInstance());
         runTimeTextView = (TextView) findViewById(R.id.runtime);
@@ -132,6 +132,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         Picasso.with(MovieDetailsActivity.this).load(imageUrl).into(img);
+
         favoriteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +141,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     public void editFavIcon(){
 
