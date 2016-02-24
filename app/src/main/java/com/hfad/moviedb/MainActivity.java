@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import com.hfad.moviedb.Utilities.INTENTPARAMS;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 --position;
                 Intent movieIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("backdropPath", moviesArrayList.get(position).backdropPath);
-                bundle.putString("posterPath", moviesArrayList.get(position).posterPath);
-                bundle.putLong("id", id);
-                bundle.putString("title", moviesArrayList.get(position).title);
+                bundle.putString(INTENTPARAMS.BACKDROP_REL_PATH.toString(), moviesArrayList.get(position).backdropPath);
+                bundle.putString(INTENTPARAMS.POSTER_REL_PATH.toString(), moviesArrayList.get(position).posterPath);
+                bundle.putLong(INTENTPARAMS.ID.toString(), id);
+                bundle.putString(INTENTPARAMS.TITLE.toString(), moviesArrayList.get(position).title);
                 movieIntent.putExtras(bundle);
                 startActivity(movieIntent);
             }

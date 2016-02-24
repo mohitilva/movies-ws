@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import com.hfad.moviedb.Utilities.INTENTPARAMS;
 
 import static com.hfad.moviedb.MovieDetailsActivity.FAVORITE_PREFERENCES;
 import static com.hfad.moviedb.MovieDetailsActivity.ITEM_CAT_MOVIES;
@@ -82,12 +83,14 @@ public class FavoriteMovies extends AppCompatActivity {
         String[] favItemsArray = favItems.split("\\|");
         String movieId = favItemsArray[0];
         String title = favItemsArray[1];
-        String picUrl = favItemsArray[2];
+        String poster_rel_path = favItemsArray[2];
+        String backdrop_rel_path = favItemsArray[3];
         Intent detailsIntent = new Intent(FavoriteMovies.this, MovieDetailsActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("title",title);
-        bundle.putString("posterPath",picUrl);
-        bundle.putLong("id",Long.parseLong(movieId));
+        bundle.putString(INTENTPARAMS.TITLE.toString(),title);
+        bundle.putString(INTENTPARAMS.POSTER_REL_PATH.toString(), poster_rel_path);
+        bundle.putString(INTENTPARAMS.BACKDROP_REL_PATH.toString(), backdrop_rel_path);
+        bundle.putLong(INTENTPARAMS.ID.toString(), Long.parseLong(movieId));
 
         detailsIntent.putExtras(bundle);
         startActivity(detailsIntent);

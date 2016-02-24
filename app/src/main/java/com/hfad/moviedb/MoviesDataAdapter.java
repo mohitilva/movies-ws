@@ -111,7 +111,7 @@ public class MoviesDataAdapter extends BaseAdapter{
 
         imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
-        String fullImageUrl =  mContext.getResources().getString(R.string.image_path)
+        String fullImageUrl =  mContext.getResources().getString(R.string.poster_prefix_path) + "/"
                 + mContext.getResources().getString(R.string.image_size_w300)
                 + moviesArrayList.get(position).posterPath
                 + "&" + mContext.getResources().getText(R.string.api_key_movies_db);

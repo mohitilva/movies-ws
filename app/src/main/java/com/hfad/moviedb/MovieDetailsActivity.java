@@ -28,7 +28,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
+import com.hfad.moviedb.Utilities.*;
 public class MovieDetailsActivity extends AppCompatActivity {
     ImageView img;
     TextView titleView;
@@ -49,7 +49,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     String homepage;
     String overview;
     String title;
-
+    Utilities util = new Utilities(MovieDetailsActivity.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +67,22 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Intent receivedIntent= getIntent();
         Bundle bundle = receivedIntent.getExtras();
 
+        String backdropPath = bundle.getString(INTENTPARAMS.BACKDROP_REL_PATH.toString());
+        String posterPath = bundle.getString(INTENTPARAMS.POSTER_REL_PATH.toString());
+        final Long id = bundle.getLong(INTENTPARAMS.ID.toString());
+        title = bundle.getString(INTENTPARAMS.TITLE.toString());
+ /*
         String backdropPath = bundle.getString("backdropPath");
         String posterPath = bundle.getString("posterPath");
         final Long id = bundle.getLong("id");
         title = bundle.getString("title");
+*/
+        System.out.println("posterPath=" + posterPath);
 
-        final String imageUrl = getResources().getString(R.string.poster_prefix_path) + backdropPath + "?"
+        final String backdropUrl = getResources().getString(R.string.poster_prefix_path) + "/w500" + backdropPath + "/?"
                 + getResources().getString(R.string.api_key_movies_db);
 
-
+        System.out.println("backdropPath="+backdropPath);
         Request request = new Request.Builder()
                 .url("https://api.themoviedb.org/3/movie/" + String.valueOf(id) + "?api_key=4eec6698891c4b89358a3779d7f2d212")
                 .build();
@@ -118,7 +125,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        favStr  = String.valueOf(id) + "|" + title + "|" + posterPath;
+        favStr  = String.valueOf(id) + "|" + title + "|" + posterPath + "|" + backdropPath;
 
 
 
@@ -131,7 +138,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             favoriteIcon.setImageResource(android.R.drawable.star_off);
         }
 
-        Picasso.with(MovieDetailsActivity.this).load(imageUrl).into(img);
+        System.out.println("Setting image for MovieDetailsActivity:" + backdropUrl);
+        Picasso.with(MovieDetailsActivity.this).load(backdropUrl).into(img);
 
         favoriteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,8 +149,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     public void editFavIcon(){
 
