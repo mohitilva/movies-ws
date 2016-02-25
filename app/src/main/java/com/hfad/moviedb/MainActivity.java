@@ -29,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ListView movieListView;
     OkHttpClient client = new OkHttpClient();
     JSONObject jsonRespObj;
-    AsyncTaskCompleteListener asyncTaskCompleteListener;
-    LoadMoreTaskListener loadMoreTaskListener;
+
     ArrayList<MovieDataObject> moviesArrayList = new ArrayList<MovieDataObject>();
     View favoriteBar;
     MoviesDataAdapter adapter;

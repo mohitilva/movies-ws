@@ -54,12 +54,6 @@ public class Utilities {
         w300,w780,w1280,original
     }
 
-    public static enum movieMultipleJsonArrayItems{
-        //JSON array "results"
-        adult,
-        backdrop_path
-
-    }
 
     static final String _ADULT = "adult";
     static final String _BACKDROP_PATH = "backdrop_path";
