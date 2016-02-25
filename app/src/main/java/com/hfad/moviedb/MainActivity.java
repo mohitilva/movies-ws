@@ -18,14 +18,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import com.hfad.moviedb.Utilities.INTENTPARAMS;
+import com.hfad.moviedb.Utilities.*;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String ITEMS_ARRAY_NAME = "results";
     ListView movieListView;
     OkHttpClient client = new OkHttpClient();
     JSONObject jsonRespObj;
@@ -108,23 +108,23 @@ public class MainActivity extends AppCompatActivity {
             Response response = client.newCall(request).execute();
             String responseStr =response.body().string();
             jsonRespObj = new JSONObject(responseStr);
-            JSONArray resultsArray = new JSONObject(responseStr).getJSONArray("results");
+            JSONArray resultsArray = new JSONObject(responseStr).getJSONArray(ITEMS_ARRAY_NAME);
 
 
             for(int i=0; i<resultsArray.length();i++){
 
                 movieObj =resultsArray.getJSONObject(i);
-                Long id = movieObj.getLong("id");
-                String title = movieObj.getString("title");
-                String overview = movieObj.getString("overview");
-                String backdropUrl = movieObj.getString("backdrop_path");
-                String posterUrl = movieObj.getString("poster_path");
-                String release_date = movieObj.getString("release_date");
+                Long id = movieObj.getLong(MovieMultipleJSONArray.ID);
+                String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
+                String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
+                String backdropUrl = movieObj.getString(MovieMultipleJSONArray.BACKDROP_PATH);
+                String posterUrl = movieObj.getString(MovieMultipleJSONArray.POSTER_PATH);
+                String release_date = movieObj.getString(MovieMultipleJSONArray.RELEASE_DATE);
                 MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropUrl);
                 movieDataObject.id = id;
                 movieDataObject.releaseDate = release_date;
 
-                Double popularity      = movieObj.getDouble("popularity");
+                Double popularity      = movieObj.getDouble(MovieMultipleJSONArray.POPULARITY);
                 movieDataObject.popularity = popularity.intValue();
                 moviesList.add(movieDataObject);
 

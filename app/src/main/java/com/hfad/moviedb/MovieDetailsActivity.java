@@ -29,6 +29,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import com.hfad.moviedb.Utilities.*;
+
 public class MovieDetailsActivity extends AppCompatActivity {
     ImageView img;
     TextView titleView;
@@ -71,22 +72,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         String posterPath = bundle.getString(INTENTPARAMS.POSTER_REL_PATH.toString());
         final Long id = bundle.getLong(INTENTPARAMS.ID.toString());
         title = bundle.getString(INTENTPARAMS.TITLE.toString());
- /*
-        String backdropPath = bundle.getString("backdropPath");
-        String posterPath = bundle.getString("posterPath");
-        final Long id = bundle.getLong("id");
-        title = bundle.getString("title");
-*/
-        System.out.println("posterPath=" + posterPath);
 
-        final String backdropUrl = getResources().getString(R.string.poster_prefix_path) + "/w500" + backdropPath + "/?"
-                + getResources().getString(R.string.api_key_movies_db);
+        final String backdropUrl = util.getImageUrl(backdropPath, posterSizes.w342.toString());
 
-        System.out.println("backdropPath="+backdropPath);
         Request request = new Request.Builder()
-                .url("https://api.themoviedb.org/3/movie/" + String.valueOf(id) + "?api_key=4eec6698891c4b89358a3779d7f2d212")
+                .url(util.getResourceUrl(String.valueOf(id)))
                 .build();
 
+
+        
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -98,12 +92,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
                 try {
                     JSONObject responseJSONObj = new JSONObject(response.body().string());
-                    homepage = responseJSONObj.getString("homepage");
+                    homepage = responseJSONObj.getString(MovieDetailsJSONArray.HOMEPAGE);
                     if (homepage == null | homepage.equals("")) homepage = "Not Available";
-                    runtime = responseJSONObj.getInt("runtime");
-                    votes = responseJSONObj.getLong("vote_average");
-                    overview =  responseJSONObj.getString("overview");
-                    title = responseJSONObj.getString("title");
+                    runtime = responseJSONObj.getInt(MovieDetailsJSONArray.RUNTIME);
+                    votes = responseJSONObj.getLong(MovieDetailsJSONArray.VOTE_AVERAGE);
+                    overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
+                    title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -127,8 +121,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
         favStr  = String.valueOf(id) + "|" + title + "|" + posterPath + "|" + backdropPath;
 
-
-
         if(setFavorites.contains(String.valueOf(favStr))){
             isFav = true;
             favoriteIcon.setImageResource(android.R.drawable.star_on);
@@ -138,7 +130,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             favoriteIcon.setImageResource(android.R.drawable.star_off);
         }
 
-        System.out.println("Setting image for MovieDetailsActivity:" + backdropUrl);
         Picasso.with(MovieDetailsActivity.this).load(backdropUrl).into(img);
 
         favoriteIcon.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +158,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
 
         SharedPreferences.Editor editor = favorites.edit();
-        editor.putStringSet("movies", setFavorites);
+        editor.putStringSet(ITEM_CAT_MOVIES, setFavorites);
         editor.commit();
 
 

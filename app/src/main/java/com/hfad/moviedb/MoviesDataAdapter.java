@@ -22,7 +22,7 @@ public class MoviesDataAdapter extends BaseAdapter{
 
     ArrayList<MovieDataObject> moviesArrayList;
     Context mContext;
-
+    Utilities utils;
     /**
      * How many items are in the data set represented by this Adapter.
      *
@@ -111,13 +111,11 @@ public class MoviesDataAdapter extends BaseAdapter{
 
         imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
-        String fullImageUrl =  mContext.getResources().getString(R.string.poster_prefix_path) + "/"
-                + mContext.getResources().getString(R.string.image_size_w300)
-                + moviesArrayList.get(position).posterPath
-                + "&" + mContext.getResources().getText(R.string.api_key_movies_db);
+        utils = new Utilities(mContext);
+        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, Utilities.posterSizes.w342.toString() );
+
         Picasso.with(mContext)
                 .load(fullImageUrl)
-
                 .into(imageView);
 
 
