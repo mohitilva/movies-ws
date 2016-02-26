@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         public NetworkOperation() {
 
         }
+
         @Override
         protected Void doInBackground(String... params) {
 
@@ -121,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected List<MovieDataObject> getList(String url){
-
 
             JSONObject movieObj;
             Request request = new Request.Builder()
@@ -169,12 +170,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void voids) {
             adapter = new MoviesDataAdapter(MainActivity.this, moviesArrayList);
             movieListView.setAdapter(adapter);
+            Log.d("MainActivity","Adapter set.");
 
         }
 
 
     }
-
 
     private  class LoadMore extends NetworkOperation {
 

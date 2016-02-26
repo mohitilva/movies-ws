@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private Long id;
     private int runtime;
     private float votes;
-
+    private String TAG = "MovieDetailsActivity";
     public static final String FAVORITE_PREFERENCES = "FAV_PREF";
     public static final String ITEM_CAT_MOVIES = "movies";
     Set<String> setFavorites;
@@ -70,8 +71,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Request request = new Request.Builder()
                 .url(util.getResourceUrl(String.valueOf(id)))
                 .build();
-        
-        client.newCall(request).enqueue(new ItemDetailsCallback());
+
+        Log.d(TAG, "Requesting:" + util.getResourceUrl(String.valueOf(id)));
+                client.newCall(request).enqueue(new ItemDetailsCallback());
 
         setFavoriteIcon();
 
