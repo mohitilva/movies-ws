@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     private OkHttpClient client = new OkHttpClient();
 
-    private ArrayList<MovieDataObject> moviesArrayList = new ArrayList<>();
+    private ArrayList<MovieDataObject> moviesArrayList;
     private MoviesDataAdapter adapter;
 
     private int page=1;
     private String request_url;
     private ArrayList<MovieDataObject> extendedlist;
-
+    private String networkResponse;
+    private String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         NetworkOperation networkOperation = new NetworkOperation();
         networkOperation.execute(request_url);
+
+
 
         movieListView.setOnItemClickListener(new OnListItemClickListener());
 
@@ -90,6 +93,41 @@ public class MainActivity extends AppCompatActivity {
         movieListView.addHeaderView(favoriteBar);
 
     }
+    protected List<MovieDataObject> getListFromNetworkResponse(String networkResponse){
+
+        List<MovieDataObject> moviesList = new ArrayList<>();
+
+        try {
+
+            //This is synchronous call. In case you need async call use enqueue()
+
+            JSONObject movieObj = new JSONObject(networkResponse);
+            JSONArray resultsArray = movieObj.getJSONArray(ITEMS_ARRAY_NAME);
+
+
+            for(int i=0; i<resultsArray.length();i++){
+
+                movieObj =resultsArray.getJSONObject(i);
+                Long id = movieObj.getLong(MovieMultipleJSONArray.ID);
+                String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
+                String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
+                String backdropUrl = movieObj.getString(MovieMultipleJSONArray.BACKDROP_PATH);
+                String posterUrl = movieObj.getString(MovieMultipleJSONArray.POSTER_PATH);
+                String release_date = movieObj.getString(MovieMultipleJSONArray.RELEASE_DATE);
+                MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropUrl);
+
+                movieDataObject.releaseDate = release_date;
+
+                Double popularity      = movieObj.getDouble(MovieMultipleJSONArray.POPULARITY);
+                movieDataObject.popularity = popularity.intValue();
+                moviesList.add(movieDataObject);
+
+            }
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return moviesList;
+    }
 
     private class OnListItemClickListener implements AdapterView.OnItemClickListener {
         @Override
@@ -106,100 +144,55 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class NetworkOperation extends AsyncTask<String, Void, Void> {
+    private class NetworkOperation extends AsyncTask<String, Void, String> {
 
         public NetworkOperation() {
-
+            super();
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected String doInBackground(String... params) {
 
             String url = params[0];
-
-            moviesArrayList = (ArrayList) getList(url);
-
-            return null;
-        }
-
-        protected List<MovieDataObject> getList(String url){
-
-            JSONObject movieObj;
             Request request = new Request.Builder()
                     .url(url)
                     .build();
 
-            ArrayList<MovieDataObject> moviesList = new ArrayList<>();
-
+            Response response;
+            String responseString = null;
             try {
+                response = client.newCall(request).execute();
+                responseString =response.body().string();
 
-                //This is synchronous call. In case you need async call use enqueue()
-                Response response = client.newCall(request).execute();
-                String responseStr =response.body().string();
-
-                JSONArray resultsArray = new JSONObject(responseStr).getJSONArray(ITEMS_ARRAY_NAME);
-
-
-                for(int i=0; i<resultsArray.length();i++){
-
-                    movieObj =resultsArray.getJSONObject(i);
-                    Long id = movieObj.getLong(MovieMultipleJSONArray.ID);
-                    String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
-                    String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
-                    String backdropUrl = movieObj.getString(MovieMultipleJSONArray.BACKDROP_PATH);
-                    String posterUrl = movieObj.getString(MovieMultipleJSONArray.POSTER_PATH);
-                    String release_date = movieObj.getString(MovieMultipleJSONArray.RELEASE_DATE);
-                    MovieDataObject movieDataObject = new MovieDataObject(id,overview,title,posterUrl, backdropUrl);
-
-                    movieDataObject.releaseDate = release_date;
-
-                    Double popularity      = movieObj.getDouble(MovieMultipleJSONArray.POPULARITY);
-                    movieDataObject.popularity = popularity.intValue();
-                    moviesList.add(movieDataObject);
-
-                }
-            } catch (JSONException e1) {
-                e1.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return moviesList;
+
+            return responseString;
         }
 
         @Override
-        protected void onPostExecute(Void voids) {
+        protected void onPostExecute(String responseString) {
+            moviesArrayList = (ArrayList<MovieDataObject>) getListFromNetworkResponse(responseString);
             adapter = new MoviesDataAdapter(MainActivity.this, moviesArrayList);
             movieListView.setAdapter(adapter);
             Log.d("MainActivity","Adapter set.");
-
         }
-
-
     }
 
     private  class LoadMore extends NetworkOperation {
 
-
-
-        public LoadMore() {
+    public LoadMore() {
 
             super();
         }
 
         @Override
-        protected Void doInBackground(String... params) {
-
-            String url = params[0];
-            extendedlist = (ArrayList) getList(url);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void v) {
-
+        protected void onPostExecute(String responseString) {
+            extendedlist = (ArrayList<MovieDataObject>) getListFromNetworkResponse(responseString);
             adapter.addItems(extendedlist);
             adapter.notifyDataSetChanged();
-            //mainActivity.loadMoreTaskListener.loadMoreTaskComplete();
+
 
         }
     }
