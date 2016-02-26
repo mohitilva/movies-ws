@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.async;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;

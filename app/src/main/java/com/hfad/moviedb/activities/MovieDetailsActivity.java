@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hfad.moviedb.R;
+import com.hfad.moviedb.utils.Utilities;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -25,7 +27,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import com.hfad.moviedb.Utilities.*;
+import com.hfad.moviedb.utils.Utilities.*;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 

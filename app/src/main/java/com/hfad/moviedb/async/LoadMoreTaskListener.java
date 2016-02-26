@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.async;
 
 /**
  * Created by mtilva on 2/17/16.

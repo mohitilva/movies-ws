@@ -1,13 +1,13 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.async;
 
-import android.os.AsyncTask;
+import com.hfad.moviedb.activities.MainActivity;
 
 import java.util.ArrayList;
 
 /**
  * Created by mtilva on 2/23/16.
  */
-class LoadMore extends NetworkOperation {
+public class LoadMore extends NetworkOperation {
 
     private MainActivity mainActivity;
 
@@ -22,7 +22,7 @@ class LoadMore extends NetworkOperation {
     protected Void doInBackground(String... params) {
 
         String url = params[0];
-        mainActivity.extendedlist = (ArrayList) mainActivity.getList(url);
+        mainActivity.extendedlist = (ArrayList) getList(url);
         return null;
     }
 

@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.models;
 
 /**
  * Created by mtilva on 2/13/16.
@@ -6,12 +6,12 @@ package com.hfad.moviedb;
 public class MovieDataObject {
 
     String overview;
-    Long id;
-    String title;
-    String posterPath;
-    String backdropPath;
-    String releaseDate;
-    int popularity;
+    public Long id;
+    public String title;
+    public String posterPath;
+    public String backdropPath;
+    public String releaseDate;
+    public int popularity;
 
     public  MovieDataObject(Long l, String overview, String title, String posterPath, String backdrop){
         this.overview = overview;

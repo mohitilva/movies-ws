@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hfad.moviedb.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

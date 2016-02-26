@@ -1,4 +1,4 @@
-package com.hfad.moviedb;
+package com.hfad.moviedb.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,18 +7,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import com.hfad.moviedb.Utilities.INTENTPARAMS;
 
-import static com.hfad.moviedb.MovieDetailsActivity.FAVORITE_PREFERENCES;
-import static com.hfad.moviedb.MovieDetailsActivity.ITEM_CAT_MOVIES;
+import com.hfad.moviedb.R;
+import com.hfad.moviedb.utils.Utilities.INTENTPARAMS;
+import com.hfad.moviedb.adapters.FavoriteDataAdapter;
+
+import static com.hfad.moviedb.activities.MovieDetailsActivity.FAVORITE_PREFERENCES;
+import static com.hfad.moviedb.activities.MovieDetailsActivity.ITEM_CAT_MOVIES;
 
 public class FavoriteMovies extends AppCompatActivity {
 
@@ -40,7 +40,6 @@ public class FavoriteMovies extends AppCompatActivity {
         ArrayList<String> favMovieDetailsArrayList = new ArrayList<>();
         favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
-        favorites = getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
 
         favoriteDataAdapter = new FavoriteDataAdapter(this, favMovieDetailsArrayList);
