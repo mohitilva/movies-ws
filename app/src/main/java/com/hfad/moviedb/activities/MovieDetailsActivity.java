@@ -31,24 +31,24 @@ import com.hfad.moviedb.utils.Utilities.*;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    ImageView img;
-    TextView titleView;
-    TextView overviewView;
-    ImageView favoriteIcon;
-    TextView runTimeTextView;
-    TextView homePage;
+    private ImageView img;
+    private TextView titleView;
+    private TextView overviewView;
+    private ImageView favoriteIcon;
+    private TextView runTimeTextView;
+    private TextView homePage;
 
-    OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client = new OkHttpClient();
 
-    String favStr;
-    String homepage;
-    String overview;
-    String title;
-    String backdropPath;
-    String posterPath;
-    Long id;
-    int runtime;
-    float votes;
+    private String favStr;
+    private String homepage;
+    private String overview;
+    private  String title;
+    private String backdropPath;
+    private String posterPath;
+    private Long id;
+    private int runtime;
+    private float votes;
 
     public static final String FAVORITE_PREFERENCES = "FAV_PREF";
     public static final String ITEM_CAT_MOVIES = "movies";

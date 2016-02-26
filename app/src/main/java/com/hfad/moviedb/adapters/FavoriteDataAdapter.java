@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hfad.moviedb.R;
@@ -18,14 +17,13 @@ import java.util.List;
 
 
 public class FavoriteDataAdapter extends BaseAdapter{
-
-
-    ArrayList<String> listFavoriteIds;
-    ArrayList<String> listTitles;
-    ArrayList<String> listIconUrls;
-    ArrayList<String> listCombined;
-    Context mContext;
-    LayoutInflater inflater;
+    
+    private ArrayList<String> listFavoriteIds;
+    private ArrayList<String> listTitles;
+    private ArrayList<String> listIconUrls;
+    private ArrayList<String> listCombined;
+    private Context mContext;
+    private LayoutInflater inflater;
     public FavoriteDataAdapter(Context context, List<String> favStrList){
 
         mContext = context;

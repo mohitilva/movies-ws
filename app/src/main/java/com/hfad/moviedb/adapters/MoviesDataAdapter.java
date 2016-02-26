@@ -21,19 +21,14 @@ import java.util.ArrayList;
  */
 public class MoviesDataAdapter extends BaseAdapter{
 
-    ArrayList<MovieDataObject> moviesArrayList;
-    Context mContext;
-    Utilities utils;
+    private ArrayList<MovieDataObject> moviesArrayList;
+    private Context mContext;
+    private Utilities utils;
 
     public MoviesDataAdapter(Context context, ArrayList<MovieDataObject> dataList){
         super();
         mContext = context;
         moviesArrayList = (ArrayList) dataList;
-    }
-
-    public void addItem(MovieDataObject newItem){
-        moviesArrayList.add(newItem);
-
     }
 
     public void addItems(ArrayList<MovieDataObject> newList){

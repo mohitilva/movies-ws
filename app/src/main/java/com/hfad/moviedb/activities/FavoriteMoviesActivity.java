@@ -20,12 +20,13 @@ import com.hfad.moviedb.adapters.FavoriteDataAdapter;
 import static com.hfad.moviedb.activities.MovieDetailsActivity.FAVORITE_PREFERENCES;
 import static com.hfad.moviedb.activities.MovieDetailsActivity.ITEM_CAT_MOVIES;
 
-public class FavoriteMovies extends AppCompatActivity {
+public class FavoriteMoviesActivity extends AppCompatActivity {
 
-    FavoriteDataAdapter favoriteDataAdapter;
-    Set<String> setFavorites;
-    ListView favListView;
-    SharedPreferences favorites;
+    private FavoriteDataAdapter favoriteDataAdapter;
+    private Set<String> setFavorites;
+    private ListView favListView;
+    private SharedPreferences favorites;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +42,8 @@ public class FavoriteMovies extends AppCompatActivity {
         favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-
         favoriteDataAdapter = new FavoriteDataAdapter(this, favMovieDetailsArrayList);
         favListView.setAdapter(favoriteDataAdapter);
-
-
     }
 
     public void toggleImage(View view) {
@@ -84,7 +82,7 @@ public class FavoriteMovies extends AppCompatActivity {
         String title = favItemsArray[1];
         String poster_rel_path = favItemsArray[2];
         String backdrop_rel_path = favItemsArray[3];
-        Intent detailsIntent = new Intent(FavoriteMovies.this, MovieDetailsActivity.class);
+        Intent detailsIntent = new Intent(FavoriteMoviesActivity.this, MovieDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(INTENTPARAMS.TITLE.toString(),title);
         bundle.putString(INTENTPARAMS.POSTER_REL_PATH.toString(), poster_rel_path);
