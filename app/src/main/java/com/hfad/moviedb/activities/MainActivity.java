@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -33,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String ITEMS_ARRAY_NAME = "results";
     private ListView movieListView;
-    private View favoriteBar;
+    private View headerView;
     private View loadMore;
-
+    private View searchView;
+    private View favoriteView;
     private OkHttpClient client = new OkHttpClient();
 
     private ArrayList<MovieDataObject> moviesArrayList;
@@ -52,13 +54,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setViews();
+
         request_url = getResources().getText(R.string.popular_movies_url)
                 + "&" + getResources().getText(R.string.api_key_movies_db);
 
         NetworkOperation networkOperation = new NetworkOperation();
         networkOperation.execute(request_url);
-
-
 
         movieListView.setOnItemClickListener(new OnListItemClickListener());
 
@@ -70,16 +71,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        favoriteBar.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Not implemented", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        favoriteView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent favIntent = new Intent(MainActivity.this, FavoriteMoviesActivity.class);
                 startActivity(favIntent);
+
             }
         });
     }
 
     private void setViews(){
+
         movieListView = (ListView) findViewById(R.id.moviesListView);
 
         LayoutInflater inflater = (LayoutInflater)MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -89,8 +99,11 @@ public class MainActivity extends AppCompatActivity {
         movieListView.addFooterView(loadMore, null, true);
 
         //add header view - favorite
-        favoriteBar = inflater.inflate(R.layout.favorite_bar,null);
-        movieListView.addHeaderView(favoriteBar);
+        headerView = inflater.inflate(R.layout.favorite_bar,null);
+        movieListView.addHeaderView(headerView);
+
+        searchView = headerView.findViewById(R.id.search_bar_textview);
+        favoriteView = headerView.findViewById(R.id.favorite_bar_textview);
 
     }
     protected List<MovieDataObject> getListFromNetworkResponse(String networkResponse){
@@ -160,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
             Response response;
             String responseString = null;
+            Log.d(TAG, "Trying to get response for:"+url);
             try {
                 response = client.newCall(request).execute();
                 responseString =response.body().string();
@@ -173,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String responseString) {
+            Log.d(TAG, "Network response string:"+responseString);
             moviesArrayList = (ArrayList<MovieDataObject>) getListFromNetworkResponse(responseString);
             adapter = new MoviesDataAdapter(MainActivity.this, moviesArrayList);
             movieListView.setAdapter(adapter);
@@ -189,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String responseString) {
+            Log.d(TAG, "Load More Response string:"+responseString);
             extendedlist = (ArrayList<MovieDataObject>) getListFromNetworkResponse(responseString);
             adapter.addItems(extendedlist);
             adapter.notifyDataSetChanged();
