@@ -27,10 +27,11 @@ import okhttp3.Response;
 
 import com.hfad.moviedb.models.MovieDataObject;
 import com.hfad.moviedb.R;
+import com.hfad.moviedb.utils.MainFragment;
 import com.hfad.moviedb.utils.Utilities.*;
 import com.hfad.moviedb.adapters.MoviesDataAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
 
     public static final String ITEMS_ARRAY_NAME = "results";
     private ListView movieListView;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         setViews();
 
         request_url = getResources().getText(R.string.popular_movies_url)
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void setViews(){
@@ -140,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
             e1.printStackTrace();
         }
         return moviesList;
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+
     }
 
     private class OnListItemClickListener implements AdapterView.OnItemClickListener {

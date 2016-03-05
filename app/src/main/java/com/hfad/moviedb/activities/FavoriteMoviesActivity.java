@@ -22,7 +22,7 @@ import static com.hfad.moviedb.activities.MovieDetailsActivity.ITEM_CAT_MOVIES;
 
 public class FavoriteMoviesActivity extends AppCompatActivity {
 
-    private FavoriteDataAdapter favoriteDataAdapter;
+    private FavoriteDataAdapter adapter;
     private Set<String> setFavorites;
     private ListView favListView;
     private SharedPreferences favorites;
@@ -42,8 +42,8 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
         favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        favoriteDataAdapter = new FavoriteDataAdapter(this, favMovieDetailsArrayList);
-        favListView.setAdapter(favoriteDataAdapter);
+        adapter = new FavoriteDataAdapter(this, favMovieDetailsArrayList);
+        favListView.setAdapter(adapter);
     }
 
     public void toggleImage(View view) {

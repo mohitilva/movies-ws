@@ -1,16 +1,15 @@
-package com.hfad.moviedb.utils;
+package com.hfad.navdrawer;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.ListFragment;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.hfad.moviedb.R;
-import com.hfad.moviedb.utils.dummy.DummyContent;
+import com.hfad.navdrawer.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
@@ -19,9 +18,16 @@ import com.hfad.moviedb.utils.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class MainFragment extends ListFragment {
+public class RecentMoviesFragment extends ListFragment {
 
-    final static String TAG="MainFragment";
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public RecentMoviesFragment() {
+    }
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,8 +40,8 @@ public class MainFragment extends ListFragment {
     private OnFragmentInteractionListener mListener;
 
     // TODO: Rename and change types of parameters
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
+    public  RecentMoviesFragment newInstance(String param1, String param2) {
+        RecentMoviesFragment fragment = new RecentMoviesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -43,12 +49,6 @@ public class MainFragment extends ListFragment {
         return fragment;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public MainFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,14 @@ public class MainFragment extends ListFragment {
                 android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState){
+
+        View rootView = inflater.inflate(R.layout.movie_listview, container, false);
+        return rootView;
+
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -71,7 +79,6 @@ public class MainFragment extends ListFragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            Log.d(TAG, "The hosting activity should implement OnFragmentInteractionListener interface");
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
@@ -92,9 +99,6 @@ public class MainFragment extends ListFragment {
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
         }
-        Toast.makeText(getActivity(),
-                "position="+position + "and id="+id,
-                Toast.LENGTH_LONG).show();
     }
 
     /**
