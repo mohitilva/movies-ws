@@ -1,8 +1,10 @@
 package com.hfad.moviesfun;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -143,7 +145,24 @@ public class Utilities {
         public static final String OVERVIEW = _OVERVIEW;
     }
 
+    public  ArrayList<DrawerItem> drawerItems = new ArrayList<>();
+    {
+        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.ic_local_movies_black_48dp));
+        drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
+        drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
 
+    }
+
+    public class DrawerItem{
+        String text;
+        int image;
+
+        DrawerItem(String t, int i){
+            text = t;
+            image = i;
+        }
+
+    }
 
 
 }

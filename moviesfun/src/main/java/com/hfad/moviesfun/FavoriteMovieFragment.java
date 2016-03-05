@@ -84,9 +84,7 @@ public class FavoriteMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         mContext = container.getContext();
-
 
         favView = inflater.inflate(R.layout.fragment_favorite_movies, null);
         favListView = (ListView) favView.findViewById(R.id.favoriteMoviesListView);
@@ -115,16 +113,10 @@ public class FavoriteMovieFragment extends Fragment {
                 String poster_rel_path = favItemsArray[2];
                 String backdrop_rel_path = favItemsArray[3];
 
-
                 mCallback.onListItemClick(Long.parseLong(movieId), backdrop_rel_path, poster_rel_path);
 
             }
         });
-
-
-
-
-
 
         return favView;
 

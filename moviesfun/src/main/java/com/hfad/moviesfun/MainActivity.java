@@ -8,10 +8,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity
 
     private String[] titles;
     private ListView drawerlist;
+    private String TAG = "MainActivity";
     Context mContext;
 
     private DrawerLayout mDrawerLayout;
@@ -38,11 +42,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         titles = DummyContent.STRING_ITEMS;
         drawerlist = (ListView) findViewById(R.id.drawer);
 
-        drawerlist.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_activated_1, titles));
+        DrawerAdapter drawerAdapter = new DrawerAdapter(mContext);
+
+        drawerlist.setAdapter(drawerAdapter);
+
 
         drawerlist.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -94,21 +101,24 @@ public class MainActivity extends AppCompatActivity
     private void selectItem(int position){
         Fragment fragment;
 
+        Log.d(TAG, "position="+position);
 
         switch (position){
             case 0:
+                Toast.makeText(this,"Hello",Toast.LENGTH_SHORT).show();
+                return;
+            case 1:
                 fragment = new MoviesRecentFragment();
                 break;
-            case 1:
+            case 2:
                 fragment = new FavoriteMovieFragment();
                 break;
-            case 2:
-                Toast.makeText(this,"Not Implemented yet",Toast.LENGTH_SHORT).show();
-                return;
             default:
                 fragment = new MoviesRecentFragment();
 
+
         }
+
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
