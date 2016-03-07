@@ -2,6 +2,7 @@ package com.hfad.moviesfun;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,8 @@ import java.util.Set;
 
 
 public class FavoriteDataAdapter extends BaseAdapter{
-    
+
+    private static final String TAG = "com.hfad.moviesfun.FavoriteDataAdapter";
     private ArrayList<String> listFavoriteIds;
     private ArrayList<String> listTitles;
     private ArrayList<String> listIconUrls;
@@ -48,12 +50,13 @@ public class FavoriteDataAdapter extends BaseAdapter{
             listIconUrls.add(components[2]);
 
         }
+        Log.d(TAG,"favoritecount="+listFavoriteIds.size());
 
-        System.out.println(listFavoriteIds);
     }
 
     @Override
     public int getCount() {
+
         return listFavoriteIds.size();
     }
 
@@ -146,7 +149,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
             }
         });
 
-        System.out.println("Tags set:" + listCombined.get(position));
+
         return view;
 
     }

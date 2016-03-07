@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="dark_grey">#222222</color>
     <color name="light_grey">#DDDDDD</color>
+    <color name="list_background">@color/white</color>
 </resources>

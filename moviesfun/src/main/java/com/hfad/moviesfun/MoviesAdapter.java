@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ public class MoviesAdapter extends BaseAdapter{
     public int getCount() {
         return moviesArrayList.size();
     }
-
 
     @Override
     public Object getItem(int position) {
@@ -71,8 +71,19 @@ public class MoviesAdapter extends BaseAdapter{
 
         Picasso.with(mContext)
                 .load(fullImageUrl)
-                .into(imageView);
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
 
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
+              //  .into(imageView);
 
         MovieDataModel currentMovieObj = moviesArrayList.get(position);
 

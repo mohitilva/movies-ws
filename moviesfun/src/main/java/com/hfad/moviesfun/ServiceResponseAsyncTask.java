@@ -12,7 +12,7 @@ import okhttp3.Response;
 
 class ServiceResponseAsyncTask extends AsyncTask<String, Void, String> {
 
-    private  static String TAG="ServiceResponseAsyncTask";
+    private  static String TAG="com.hfad.moviesfun.ServiceResponseAsyncTask";
     OkHttpClient mClient;
 
 
@@ -32,7 +32,7 @@ class ServiceResponseAsyncTask extends AsyncTask<String, Void, String> {
 
         Response response;
         String responseString = null;
-        Log.d(TAG, "Trying to get response for:" + url);
+
         try {
             response = mClient.newCall(request).execute();
             responseString = response.body().string();

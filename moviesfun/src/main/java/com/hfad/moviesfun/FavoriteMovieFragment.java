@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class FavoriteMovieFragment extends Fragment {
     private View favoriteItem;
     private ImageView favIcon;
 
+    private String TAG = "com.hfad.moviesfun.FavoriteMovieFragment";
     public static final String FAVORITE_PREFERENCES = "FAV_PREF";
     public static final String ITEM_CAT_MOVIES = "movies";
 
@@ -58,10 +60,13 @@ public class FavoriteMovieFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try{
+
             mCallback = (OnListItemClickCallback) activity;
         }catch(ClassCastException e){
             throw new ClassCastException(activity.toString() + " must implement OnListItemClickCallback");
         }
+
+        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.FAVORITES);
     }
 
     /**
@@ -84,6 +89,7 @@ public class FavoriteMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         mContext = container.getContext();
 
         favView = inflater.inflate(R.layout.fragment_favorite_movies, null);
@@ -93,6 +99,7 @@ public class FavoriteMovieFragment extends Fragment {
 
         favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavMovieDetails = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
+        Log.d(TAG,"setFavmovies size="+setFavMovieDetails.size());
         ArrayList<String> favMovieDetailsArrayList = new ArrayList<>();
         favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
@@ -113,7 +120,7 @@ public class FavoriteMovieFragment extends Fragment {
                 String poster_rel_path = favItemsArray[2];
                 String backdrop_rel_path = favItemsArray[3];
 
-                mCallback.onListItemClick(Long.parseLong(movieId), backdrop_rel_path, poster_rel_path);
+                mCallback.onListItemClick(Long.parseLong(movieId), backdrop_rel_path, poster_rel_path, MainActivity.fragmentTags.FAVORITES);
 
             }
         });

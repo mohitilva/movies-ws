@@ -4,18 +4,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="horizontal"
 android:layout_width="match_parent"
-android:layout_height="match_parent"
+android:layout_height="wrap_content"
 android:clickable="false"
-android:background="@color/light_grey"
-android:id="@+id/movieItemLinearLayout">
+android:background="@color/list_background"
+android:id="@+id/movieItemLinearLayout"
+              android:paddingBottom="@dimen/list_item_padding"
+              android:paddingTop="@dimen/list_item_padding">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
+        android:showDividers="none">
 
         <ImageView
             android:layout_width="75dp"
             android:layout_height="100dp"
             android:contentDescription="Description"
-            android:id="@+id/movieIconImageView"/>
+            android:id="@+id/movieIconImageView"
+            android:background="@color/light_grey"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -23,7 +30,8 @@ android:id="@+id/movieItemLinearLayout">
             android:orientation="vertical"
 
             android:focusable="false"
-            android:paddingLeft="@dimen/abc_button_padding_horizontal_material">
+            android:paddingLeft="@dimen/abc_button_padding_horizontal_material"
+            android:paddingTop="@dimen/abc_button_padding_horizontal_material">
 
 
             <TextView
@@ -81,5 +89,6 @@ android:id="@+id/movieItemLinearLayout">
 
         </LinearLayout>
 
+    </LinearLayout>
 
 </LinearLayout>

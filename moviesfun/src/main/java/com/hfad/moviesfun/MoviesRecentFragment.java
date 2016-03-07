@@ -48,7 +48,7 @@ public class MoviesRecentFragment extends Fragment {
     private String request_url;
     private ArrayList<MovieDataModel> extendedlist;
     private String networkResponse;
-    private static String TAG = "MainActivity";
+    private static String TAG = "com.hfad.moviesfun.MoviesRecentFragment";
     private Utilities utils;
     OnListItemClickCallback mCallback;
     public MoviesRecentFragment() {
@@ -62,6 +62,7 @@ public class MoviesRecentFragment extends Fragment {
         }catch(ClassCastException e){
             throw new ClassCastException(activity.toString() + " must implement OnListItemClickCallback");
         }
+        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.MAIN);
     }
 
     @Override
@@ -80,23 +81,7 @@ public class MoviesRecentFragment extends Fragment {
         loadMore =  inflater.inflate(R.layout.load_more,null);
         movieListView.addFooterView(loadMore, null, true);
 
-        loadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String loadMoreUrl = request_url +  "&page=" + String.valueOf(++page);
-                String  responseString = null;
-                try {
-                    responseString = new ServiceResponseAsyncTask(client).execute(loadMoreUrl).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                extendedlist = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
-                adapter.addItems(extendedlist);
-                adapter.notifyDataSetChanged();
-            }
-        });
+        loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
         String responseString = null;
 
@@ -108,7 +93,6 @@ public class MoviesRecentFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
         adapter = new MoviesAdapter(mContext, moviesArrayList);
         movieListView.setAdapter(adapter);
@@ -119,7 +103,8 @@ public class MoviesRecentFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCallback.onListItemClick(id,
                         moviesArrayList.get(position).backdropPath,
-                        moviesArrayList.get(position).posterPath);
+                        moviesArrayList.get(position).posterPath,
+                        MainActivity.fragmentTags.MAIN);
             }
         });
 
@@ -165,4 +150,21 @@ public class MoviesRecentFragment extends Fragment {
     }
 
 
+    private class LoadMoreOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String loadMoreUrl = request_url +  "&page=" + String.valueOf(++page);
+            String  responseString = null;
+            try {
+                responseString = new ServiceResponseAsyncTask(client).execute(loadMoreUrl).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            extendedlist = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
+            adapter.addItems(extendedlist);
+            adapter.notifyDataSetChanged();
+        }
+    }
 }

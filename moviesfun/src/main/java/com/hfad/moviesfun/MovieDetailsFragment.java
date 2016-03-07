@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.hfad.moviesfun.Utilities.backdropSizes;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.hfad.moviesfun.Utilities.MovieDetailsJSONArray;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -66,7 +68,7 @@ public class MovieDetailsFragment extends Fragment {
     private ImageView favoriteIcon;
     private TextView runTimeTextView;
     private TextView homePage;
-    private static final String TAG="MOVIEDETAILSFRAGMENT";
+    private static final String TAG="com.hfad.moviesfun.MovieDetailsFragment";
 
     Set<String> setFavorites;
     boolean isFav = false;
@@ -76,6 +78,12 @@ public class MovieDetailsFragment extends Fragment {
 
     public MovieDetailsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.DETAILS);
     }
 
     public static MovieDetailsFragment newInstance(String id, String backDropPath, String posterPath) {
@@ -111,6 +119,8 @@ public class MovieDetailsFragment extends Fragment {
         img = (ImageView) fragmentView.findViewById(R.id.moviebackdrop_details);
         titleView = (TextView) fragmentView.findViewById(R.id.title_details);
         overviewView = (TextView) fragmentView.findViewById(R.id.overview_details);
+
+        overviewView.setMovementMethod(new ScrollingMovementMethod());
         favoriteIcon = (ImageView) fragmentView.findViewById(R.id.imageView);
         homePage = (TextView) fragmentView.findViewById(R.id.homepage_textbox);
         homePage.setMovementMethod(LinkMovementMethod.getInstance());
@@ -118,6 +128,20 @@ public class MovieDetailsFragment extends Fragment {
 
         String requestUrl =  utils.getResourceUrl(String.valueOf(movieId));
         String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w300.toString());
+        Picasso.with(mContext).load(backdropUrl)
+                .into(img, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+                //.into(img);
+
         String serviceResponse = null;
 
         try {
@@ -138,12 +162,12 @@ public class MovieDetailsFragment extends Fragment {
             overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
         }  catch (JSONException e) {
-            Log.e(TAG, "JSONException occurred. " + e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
 
         //Set values for the views
-        Picasso.with(mContext).load(backdropUrl).into(img);
+
         titleView.setText(title);
         overviewView.setText(overview);
         homePage.setText(homepage);
@@ -176,13 +200,13 @@ public class MovieDetailsFragment extends Fragment {
             }
 
             SharedPreferences.Editor editor = favorites.edit();
+            editor.clear();
             editor.putStringSet(ITEM_CAT_MOVIES, setFavorites);
-            editor.commit();
+            Log.d(TAG, "set of Fav String:"+setFavorites);
 
+            editor.apply();
 
-            favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
-            setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-            Toast.makeText(mContext, setFavorites.toString(), Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(mContext, setFavorites.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 

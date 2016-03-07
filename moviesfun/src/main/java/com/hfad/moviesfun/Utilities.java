@@ -15,7 +15,7 @@ public class Utilities {
 
     Context mContext;
     static String apiKey;
-    private static String TAG="UTILITIES";
+    private static String TAG="MovieDetailsFragment.Utilities";
     private  OkHttpClient client = new OkHttpClient();
     public Utilities(Context context){
         mContext = context;
