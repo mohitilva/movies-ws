@@ -33,14 +33,13 @@ public class FavoriteMovieFragment extends Fragment {
     Context mContext;
 
     private FavoriteDataAdapter adapter;
-    private Set<String> setFavorites;
     private View favView;
     private SharedPreferences favorites;
     private ListView favListView;
     private View favoriteItem;
     private ImageView favIcon;
 
-    private String TAG = "com.hfad.moviesfun.FavoriteMovieFragment";
+    private final String TAG = getClass().getName();
     public static final String FAVORITE_PREFERENCES = "FAV_PREF";
     public static final String ITEM_CAT_MOVIES = "movies";
 
@@ -92,18 +91,24 @@ public class FavoriteMovieFragment extends Fragment {
 
         mContext = container.getContext();
 
+        favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
+        Set<String> setFavMovieDetails =
+                favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
+
+        if(setFavMovieDetails.size()==0){
+            View emptyView = inflater.inflate(R.layout.no_items_found,null);
+            TextView messageView = (TextView)emptyView.findViewById(R.id.message);
+            messageView.setText("You haven't added any favorites. \n" +
+                    "To add favorites tap the favorite icon in the movie description.");
+            return emptyView;
+        }
+
         favView = inflater.inflate(R.layout.fragment_favorite_movies, null);
         favListView = (ListView) favView.findViewById(R.id.favoriteMoviesListView);
 
-        Set<String> setFavMovieDetails;
-
-        favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
-        setFavMovieDetails = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        Log.d(TAG,"setFavmovies size="+setFavMovieDetails.size());
         ArrayList<String> favMovieDetailsArrayList = new ArrayList<>();
         favMovieDetailsArrayList.addAll(setFavMovieDetails);
 
-        setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
         adapter = new FavoriteDataAdapter(mContext, favMovieDetailsArrayList);
         favListView.setAdapter(adapter);
 
@@ -116,11 +121,14 @@ public class FavoriteMovieFragment extends Fragment {
                 String favItems = (String) view.getTag();
                 String[] favItemsArray = favItems.split("\\|");
                 String movieId = favItemsArray[0];
-                String title = favItemsArray[1];
+                //String title = favItemsArray[1];
                 String poster_rel_path = favItemsArray[2];
                 String backdrop_rel_path = favItemsArray[3];
 
-                mCallback.onListItemClick(Long.parseLong(movieId), backdrop_rel_path, poster_rel_path, MainActivity.fragmentTags.FAVORITES);
+                mCallback.onListItemClick(Long.parseLong(movieId),
+                                            backdrop_rel_path,
+                                            poster_rel_path,
+                                            MainActivity.fragmentTags.FAVORITES);
 
             }
         });

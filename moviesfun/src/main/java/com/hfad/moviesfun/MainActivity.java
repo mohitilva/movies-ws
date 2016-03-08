@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     private String[] titles;
     private ListView drawerlist;
-    private String TAG = "com.hfad.moviesfun.MainActivity";
+    private String TAG = getClass().getName();
     Context mContext;
 
 
@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity
     public void setCurrentFragment(fragmentTags currentFragment) {
         this.currentFragment = currentFragment;
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

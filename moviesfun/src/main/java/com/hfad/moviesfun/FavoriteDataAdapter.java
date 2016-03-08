@@ -75,8 +75,8 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
         inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view;
-        ImageView iconView;
-        ImageView favView;
+        ImageView posterImgView;
+        ImageView favIconImgView;
         TextView titleView;
 
         if(convertView==null) {
@@ -86,17 +86,17 @@ public class FavoriteDataAdapter extends BaseAdapter{
             view =  convertView;
         }
 
-        iconView = (ImageView) view.findViewById(R.id.fav_movie_icon_ImageView);
+        posterImgView = (ImageView) view.findViewById(R.id.fav_movie_icon_ImageView);
 
-        favView = (ImageView)view.findViewById(R.id.fav_icon);
+        favIconImgView = (ImageView)view.findViewById(R.id.fav_icon);
 
 
         HashMap<Integer, String> favIconTag = new HashMap<>();
         favIconTag.put(0, "true");
         favIconTag.put(1, listCombined.get(position));
 
-        favView.setTag(favIconTag);
-        favView.setImageResource(android.R.drawable.star_on);
+        favIconImgView.setTag(favIconTag);
+        favIconImgView.setImageResource(android.R.drawable.star_on);
 
 
         titleView = (TextView)view.findViewById(R.id.fav_movie_title_textview);
@@ -108,20 +108,21 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
         Picasso.with(mContext)
                 .load(fullIconUrl)
-                .into(iconView);
+                .into(posterImgView);
 
         titleView.setText(listTitles.get(position));
 
         view.setTag(listCombined.get(position));
-        iconView.setTag(listCombined.get(position));
+        posterImgView.setTag(listCombined.get(position));
         titleView.setTag(listCombined.get(position));
 
         favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
         setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
 
-        favView.setOnClickListener(new View.OnClickListener() {
+        favIconImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 HashMap<Integer, String> tags = (HashMap<Integer, String>) view.getTag();
 
                 String combinedString = tags.get(1);
