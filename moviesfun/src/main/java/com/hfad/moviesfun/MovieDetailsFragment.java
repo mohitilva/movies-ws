@@ -61,6 +61,7 @@ public class MovieDetailsFragment extends Fragment {
     private String movieId;
     private String backdropPath;
     private OnFragmentInteractionListener mListener;
+    private FavoriteManager favoriteManager;
 
     private ImageView img;
     private TextView titleView;
@@ -68,13 +69,10 @@ public class MovieDetailsFragment extends Fragment {
     private ImageView favoriteIcon;
     private TextView runTimeTextView;
     private TextView homePage;
-    private static final String TAG="com.hfad.moviesfun.MovieDetailsFragment";
+    private final String TAG = getClass().getName();
 
-    Set<String> setFavorites;
+
     boolean isFav = false;
-    SharedPreferences favorites;
-    public static final String FAVORITE_PREFERENCES = "FAV_PREF";
-    public static final String ITEM_CAT_MOVIES = "movies";
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -112,6 +110,7 @@ public class MovieDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mContext = container.getContext();
+        favoriteManager = new FavoriteManager(mContext);
         utils = new Utilities(mContext);
 
         //Set the views
@@ -140,7 +139,7 @@ public class MovieDetailsFragment extends Fragment {
 
                     }
                 });
-                //.into(img);
+
 
         String serviceResponse = null;
 
@@ -176,46 +175,34 @@ public class MovieDetailsFragment extends Fragment {
         setFavoriteIcon();
 
         favoriteIcon.setOnClickListener(new FavoriteIconOnClickListener());
-
-
         return fragmentView;
-
     }
 
     private class FavoriteIconOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+
+
             if(!isFav){
                 isFav = true;
                 favoriteIcon.setImageResource(android.R.drawable.star_on);
-                setFavorites.add(String.valueOf(favStr));
-
+                favoriteManager.addToFavorites(favStr);
             }
             else{
-
                 isFav = false;
                 favoriteIcon.setImageResource(android.R.drawable.star_off);
-                setFavorites.remove(String.valueOf(favStr));
+                favoriteManager.removeFromFavorites(favStr);
 
             }
-
-            SharedPreferences.Editor editor = favorites.edit();
-            editor.clear();
-            editor.putStringSet(ITEM_CAT_MOVIES, setFavorites);
-            Log.d(TAG, "set of Fav String:"+setFavorites);
-
-            editor.apply();
-
-          //  Toast.makeText(mContext, setFavorites.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void setFavoriteIcon(){
-        favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
-        setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
-        favStr  = String.valueOf(movieId) + "|" + title + "|" + posterPath + "|" + backdropPath;
 
-        if(setFavorites.contains(String.valueOf(favStr))){
+        favStr  =  FavoriteManager.makeFavString(movieId, title, posterPath, backdropPath);
+
+
+        if(favoriteManager.isItemFavorite(favStr)){
             isFav = true;
             favoriteIcon.setImageResource(android.R.drawable.star_on);
 
@@ -232,34 +219,14 @@ public class MovieDetailsFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-/*
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-*/
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);

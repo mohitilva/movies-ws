@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,7 +22,7 @@ import java.util.Set;
 
 public class FavoriteDataAdapter extends BaseAdapter{
 
-    private static final String TAG = "com.hfad.moviesfun.FavoriteDataAdapter";
+    private  final String TAG = getClass().getName();
     private ArrayList<String> listFavoriteIds;
     private ArrayList<String> listTitles;
     private ArrayList<String> listIconUrls;
@@ -29,10 +30,6 @@ public class FavoriteDataAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater inflater;
 
-    public static final String FAVORITE_PREFERENCES = "FAV_PREF";
-    public static final String ITEM_CAT_MOVIES = "movies";
-    private SharedPreferences favorites;
-    private Set<String> setFavorites;
 
 
     public FavoriteDataAdapter(Context context, List<String> favStrList){
@@ -44,7 +41,10 @@ public class FavoriteDataAdapter extends BaseAdapter{
         listIconUrls = new ArrayList<>();
         for(int i=0 ; i< favStrList.size(); i++){
 
-            String[] components = favStrList.get(i).split("\\|");
+
+            String[] components = favStrList.get(i).split(FavoriteManager.getFavoriteDelimiter());
+            Log.d(TAG, "favStrList.get()=" + favStrList.get(i));
+            Log.d(TAG, "Components:" + components[0] + ", " + components[1] +", "+ components[2]);
             listFavoriteIds.add(components[0]);
             listTitles.add(components[1]);
             listIconUrls.add(components[2]);
@@ -116,14 +116,14 @@ public class FavoriteDataAdapter extends BaseAdapter{
         posterImgView.setTag(listCombined.get(position));
         titleView.setTag(listCombined.get(position));
 
-        favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
-        setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
 
         favIconImgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 HashMap<Integer, String> tags = (HashMap<Integer, String>) view.getTag();
+                FavoriteManager favoriteManager = new FavoriteManager(mContext);
+
 
                 String combinedString = tags.get(1);
 
@@ -131,7 +131,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
                     //unfavoriting the item
                     ((ImageView) view).setImageResource(android.R.drawable.star_off);
-                    setFavorites.remove(String.valueOf(combinedString));
+                    favoriteManager.removeFromFavorites(combinedString);
                     tags.put(0, "false");
 
 
@@ -139,17 +139,13 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
                     //favoriting the item
                     ((ImageView) view).setImageResource(android.R.drawable.star_on);
-                    setFavorites.add(String.valueOf(combinedString));
+                    favoriteManager.addToFavorites(combinedString);
                     tags.put(0, "true");
                 }
                 view.setTag(tags);
-                SharedPreferences.Editor editor = favorites.edit();
-                editor.putStringSet("movies", setFavorites);
-                editor.commit();
 
             }
         });
-
 
         return view;
 
