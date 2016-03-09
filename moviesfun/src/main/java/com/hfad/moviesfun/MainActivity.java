@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity
             fragment = new MoviesRecentFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.content_frame, fragment, fragmentTags.MAIN.name());
-         //   backStack.push(fragmentTags.MAIN);
             ft.addToBackStack(null);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
@@ -182,17 +181,25 @@ public class MainActivity extends AppCompatActivity
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             selectItem(position);
-            setActionBarTitle(position);
+
         }
     }
     private void setActionBarTitle(int position)
     {
       //  String title = (String) getActionBar().getTitle();
         String title = (String) getSupportActionBar().getTitle();
-        if(position==0)
-            title = "RECENT MOVIES";
-        else if(position==1)
-            title = "MY FAVORITES";
+
+        switch (position){
+
+            case 1:
+                title = "MoviesFun";
+                break;
+            case 2:
+                title = "MY FAVORITES";
+
+        }
+
+
 
      //   getActionBar().setTitle(title);
         getSupportActionBar().setTitle(title);
@@ -277,6 +284,7 @@ public class MainActivity extends AppCompatActivity
             ft.addToBackStack(null);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+            setActionBarTitle(drawerItem);
         }
 
         @Override
