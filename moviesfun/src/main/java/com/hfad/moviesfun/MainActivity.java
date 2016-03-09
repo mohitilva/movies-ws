@@ -2,6 +2,7 @@ package com.hfad.moviesfun;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.content.SharedPreferences;
@@ -33,18 +34,17 @@ public class MainActivity extends AppCompatActivity
 
 {
 
-    private String[] titles;
     private ListView drawerlist;
     private String TAG = getClass().getName();
     Context mContext;
-
+    Fragment fragment;
 
     Set<String> setFavorites;
 
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
 
-    java.util.ArrayDeque<fragmentTags> backStack = new ArrayDeque();
+    ArrayDeque<fragmentTags> backStack = new ArrayDeque();
 
     public  enum fragmentTags {
         MAIN,
@@ -58,16 +58,19 @@ public class MainActivity extends AppCompatActivity
         this.currentFragment = currentFragment;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
+
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.addDrawerListener(new MyDrawerListener());
 
-        titles = DummyContent.STRING_ITEMS;
         drawerlist = (ListView) findViewById(R.id.drawer);
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(mContext);
@@ -77,12 +80,14 @@ public class MainActivity extends AppCompatActivity
 
         drawerlist.setOnItemClickListener(new DrawerItemClickListener());
 
+
         //create ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open_drawer, R.string.close_drawer){
 
             public void onDrawerClosed(View view){
                 super.onDrawerClosed(view);
                 invalidateOptionsMenu();
+
             }
             public void onDrawerOpened(View drawerView){
                 super.onDrawerOpened(drawerView);
@@ -90,8 +95,10 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
+
         if(savedInstanceState==null){
-            Fragment fragment = new MoviesRecentFragment();
+
+            fragment = new MoviesRecentFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.content_frame, fragment, fragmentTags.MAIN.name());
          //   backStack.push(fragmentTags.MAIN);
@@ -104,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         /*   getActionBar().setDisplayHomeAsUpEnabled(true);
              getActionBar().setHomeButtonEnabled(true);
         */
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -130,58 +138,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     //when item is clicked on the navigation bar
-    private void selectItem(int position){
-        Fragment fragment;
 
-        Log.d(TAG, "backStack when entering selectItem()="+backStack);
-        //mDrawerToggle.syncState();
-        //Close the drawer
+    int drawerItem;
+    private void selectItem(int position) {
+
+        drawerItem = position;
+
+        Log.d(TAG, "backStack when entering selectItem()=" + backStack);
+
         mDrawerLayout.closeDrawer(drawerlist);
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        switch (position){
-            case 0:
-                Toast.makeText(this,"Hello",Toast.LENGTH_SHORT).show();
-                return;
-            case 1:
-
-                /*if(backStack.size()==0) {
-                    mDrawerLayout.closeDrawer(drawerlist);
-
-                    return;
-                }*/
-                if(currentFragment == fragmentTags.MAIN){
-            //        mDrawerLayout.closeDrawer(drawerlist);
-                    return;
-                }
-                backStack.clear();
-
-                fragment = new MoviesRecentFragment();
-                ft.replace(R.id.content_frame, fragment);
-                break;
-            case 2:
-
-                if(currentFragment == fragmentTags.FAVORITES){
-            //        mDrawerLayout.closeDrawer(drawerlist);
-                    return;
-                }
-
-                fragment = new FavoriteMovieFragment();
-                ft.replace(R.id.content_frame, fragment, fragmentTags.FAVORITES.name());
-                if(backStack.peek()!=fragmentTags.MAIN)
-                    backStack.push(fragmentTags.MAIN);
-                Log.d(TAG, backStack.toString());
-                break;
 
 
-        }
 
-
-        ft.addToBackStack(null);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
 
     }
+
 
 
 
@@ -189,13 +161,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags addToBackStack) {
 
-        Fragment movieDetailsFragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
+        fragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
         if(addToBackStack != null)
             backStack.push(addToBackStack);
-        Log.d(TAG, "backstack=" + backStack.toString());
+
+        Log.d(TAG, "backstack after adding " + addToBackStack + "=" + backStack.toString());
 
        getFragmentManager().beginTransaction()
-        .replace(R.id.content_frame, movieDetailsFragment)
+        .replace(R.id.content_frame, fragment)
         .addToBackStack(null)
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         .commit();
@@ -235,20 +208,80 @@ public class MainActivity extends AppCompatActivity
         else
         {
             fragmentTags tag = backStack.pop();
-
+            Log.d(TAG, "fragmentsTag that is popped from backstack ="+ tag.name());
            if(tag.equals(fragmentTags.MAIN)){
-
+               drawerItem = 1;
                selectItem(1);
+
            } else if(tag.equals(fragmentTags.FAVORITES)){
+               drawerItem = 2;
                selectItem(2);
            } else if(tag.equals(fragmentTags.DETAILS)){
+               drawerItem = 3;
                selectItem(3);
            } else {
                super.onBackPressed();
            }
+            new MyDrawerListener().onDrawerClosed(null);
         }
 
     }
 
 
+    private class MyDrawerListener implements DrawerLayout.DrawerListener {
+
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+
+
+            FragmentTransaction ft;
+            ft = getFragmentManager().beginTransaction();
+            Log.d(TAG, "In onDrawerClosed(). currentFragment = "+ currentFragment.name());
+            switch (drawerItem) {
+                case 0:
+                    Toast.makeText(mContext, "Hello", Toast.LENGTH_SHORT).show();
+                    return;
+                case 1:
+
+
+                    if (currentFragment == fragmentTags.MAIN) {
+                        return;
+                    }
+                    backStack.clear();
+                    fragment = new MoviesRecentFragment();
+
+                    ft.replace(R.id.content_frame, fragment);
+                    break;
+                case 2:
+                    if (currentFragment == fragmentTags.FAVORITES) {
+                        return;
+                    }
+                    fragment = new FavoriteMovieFragment();
+                    ft.replace(R.id.content_frame, fragment, fragmentTags.FAVORITES.name());
+                    if (backStack.peek() != fragmentTags.MAIN)
+                        backStack.push(fragmentTags.MAIN);
+                    Log.d(TAG, backStack.toString());
+                    break;
+            }
+
+            ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+
+        }
+    }
 }

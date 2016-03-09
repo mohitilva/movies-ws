@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,10 +46,14 @@ public class MoviesRecentFragment extends Fragment {
     private int page=1;
     private String request_url;
     private ArrayList<MovieDataModel> extendedlist;
-    private String networkResponse;
+
     private static String TAG = "com.hfad.moviesfun.MoviesRecentFragment";
     private Utilities utils;
     OnListItemClickCallback mCallback;
+    private NetworkResponseSharedPreferenceManager sharedPreferencesManager;
+
+    String responseString;
+
     public MoviesRecentFragment() {
     }
 
@@ -65,15 +68,35 @@ public class MoviesRecentFragment extends Fragment {
         ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.MAIN);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mContext = getActivity().getBaseContext();
         utils = new Utilities(mContext);
-        request_url = getResources().getText(R.string.popular_movies_url)
-                + "&" + getResources().getText(R.string.api_key_movies_db);
 
+        /*
+        //Use preference manager to save network calls. But the try catch inside else block
+        sharedPreferencesManager = new NetworkResponseSharedPreferenceManager(mContext);
+
+        if(sharedPreferencesManager.getNetworkString()!=null){
+            Log.d(TAG, "Using saved newtwork response");
+            responseString = sharedPreferencesManager.getNetworkString();
+        }else {
+
+        }*/
+
+        try {
+            request_url = getResources().getText(R.string.popular_movies_url)
+                    + "&" + getResources().getText(R.string.api_key_movies_db);
+
+            responseString = new ServiceResponseAsyncTask(client).execute(request_url).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         fragmentView =  inflater.inflate(R.layout.fragment_list,null);
         movieListView = (ListView)fragmentView.findViewById(R.id.moviesListView);
@@ -83,20 +106,9 @@ public class MoviesRecentFragment extends Fragment {
 
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
-        String responseString = null;
-
-        try {
-            responseString = new ServiceResponseAsyncTask(client).execute(request_url).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
         moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
         adapter = new MoviesAdapter(mContext, moviesArrayList);
         movieListView.setAdapter(adapter);
-        Log.d(TAG,"Adapter set.");
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,6 +123,39 @@ public class MoviesRecentFragment extends Fragment {
         return fragmentView;
 
     }
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "In onSaveInstanceState()");
+
+
+    }
+
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
+        Log.d(TAG, "In onDestroyView()");
+    }
+
+    @Override
+    public void onDestroy() {
+        if(sharedPreferencesManager!=null) sharedPreferencesManager.putNetworkString(responseString);
+        super.onDestroy();
+        Log.d(TAG, "In onDestroy()");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "In onDetach()");
+    }
+
+
 
 
     protected List<MovieDataModel> getListFromNetworkResponse(String networkResponse){

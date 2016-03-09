@@ -83,8 +83,6 @@ public class MoviesAdapter extends BaseAdapter{
                     }
                 });
 
-              //  .into(imageView);
-
         MovieDataModel currentMovieObj = moviesArrayList.get(position);
 
         ratingBar = (RatingBar) view.findViewById(R.id.rating_bar_main_page);

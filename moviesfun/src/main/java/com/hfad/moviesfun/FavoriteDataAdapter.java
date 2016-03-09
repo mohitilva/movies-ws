@@ -43,14 +43,13 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
 
             String[] components = favStrList.get(i).split(FavoriteManager.getFavoriteDelimiter());
-            Log.d(TAG, "favStrList.get()=" + favStrList.get(i));
-            Log.d(TAG, "Components:" + components[0] + ", " + components[1] +", "+ components[2]);
+
             listFavoriteIds.add(components[0]);
             listTitles.add(components[1]);
             listIconUrls.add(components[2]);
 
         }
-        Log.d(TAG,"favoritecount="+listFavoriteIds.size());
+
 
     }
 
