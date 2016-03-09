@@ -1,6 +1,7 @@
 package com.hfad.moviesfun;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -38,13 +39,13 @@ public class MainActivity extends AppCompatActivity
     private String TAG = getClass().getName();
     Context mContext;
     Fragment fragment;
-
+    FragmentManager fm  = getFragmentManager();
     Set<String> setFavorites;
 
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
 
-    ArrayDeque<fragmentTags> backStack = new ArrayDeque();
+    ArrayDeque<fragmentTags> backStack = new ArrayDeque<>();
 
     public  enum fragmentTags {
         MAIN,
@@ -77,9 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         drawerlist.setAdapter(drawerAdapter);
 
-
         drawerlist.setOnItemClickListener(new DrawerItemClickListener());
-
 
         //create ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open_drawer, R.string.close_drawer){
@@ -95,15 +94,16 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-
         if(savedInstanceState==null){
 
             fragment = new MoviesRecentFragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.content_frame, fragment, fragmentTags.MAIN.name());
-            ft.addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
+
+            fm.beginTransaction()
+            .replace(R.id.content_frame, fragment, fragmentTags.MAIN.name())
+            .addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commit();
+
 
         }
 
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.d(TAG, "backstack after adding " + addToBackStack + "=" + backStack.toString());
 
-       getFragmentManager().beginTransaction()
+       fm.beginTransaction()
         .replace(R.id.content_frame, fragment)
         .addToBackStack(null)
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -206,33 +206,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     @Override
     public void onBackPressed() {
 
 
-        if(backStack.peekLast()==null)
+        if (fm.getBackStackEntryCount() > 1) {
+            fm.popBackStack();
+        } else {
             super.onBackPressed();
-        else
-        {
-            fragmentTags tag = backStack.pop();
-            Log.d(TAG, "fragmentsTag that is popped from backstack ="+ tag.name());
-           if(tag.equals(fragmentTags.MAIN)){
-               drawerItem = 1;
-               selectItem(1);
-
-           } else if(tag.equals(fragmentTags.FAVORITES)){
-               drawerItem = 2;
-               selectItem(2);
-           } else if(tag.equals(fragmentTags.DETAILS)){
-               drawerItem = 3;
-               selectItem(3);
-           } else {
-               super.onBackPressed();
-           }
-            new MyDrawerListener().onDrawerClosed(null);
         }
-
     }
+
 
 
     private class MyDrawerListener implements DrawerLayout.DrawerListener {
@@ -252,7 +237,7 @@ public class MainActivity extends AppCompatActivity
 
 
             FragmentTransaction ft;
-            ft = getFragmentManager().beginTransaction();
+            ft = fm.beginTransaction();
             Log.d(TAG, "In onDrawerClosed(). currentFragment = "+ currentFragment.name());
             switch (drawerItem) {
                 case 0:
