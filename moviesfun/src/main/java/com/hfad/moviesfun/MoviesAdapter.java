@@ -90,9 +90,13 @@ public class MoviesAdapter extends BaseAdapter{
         releaseDateView = (TextView) view.findViewById(R.id.release_date);
 
         String title = currentMovieObj.title;
-        int popularity = currentMovieObj.popularity;
-        popularity = popularity / 20;
-        ratingBar.setRating(popularity);
+
+
+        float rating = Float.parseFloat(String.valueOf(currentMovieObj.voteAvg));
+
+        //Since rating is out of 10 and we have 5 stars
+
+        ratingBar.setRating(rating/2);
 
         titleView.setText(title);
         releaseDateView.setText(currentMovieObj.releaseDate);

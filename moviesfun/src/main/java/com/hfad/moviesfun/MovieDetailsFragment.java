@@ -81,7 +81,7 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.DETAILS);
+       // ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.DETAILS);
     }
 
     public static MovieDetailsFragment newInstance(String id, String backDropPath, String posterPath) {
@@ -109,6 +109,7 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         mContext = container.getContext();
         favoriteManager = new FavoriteManager(mContext);
         utils = new Utilities(mContext);
@@ -126,7 +127,7 @@ public class MovieDetailsFragment extends Fragment {
         runTimeTextView = (TextView) fragmentView.findViewById(R.id.runtime);
 
         String requestUrl =  utils.getResourceUrl(String.valueOf(movieId));
-        String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w300.toString());
+        String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w780.toString());
         Picasso.with(mContext).load(backdropUrl)
                 .into(img, new Callback() {
                     @Override

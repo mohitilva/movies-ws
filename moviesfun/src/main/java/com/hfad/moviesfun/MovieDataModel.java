@@ -11,7 +11,7 @@ public class MovieDataModel {
     public String posterPath;
     public String backdropPath;
     public String releaseDate;
-    public int popularity;
+    public double voteAvg;
 
     public MovieDataModel(Long l, String overview, String title, String posterPath, String backdrop){
         this.overview = overview;

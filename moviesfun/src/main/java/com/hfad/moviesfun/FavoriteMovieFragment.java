@@ -65,7 +65,7 @@ public class FavoriteMovieFragment extends Fragment {
             throw new ClassCastException(activity.toString() + " must implement OnListItemClickCallback");
         }
 
-        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.FAVORITES);
+       //    ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.FAVORITES);
     }
 
     /**
@@ -88,6 +88,15 @@ public class FavoriteMovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+        String fragmentTag = getTag();
+        Log.d(TAG, "fragmentTag in fragment="+fragmentTag);
+
+        if(fragmentTag!=null){
+                mCallback.updateActivityUI(fragmentTag);
+        }else{
+            Log.d(TAG, "fragment was null");
+        }
 
         mContext = container.getContext();
 

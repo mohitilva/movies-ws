@@ -3,7 +3,6 @@ package com.hfad.moviesfun;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +36,7 @@ public class MoviesRecentFragment extends Fragment {
     private View headerView;
     private View loadMore;
     private View fragmentView;
-    private View favoriteView;
+
     private OkHttpClient client = new OkHttpClient();
     private MoviesAdapter adapter;
     private ArrayList<MovieDataModel> moviesArrayList;
@@ -47,10 +46,10 @@ public class MoviesRecentFragment extends Fragment {
     private String request_url;
     private ArrayList<MovieDataModel> extendedlist;
 
-    private static String TAG = "com.hfad.moviesfun.MoviesRecentFragment";
+    private  String TAG = getClass().getName();
     private Utilities utils;
     OnListItemClickCallback mCallback;
-    private NetworkResponseSharedPreferenceManager sharedPreferencesManager;
+    Activity hostActivity;
 
     String responseString;
 
@@ -60,12 +59,13 @@ public class MoviesRecentFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        hostActivity = (MainActivity) activity;
         try{
             mCallback = (OnListItemClickCallback) activity;
         }catch(ClassCastException e){
             throw new ClassCastException(activity.toString() + " must implement OnListItemClickCallback");
         }
-        ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.MAIN);
+        //((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.MAIN);
     }
 
 
@@ -73,19 +73,18 @@ public class MoviesRecentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+        String fragmentTag = getTag();
+        Log.d(TAG, "fragmentTag in fragment="+fragmentTag);
+
+        if(fragmentTag!=null){
+            mCallback.updateActivityUI(fragmentTag);
+        }else{
+            Log.d(TAG, "fragment was null");
+        }
+
         mContext = getActivity().getBaseContext();
         utils = new Utilities(mContext);
-
-        /*
-        //Use preference manager to save network calls. But the try catch inside else block
-        sharedPreferencesManager = new NetworkResponseSharedPreferenceManager(mContext);
-
-        if(sharedPreferencesManager.getNetworkString()!=null){
-            Log.d(TAG, "Using saved newtwork response");
-            responseString = sharedPreferencesManager.getNetworkString();
-        }else {
-
-        }*/
 
         try {
             request_url = getResources().getText(R.string.popular_movies_url)
@@ -144,7 +143,7 @@ public class MoviesRecentFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if(sharedPreferencesManager!=null) sharedPreferencesManager.putNetworkString(responseString);
+
         super.onDestroy();
         Log.d(TAG, "In onDestroy()");
     }
@@ -183,8 +182,8 @@ public class MoviesRecentFragment extends Fragment {
 
                 movieDataObject.releaseDate = release_date;
 
-                Double popularity      = movieObj.getDouble(MovieMultipleJSONArray.POPULARITY);
-                movieDataObject.popularity = popularity.intValue();
+                double voteAvg      =  movieObj.getDouble(MovieMultipleJSONArray.VOTE_AVERAGE);
+                movieDataObject.voteAvg = voteAvg;
                 moviesList.add(movieDataObject);
 
             }

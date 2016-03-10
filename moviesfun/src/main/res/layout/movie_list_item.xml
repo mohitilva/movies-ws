@@ -52,7 +52,7 @@ android:id="@+id/movieItemLinearLayout"
                                 android:layout_height="20dip"
                                 android:paddingRight="8dp"
                                 android:textColor="@color/dark_grey"
-                                android:text="@string/popularity"
+                                android:text="@string/ratings"
 
 
                                 android:gravity="left"/>
@@ -63,7 +63,7 @@ android:id="@+id/movieItemLinearLayout"
                                        android:layout_gravity="center_horizontal"
                                        android:layout_width="wrap_content"
                                        android:layout_height="20dip"
-
+                                       android:progressTint="@color/yellow"
                                        android:numStars="5"
                                        />
 

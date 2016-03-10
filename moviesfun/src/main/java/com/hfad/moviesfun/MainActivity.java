@@ -3,31 +3,19 @@ package com.hfad.moviesfun;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Context;
 
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.hfad.moviesfun.dummy.DummyContent;
-
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
@@ -37,28 +25,30 @@ public class MainActivity extends AppCompatActivity
 
     private ListView drawerlist;
     private String TAG = getClass().getName();
-    Context mContext;
-    Fragment fragment;
-    FragmentManager fm  = getFragmentManager();
-    Set<String> setFavorites;
-
+    private Context mContext;
+    private Fragment fragment;
+    private FragmentManager fragmentManager = getFragmentManager();
+    private String currentFragment;
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+    private int drawerItemSelected;
 
-    ArrayDeque<fragmentTags> backStack = new ArrayDeque<>();
 
-    public  enum fragmentTags {
+
+    public   enum  fragmentTags {
         MAIN,
         FAVORITES,
         DETAILS
     }
-    private fragmentTags currentFragment;
 
+    @Override
+    public void updateActivityUI(String fragmentTag) {
 
-    public void setCurrentFragment(fragmentTags currentFragment) {
-        this.currentFragment = currentFragment;
+        setActionBarTitle(fragmentTag);
+        currentFragment = fragmentTag;
+        Log.d(TAG,"Current fragment set to " + currentFragment);
+
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +87,12 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState==null){
 
             fragment = new MoviesRecentFragment();
-
-            fm.beginTransaction()
+            fragmentManager.beginTransaction()
             .replace(R.id.content_frame, fragment, fragmentTags.MAIN.name())
             .addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit();
-
+            currentFragment = fragmentTags.MAIN.name();
 
         }
 
@@ -132,42 +121,31 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
 
-        Log.d(TAG,"Before Destroy Set of favorites="+setFavorites);
+
         super.onDestroy();
     }
 
     //when item is clicked on the navigation bar
 
-    int drawerItem;
+
     private void selectItem(int position) {
 
-        drawerItem = position;
-
-        Log.d(TAG, "backStack when entering selectItem()=" + backStack);
+        drawerItemSelected = position;
 
         mDrawerLayout.closeDrawer(drawerlist);
-
-
-
-
-
     }
 
 
 
 
-    /* Implementing the callback for movie clicked */
+    /* Implementing the callback for movie clicked. Called from two places, Main Fragment and Favorites Fragment */
     @Override
-    public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags addToBackStack) {
+    public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags callingFragment) {
 
         fragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
-        if(addToBackStack != null)
-            backStack.push(addToBackStack);
 
-        Log.d(TAG, "backstack after adding " + addToBackStack + "=" + backStack.toString());
-
-       fm.beginTransaction()
-        .replace(R.id.content_frame, fragment)
+       fragmentManager.beginTransaction()
+        .replace(R.id.content_frame, fragment, fragmentTags.DETAILS.name())
         .addToBackStack(null)
         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         .commit();
@@ -184,10 +162,28 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-    private void setActionBarTitle(int position)
+
+    public void setActionBarTitle(String currentFragment){
+
+
+        switch (currentFragment){
+            case "MAIN":
+                setActionBarTitle(1);
+                break;
+            case "FAVORITES":
+                setActionBarTitle(2);
+                break;
+            case "DETAILS":
+                Log.d(TAG, "Tag fouund was DETAILS");
+                break;
+        }
+
+    }
+
+    public void setActionBarTitle(int position)
     {
       //  String title = (String) getActionBar().getTitle();
-        String title = (String) getSupportActionBar().getTitle();
+        String title = "ABC";
 
         switch (position){
 
@@ -198,27 +194,62 @@ public class MainActivity extends AppCompatActivity
                 title = "MY FAVORITES";
 
         }
-
-
-
-     //   getActionBar().setTitle(title);
         getSupportActionBar().setTitle(title);
-
     }
+
 
 
     @Override
     public void onBackPressed() {
 
 
-        if (fm.getBackStackEntryCount() > 1) {
-            fm.popBackStack();
+        if(mDrawerLayout.isDrawerOpen(drawerlist)) {
+            mDrawerLayout.closeDrawer(drawerlist);
+            return;
+        }
+
+        if (fragmentManager.getBackStackEntryCount() > 1) {
+
+
+            fragmentManager.popBackStack();
+
         } else {
             super.onBackPressed();
         }
     }
 
+    private void switchFragment(){
 
+        Log.d(TAG, "Currentfragment in switchFragment="+currentFragment);
+
+        FragmentTransaction ft;
+        ft = fragmentManager.beginTransaction();
+
+        switch (drawerItemSelected) {
+            case 0:
+                return;
+            case 1:
+
+                if (currentFragment == fragmentTags.MAIN.name()) return;
+
+                fragment = new MoviesRecentFragment();
+                ft.replace(R.id.content_frame, fragment, fragmentTags.MAIN.name());
+                ft.addToBackStack(null);
+                break;
+
+            case 2:
+                if (currentFragment == fragmentTags.FAVORITES.name()) return;
+
+                fragment = new FavoriteMovieFragment();
+                ft.replace(R.id.content_frame, fragment, fragmentTags.FAVORITES.name());
+                ft.addToBackStack(null);
+                break;
+        }
+
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+        setActionBarTitle(drawerItemSelected);
+    }
 
     private class MyDrawerListener implements DrawerLayout.DrawerListener {
 
@@ -235,41 +266,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onDrawerClosed(View drawerView) {
 
+            switchFragment();
 
-            FragmentTransaction ft;
-            ft = fm.beginTransaction();
-            Log.d(TAG, "In onDrawerClosed(). currentFragment = "+ currentFragment.name());
-            switch (drawerItem) {
-                case 0:
-                    Toast.makeText(mContext, "Hello", Toast.LENGTH_SHORT).show();
-                    return;
-                case 1:
-
-
-                    if (currentFragment == fragmentTags.MAIN) {
-                        return;
-                    }
-                    backStack.clear();
-                    fragment = new MoviesRecentFragment();
-
-                    ft.replace(R.id.content_frame, fragment);
-                    break;
-                case 2:
-                    if (currentFragment == fragmentTags.FAVORITES) {
-                        return;
-                    }
-                    fragment = new FavoriteMovieFragment();
-                    ft.replace(R.id.content_frame, fragment, fragmentTags.FAVORITES.name());
-                    if (backStack.peek() != fragmentTags.MAIN)
-                        backStack.push(fragmentTags.MAIN);
-                    Log.d(TAG, backStack.toString());
-                    break;
-            }
-
-            ft.addToBackStack(null);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
-            setActionBarTitle(drawerItem);
         }
 
         @Override

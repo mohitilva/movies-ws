@@ -25,7 +25,7 @@
     <string name="favorite">Favorite</string>
     <string name="overview">Overview</string>
     <string name="homepage">Home Page</string>
-    <string name="popularity">Popularity</string>
+    <string name="ratings">Ratings</string>
     <string name="release_date">Release Date</string>
     <string name="item_movies">movies</string>
 </resources>
