@@ -15,7 +15,7 @@ public class Utilities {
 
     Context mContext;
     static String apiKey;
-    private static String TAG="MovieDetailsFragment.Utilities";
+    private  String TAG = getClass().getName();
     private  OkHttpClient client = new OkHttpClient();
     public Utilities(Context context){
         mContext = context;
@@ -103,7 +103,16 @@ public class Utilities {
         }
     };
 
+    public static String[] getGenreNames(int[] genreIds){
+        if(genreIds ==null || genreIds.length==0) return null;
 
+        String[] genreNames= new String[genreIds.length];
+        for(int i=0; i<genreIds.length;i++){
+            genreNames[i] = genreIdMap.get(genreIds[i]);
+        }
+
+        return genreNames;
+    }
 
     public static final class  MovieMultipleJSONArray {
 

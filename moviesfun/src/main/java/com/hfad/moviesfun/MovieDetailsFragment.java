@@ -94,6 +94,18 @@ public class MovieDetailsFragment extends Fragment {
         return fragment;
     }
 
+    public MovieDetailsFragment(String id, String backDropPath, String posterPath){
+        this.movieId = id;
+        this.backdropPath = backDropPath;
+        this.posterPath = posterPath;
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, movieId);
+        args.putString(ARG_PARAM2,this.backdropPath);
+        args.putString(ARG_PARAM3,this.posterPath);
+        this.setArguments(args);
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

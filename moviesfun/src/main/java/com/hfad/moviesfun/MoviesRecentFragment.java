@@ -172,6 +172,18 @@ public class MoviesRecentFragment extends Fragment {
             for(int i=0; i<resultsArray.length();i++){
 
                 movieObj =resultsArray.getJSONObject(i);
+                JSONArray genresJSONArray = movieObj.getJSONArray(MovieMultipleJSONArray.GENRE_ID_Array);
+                int[] genres = null;
+
+                if(genresJSONArray.length()>0){
+                    genres = new  int[genresJSONArray.length()];
+                    for(int g=0; g<genresJSONArray.length(); g++){
+                        genres[g]= genresJSONArray.getInt(g);
+                        Log.d(TAG,"genreId of " +i + "=" +genres[g]);
+                    }
+                }else{
+                    Log.d(TAG,"No genreId of " + i);
+                }
                 Long id = movieObj.getLong(Utilities.MovieMultipleJSONArray.ID);
                 String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
                 String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
@@ -181,6 +193,7 @@ public class MoviesRecentFragment extends Fragment {
                 MovieDataModel movieDataObject = new MovieDataModel(id,overview,title,posterUrl, backdropUrl);
 
                 movieDataObject.releaseDate = release_date;
+                movieDataObject.genres = genres;
 
                 double voteAvg      =  movieObj.getDouble(MovieMultipleJSONArray.VOTE_AVERAGE);
                 movieDataObject.voteAvg = voteAvg;

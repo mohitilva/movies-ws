@@ -27,5 +27,6 @@
     <string name="homepage">Home Page</string>
     <string name="ratings">Ratings</string>
     <string name="release_date">Release Date</string>
+    <string name="genres">Genres</string>
     <string name="item_movies">movies</string>
 </resources>

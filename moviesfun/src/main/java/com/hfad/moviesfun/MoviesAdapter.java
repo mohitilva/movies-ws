@@ -1,6 +1,7 @@
 package com.hfad.moviesfun;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class MoviesAdapter extends BaseAdapter{
     private ArrayList<MovieDataModel> moviesArrayList;
     private Context mContext;
     private Utilities utils;
+    private  String TAG = getClass().getName();
 
     public MoviesAdapter(Context context, ArrayList<MovieDataModel> dataList){
         super();
@@ -56,6 +58,7 @@ public class MoviesAdapter extends BaseAdapter{
         TextView titleView;
         TextView releaseDateView;
         RatingBar ratingBar;
+        TextView genresTextView;
 
         if(convertView==null) {
             view = inflater.inflate(R.layout.movie_list_item,null);
@@ -67,7 +70,7 @@ public class MoviesAdapter extends BaseAdapter{
         imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
         utils = new Utilities(mContext);
-        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, Utilities.posterSizes.w342.toString() );
+        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, Utilities.posterSizes.w342.toString());
 
         Picasso.with(mContext)
                 .load(fullImageUrl)
@@ -88,8 +91,12 @@ public class MoviesAdapter extends BaseAdapter{
         ratingBar = (RatingBar) view.findViewById(R.id.rating_bar_main_page);
         titleView = (TextView) view.findViewById(R.id.movie_title_textview);
         releaseDateView = (TextView) view.findViewById(R.id.release_date);
+        genresTextView = (TextView) view.findViewById(R.id.genres_textView);
 
         String title = currentMovieObj.title;
+        int[] genresIds = currentMovieObj.genres;
+        String[] genreNames = Utilities.getGenreNames(genresIds);
+        String genreDisplayText = generateGenreText(genreNames);
 
 
         float rating = Float.parseFloat(String.valueOf(currentMovieObj.voteAvg));
@@ -100,9 +107,26 @@ public class MoviesAdapter extends BaseAdapter{
 
         titleView.setText(title);
         releaseDateView.setText(currentMovieObj.releaseDate);
-
+        genresTextView.setText(genreDisplayText);
         return view;
 
 
+    }
+
+    public String generateGenreText(String[] genreNames){
+        String genreText;
+
+        if(genreNames==null || genreNames.length==0){
+            return "Not Available";
+        }
+        else{
+            if(genreNames.length==1){
+                   genreText = genreNames[0];
+            }else{
+                 genreText = genreNames[0] + "  " + genreNames[1];
+            }
+
+            return genreText;
+        }
     }
 }

@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity
 
         if(savedInstanceState==null){
 
+            Log.d(TAG, "onCreate(): backstackcount=" + fragmentManager.getBackStackEntryCount());
             fragment = new MoviesRecentFragment();
             fragmentManager.beginTransaction()
             .replace(R.id.content_frame, fragment, fragmentTags.MAIN.name())
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit();
             currentFragment = fragmentTags.MAIN.name();
+            Log.d(TAG, "onCreate(): backstackcount=" + fragmentManager.getBackStackEntryCount());
 
         }
 
@@ -142,12 +144,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags callingFragment) {
 
-        fragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
-
-       fragmentManager.beginTransaction()
+        //fragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
+        Log.d(TAG, "onListItemClick(): backstackcount=" + fragmentManager.getBackStackEntryCount());
+        fragment = new MovieDetailsFragment(String.valueOf(id),backDropPath,posterPath);
+        fragmentManager.beginTransaction()
         .replace(R.id.content_frame, fragment, fragmentTags.DETAILS.name())
-        .addToBackStack(null)
-        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         .commit();
 
     }
@@ -221,7 +225,7 @@ public class MainActivity extends AppCompatActivity
     private void switchFragment(){
 
         Log.d(TAG, "Currentfragment in switchFragment="+currentFragment);
-
+        Log.d(TAG, "switchFragment(): backstackcount=" + fragmentManager.getBackStackEntryCount());
         FragmentTransaction ft;
         ft = fragmentManager.beginTransaction();
 
@@ -235,6 +239,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MoviesRecentFragment();
                 ft.replace(R.id.content_frame, fragment, fragmentTags.MAIN.name());
                 ft.addToBackStack(null);
+
                 break;
 
             case 2:
