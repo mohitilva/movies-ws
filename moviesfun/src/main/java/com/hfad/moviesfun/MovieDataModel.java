@@ -3,7 +3,7 @@ package com.hfad.moviesfun;
 /**
  * Created by mtilva on 2/13/16.
  */
-public class MovieDataModel {
+public class MovieDataModel implements Comparable<MovieDataModel> {
 
     String overview;
     public Long id;
@@ -24,5 +24,9 @@ public class MovieDataModel {
     }
 
 
-
+    @Override
+    public int compareTo(MovieDataModel another) {
+        if(another.releaseDate==null || releaseDate==null) return 0;
+        return another.releaseDate.compareTo(releaseDate);
+    }
 }

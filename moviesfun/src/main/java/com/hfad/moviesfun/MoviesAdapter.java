@@ -13,7 +13,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MoviesAdapter extends BaseAdapter{
 
@@ -103,10 +106,20 @@ public class MoviesAdapter extends BaseAdapter{
 
         //Since rating is out of 10 and we have 5 stars
 
-        ratingBar.setRating(rating/2);
+        ratingBar.setRating(rating / 2);
 
         titleView.setText(title);
-        releaseDateView.setText(currentMovieObj.releaseDate);
+
+        SimpleDateFormat f = new SimpleDateFormat(Utilities.INPUT_DATE_FORMAT);
+        SimpleDateFormat out = new SimpleDateFormat(Utilities.OUTPUT_DATE_FORMAT);
+        Date d;
+        try {
+             d = f.parse(currentMovieObj.releaseDate);
+             releaseDateView.setText(out.format(d));
+        } catch (ParseException e) {
+            releaseDateView.setText("Not Available");
+        }
+
         genresTextView.setText(genreDisplayText);
         return view;
 

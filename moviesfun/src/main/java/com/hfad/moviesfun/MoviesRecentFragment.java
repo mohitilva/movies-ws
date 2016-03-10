@@ -16,6 +16,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -106,7 +108,14 @@ public class MoviesRecentFragment extends Fragment {
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
         moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
+
+        //Sort by date
+        Collections.sort(moviesArrayList);
+
         adapter = new MoviesAdapter(mContext, moviesArrayList);
+
+
+
         movieListView.setAdapter(adapter);
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

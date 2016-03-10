@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import okhttp3.OkHttpClient;
 
 
+
 public class Utilities {
 
     Context mContext;
@@ -22,7 +23,8 @@ public class Utilities {
 
     }
 
-
+    public static final String  INPUT_DATE_FORMAT= "yyyy-MM-dd";
+    public static final String OUTPUT_DATE_FORMAT="MMM dd, yyyy";
 
     public static  enum INTENTPARAMS{
         ID,
