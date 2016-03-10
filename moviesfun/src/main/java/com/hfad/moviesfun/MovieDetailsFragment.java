@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class MovieDetailsFragment extends Fragment {
     private TextView overviewView;
     private ImageView favoriteIcon;
     private TextView runTimeTextView;
+    private RatingBar ratingBar;
     private TextView homePage;
     private final String TAG = getClass().getName();
 
@@ -131,6 +133,7 @@ public class MovieDetailsFragment extends Fragment {
         img = (ImageView) fragmentView.findViewById(R.id.moviebackdrop_details);
         titleView = (TextView) fragmentView.findViewById(R.id.title_details);
         overviewView = (TextView) fragmentView.findViewById(R.id.overview_details);
+        ratingBar = (RatingBar)fragmentView.findViewById(R.id.rating_bar);
 
         overviewView.setMovementMethod(new ScrollingMovementMethod());
         favoriteIcon = (ImageView) fragmentView.findViewById(R.id.imageView);
@@ -173,6 +176,12 @@ public class MovieDetailsFragment extends Fragment {
             votes = responseJSONObj.getLong(MovieDetailsJSONArray.VOTE_AVERAGE);
             overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
+
+            float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(MovieDetailsJSONArray.VOTE_AVERAGE)));
+            Log.d(TAG,"rating="+ratings);
+
+            ratingBar.setRating(ratings/2);
+
         }  catch (JSONException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();

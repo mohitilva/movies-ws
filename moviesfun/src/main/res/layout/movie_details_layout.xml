@@ -35,6 +35,20 @@
         android:layout_height="wrap_content"
         android:text="Title"/>
 
+
+
+    <RatingBar android:id="@+id/rating_bar"
+               style="?android:attr/ratingBarStyleSmall"
+               android:stepSize="0.5"
+               android:paddingLeft="@dimen/activity_vertical_margin"
+               android:layout_width="95dip"
+               android:layout_height="20dip"
+               android:progressTint="@color/yellow"
+               android:numStars="5"
+        />
+
+
+
     <TextView
         android:text="@string/overview"
         android:layout_width="match_parent"
