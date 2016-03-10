@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -99,7 +100,7 @@ public class MoviesRecentFragment extends Fragment {
             e.printStackTrace();
         }
 
-        fragmentView =  inflater.inflate(R.layout.fragment_list,null);
+        fragmentView =  inflater.inflate(R.layout.fragment_list, null);
         movieListView = (ListView)fragmentView.findViewById(R.id.moviesListView);
 
         loadMore =  inflater.inflate(R.layout.load_more,null);
@@ -110,8 +111,14 @@ public class MoviesRecentFragment extends Fragment {
         moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
 
         //Sort by date
-        Collections.sort(moviesArrayList);
 
+        Collections.sort(moviesArrayList, new Comparator<MovieDataModel>() {
+            @Override
+            public int compare(MovieDataModel lhs, MovieDataModel rhs) {
+                if(lhs.releaseDate==null || rhs.releaseDate==null) return 0;
+                return rhs.releaseDate.compareTo(lhs.releaseDate);
+            }
+        });
         adapter = new MoviesAdapter(mContext, moviesArrayList);
 
 
