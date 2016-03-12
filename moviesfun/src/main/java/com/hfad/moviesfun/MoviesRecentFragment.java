@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -36,7 +38,6 @@ public class MoviesRecentFragment extends Fragment {
 
     public static final String ITEMS_ARRAY_NAME = "results";
     private ListView movieListView;
-    private View headerView;
     private View loadMore;
     private View fragmentView;
 
@@ -103,7 +104,8 @@ public class MoviesRecentFragment extends Fragment {
         movieListView = (ListView)fragmentView.findViewById(R.id.moviesListView);
 
         loadMore =  inflater.inflate(R.layout.load_more,null);
-        movieListView.addFooterView(loadMore, null, true);
+
+        movieListView.addFooterView(loadMore);
 
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
@@ -123,6 +125,7 @@ public class MoviesRecentFragment extends Fragment {
 
 
         movieListView.setAdapter(adapter);
+
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -236,6 +239,7 @@ public class MoviesRecentFragment extends Fragment {
             }
             extendedlist = (ArrayList<MovieDataModel>) getListFromNetworkResponse(responseString);
             adapter.addItems(extendedlist);
+            movieListView.removeFooterView(loadMore);
             adapter.notifyDataSetChanged();
         }
     }

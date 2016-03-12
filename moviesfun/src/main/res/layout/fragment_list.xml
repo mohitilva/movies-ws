@@ -20,6 +20,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/moviesListView"
         android:background="@color/list_background"
+        android:footerDividersEnabled="true"
         android:paddingRight="4dp">
     </ListView>
 
