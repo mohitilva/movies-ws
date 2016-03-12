@@ -161,6 +161,7 @@ public class MovieDetailsFragment extends Fragment {
 
         try {
             serviceResponse = new ServiceResponseAsyncTask(client).execute(requestUrl).get();
+            Log.d(TAG, serviceResponse);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

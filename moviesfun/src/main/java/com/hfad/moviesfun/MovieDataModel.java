@@ -1,5 +1,7 @@
 package com.hfad.moviesfun;
 
+import java.util.ArrayList;
+
 /**
  * Created by mtilva on 2/13/16.
  */
@@ -13,7 +15,7 @@ public class MovieDataModel {
     public String releaseDate;
     public double voteAvg;
     public int[] genres;
-
+    public ArrayList<String> actors;
 
     public MovieDataModel(Long l, String overview, String title, String posterPath, String backdrop){
         this.overview = overview;

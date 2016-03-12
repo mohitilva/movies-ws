@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private int drawerItemSelected;
 
-
-
     public   enum  fragmentTags {
         MAIN,
         FAVORITES,
@@ -155,8 +153,7 @@ public class MainActivity extends AppCompatActivity
         .commit();
 
     }
-
-
+    
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
 
         @Override
@@ -200,8 +197,6 @@ public class MainActivity extends AppCompatActivity
         }
         getSupportActionBar().setTitle(title);
     }
-
-
 
     @Override
     public void onBackPressed() {

@@ -9,6 +9,7 @@
 
     <string name="title_activity_movies_adapter">MoviesAdapter</string>
     <string name="popular_movies_url">https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc</string>
+    <string name="movie_base_url">https://api.themoviedb.org/3/movie/</string>
     <string name="api_key_movies_db">api_key=4eec6698891c4b89358a3779d7f2d212</string>
     <string name="poster_prefix_path">http://image.tmdb.org/t/p</string>
     <string name="movie_prefix_path">https://api.themoviedb.org/3/movie</string>

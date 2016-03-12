@@ -13,13 +13,13 @@ android:id="@+id/movieItemLinearLayout"
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/list_background"
         android:showDividers="none">
 
         <ImageView
             android:layout_width="75dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:contentDescription="Description"
             android:id="@+id/movieIconImageView"
             android:background="@color/list_background"
@@ -27,7 +27,7 @@ android:id="@+id/movieItemLinearLayout"
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:orientation="vertical"
 
             android:focusable="false"
@@ -48,17 +48,8 @@ android:id="@+id/movieItemLinearLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="20dip"
-                                android:paddingRight="8dp"
-                                android:textColor="@color/dark_grey"
-                                android:text="@string/ratings"
 
-
-                                android:gravity="left"/>
-
-                            <RatingBar android:id="@+id/rating_bar_main_page"
+                    <RatingBar android:id="@+id/rating_bar_main_page"
                                        style="?android:attr/ratingBarStyleSmall"
                                         android:stepSize="0.5"
                                        android:layout_gravity="center_horizontal"
@@ -67,20 +58,24 @@ android:id="@+id/movieItemLinearLayout"
                                        android:progressTint="@color/yellow"
                                        android:numStars="5"
                                        />
+            </LinearLayout>
 
-                </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="20dip"
-                    android:paddingRight="8dp"
-                    android:textColor="@color/dark_grey"
-                    android:text="@string/genres"
 
-                    android:gravity="left"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_grey"
+                    android:id="@+id/actors_textView"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,15 +86,8 @@ android:id="@+id/movieItemLinearLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="20dip"
-                                android:paddingRight="8dp"
-                                android:textColor="@color/dark_grey"
-                                android:text="@string/release_date"
 
-                                android:gravity="left"/>
-                            <TextView
+                <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/dark_grey"

@@ -93,6 +93,8 @@ public class Utilities {
     static final String _REVENUE = "revenue";
     static final String _GENRE_ID_JSONArray = "genre_ids";
 
+    static final String CAST_ARRAY_NAME = "cast";
+    static final String ACTOR_STRING_NAME = "name";
 
     static final HashMap<Integer, String> genreIdMap = new HashMap<Integer,String>(){
         {
@@ -176,6 +178,25 @@ public class Utilities {
         drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
         drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
 
+    }
+
+    public static String trimText(String str){
+
+        if(str==null || "".equals(str)) return "";
+
+        str= str.trim();
+        if(str.charAt(0)==',')
+            str = str.substring(1);
+
+        if(str.charAt(str.length()-1)==',')
+            str = str.substring(0, str.length()-2);
+
+        str = str.trim();
+        return str;
+    }
+
+    public String getCreditsUrl(Long id){
+        return mContext.getString(R.string.movie_base_url) +id +  "/credits?" + apiKey;
     }
 
     public class DrawerItem{

@@ -1,6 +1,7 @@
 package com.hfad.moviesfun;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,19 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MoviesAdapter extends BaseAdapter{
 
@@ -24,6 +34,15 @@ public class MoviesAdapter extends BaseAdapter{
     private Context mContext;
     private Utilities utils;
     private  String TAG = getClass().getName();
+    private OkHttpClient client = new OkHttpClient();
+
+    ImageView imageView;
+    View view;
+    TextView titleView;
+    TextView releaseDateView;
+    RatingBar ratingBar;
+    TextView genresTextView;
+    TextView actorsTextView;
 
     public MoviesAdapter(Context context, ArrayList<MovieDataModel> dataList){
         super();
@@ -50,18 +69,12 @@ public class MoviesAdapter extends BaseAdapter{
         return moviesArrayList.get(position).id;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ImageView imageView;
-        View view;
-        TextView titleView;
-        TextView releaseDateView;
-        RatingBar ratingBar;
-        TextView genresTextView;
+
 
         if(convertView==null) {
             view = inflater.inflate(R.layout.movie_list_item,null);
@@ -69,6 +82,7 @@ public class MoviesAdapter extends BaseAdapter{
         }else{
             view =  convertView;
         }
+        MovieDataModel currentMovieObj = moviesArrayList.get(position);
 
         imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
@@ -89,27 +103,29 @@ public class MoviesAdapter extends BaseAdapter{
                     }
                 });
 
-        MovieDataModel currentMovieObj = moviesArrayList.get(position);
 
         ratingBar = (RatingBar) view.findViewById(R.id.rating_bar_main_page);
         titleView = (TextView) view.findViewById(R.id.movie_title_textview);
         releaseDateView = (TextView) view.findViewById(R.id.release_date);
         genresTextView = (TextView) view.findViewById(R.id.genres_textView);
+        actorsTextView = (TextView) view.findViewById(R.id.actors_textView);
 
+        //title
         String title = currentMovieObj.title;
+        titleView.setText(title);
+
+        //genres
         int[] genresIds = currentMovieObj.genres;
         String[] genreNames = Utilities.getGenreNames(genresIds);
         String genreDisplayText = generateGenreText(genreNames);
+        genresTextView.setText(genreDisplayText);
 
-
+        //rating
         float rating = Float.parseFloat(String.valueOf(currentMovieObj.voteAvg));
-
         //Since rating is out of 10 and we have 5 stars
-
         ratingBar.setRating(rating / 2);
 
-        titleView.setText(title);
-
+        //Release Date
         SimpleDateFormat f = new SimpleDateFormat(mContext.getString(R.string.input_date_format));
         SimpleDateFormat out = new SimpleDateFormat(mContext.getString(R.string.output_date_format));
         Date d;
@@ -120,10 +136,25 @@ public class MoviesAdapter extends BaseAdapter{
             releaseDateView.setText("Not Available");
         }
 
-        genresTextView.setText(genreDisplayText);
+        //Actors
+        String actors = getActorsString(currentMovieObj.actors, 2);
+        actorsTextView.setText(actors);
+
         return view;
 
 
+    }
+
+    private String getActorsString(ArrayList<String> actorsList, int limit) {
+
+        String actors = "";
+
+        for(int i=0;i<actorsList.size()-1;i++){
+            actors +=  ", " + actorsList.get(i);
+            if(i==limit-1) break;
+        }
+
+        return Utilities.trimText(actors);
     }
 
     public String generateGenreText(String[] genreNames){
@@ -132,14 +163,66 @@ public class MoviesAdapter extends BaseAdapter{
         if(genreNames==null || genreNames.length==0){
             return "Not Available";
         }
-        else{
-            if(genreNames.length==1){
-                   genreText = genreNames[0];
-            }else{
-                 genreText = genreNames[0] + "  " + genreNames[1];
-            }
 
-            return genreText;
+        if(genreNames.length==1){
+               genreText = genreNames[0];
+        }else{
+             genreText = genreNames[0] + ", " + genreNames[1];
+        }
+
+        return Utilities.trimText(genreText);
+
+    }
+
+    class GetActors extends AsyncTask<MovieDataModel, Void, String>{
+
+        @Override
+        protected String doInBackground(MovieDataModel... params) {
+            MovieDataModel movieObj = params[0];
+            Request request;
+            String creditRequestString = "https://api.themoviedb.org/3/movie/" +movieObj.id +  "/credits?api_key=4eec6698891c4b89358a3779d7f2d212";
+
+
+            request  = new Request.Builder()
+                    .url(creditRequestString)
+                    .build();
+            Response response;
+            String credits;
+            String actorsStr = "";
+            try {
+                response =  client.newCall(request).execute();
+                credits = response.body().string();
+
+                ArrayList<String> actors = new ArrayList<>();
+                Log.d(TAG, "credits=" + credits);
+                JSONObject responseObject;
+
+                responseObject = new JSONObject(credits);
+                JSONArray castJsonArray = responseObject.getJSONArray("cast");
+
+                for (int i = 0; i < castJsonArray.length(); i++) {
+                    String cast = castJsonArray.getJSONObject(i).getString("name");
+                    actors.add(cast);
+                    actorsStr +=  cast + " ";
+                    if (i == 1) break;
+                }
+                movieObj.actors = actors;
+                //  Log.d(TAG, "Actors=" + actors);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "actors="+actorsStr);
+            return actorsStr;
+
+        }
+
+        @Override
+        protected void onPostExecute(String actorsString) {
+
+            super.onPostExecute(actorsString);
+            actorsTextView.setText(actorsString);
         }
     }
 }
