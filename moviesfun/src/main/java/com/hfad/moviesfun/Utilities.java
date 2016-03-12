@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -20,11 +23,9 @@ public class Utilities {
     private  OkHttpClient client = new OkHttpClient();
     public Utilities(Context context){
         mContext = context;
-
+        apiKey = mContext.getResources().getString(R.string.api_key_movies_db);
     }
 
-    public static final String  INPUT_DATE_FORMAT= "yyyy-MM-dd";
-    public static final String OUTPUT_DATE_FORMAT="MMM dd, yyyy";
 
     public static  enum INTENTPARAMS{
         ID,
@@ -40,15 +41,28 @@ public class Utilities {
 
     public  String getImageUrl(String imageRelPath, String size){
         String prefix =  mContext.getResources().getString(R.string.poster_prefix_path);
-        apiKey = mContext.getResources().getString(R.string.api_key_movies_db);
+
         return prefix + "/" + size + imageRelPath + "?" + apiKey;
     }
 
     public String getResourceUrl(String resourceRelPath){
         String prefix =  mContext.getResources().getString(R.string.movie_prefix_path);
-        apiKey = mContext.getResources().getString(R.string.api_key_movies_db);
+
         return prefix + "/" + resourceRelPath + "?" + apiKey;
     }
+
+    public String getRecentReleasedMoviesUrl() {
+     String url = mContext.getResources().getText(R.string.popular_movies_url)
+                + "&" + apiKey;
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = Calendar.getInstance().getTime();
+        String currentDate = f.format(today);
+        url = url + "&release_date.lte=" + currentDate;
+        return url;
+    }
+
+
+
 
     public static  enum posterSizes{
         w45,w92,w154,w185,w342, w500,w780,original

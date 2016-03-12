@@ -90,8 +90,7 @@ public class MoviesRecentFragment extends Fragment {
         utils = new Utilities(mContext);
 
         try {
-            request_url = getResources().getText(R.string.popular_movies_url)
-                    + "&" + getResources().getText(R.string.api_key_movies_db);
+            request_url = utils.getRecentReleasedMoviesUrl();
 
             responseString = new ServiceResponseAsyncTask(client).execute(request_url).get();
         } catch (InterruptedException e) {

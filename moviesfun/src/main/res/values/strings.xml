@@ -30,5 +30,7 @@
     <string name="genres">Genres</string>
     <string name="item_movies">movies</string>
 
+    <string name="input_date_format">yyyy-MM-dd</string>
+    <string name="output_date_format">MMM dd, yyyy</string>
 
 </resources>

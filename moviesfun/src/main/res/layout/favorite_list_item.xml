@@ -12,11 +12,12 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:contentDescription="Description"
-        android:background="@color/light_grey"
-        android:id="@+id/fav_movie_icon_ImageView"/>
+        android:background="@color/list_background"
+        android:id="@+id/fav_movie_icon_ImageView"
+        android:padding="2dp"/>
 
     <LinearLayout
-        android:background="@color/light_grey"
+        android:background="@color/list_background"
         android:layout_width="fill_parent"
         android:layout_height="75dp"
         android:orientation="horizontal"

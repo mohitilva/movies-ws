@@ -178,7 +178,7 @@ public class MovieDetailsFragment extends Fragment {
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
 
             float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(MovieDetailsJSONArray.VOTE_AVERAGE)));
-            Log.d(TAG,"rating="+ratings);
+            Log.d(TAG, "rating=" + ratings);
 
             ratingBar.setRating(ratings/2);
 
@@ -192,7 +192,12 @@ public class MovieDetailsFragment extends Fragment {
         titleView.setText(title);
         overviewView.setText(overview);
         homePage.setText(homepage);
-        runTimeTextView.setText(String.valueOf(runtime));
+        int hours = runtime / 60;
+        int minutes = runtime % 60;
+        if(minutes!=0)
+             runTimeTextView.setText(hours + " hrs "+ minutes + " minutes");
+        else
+             runTimeTextView.setText(hours + " hrs ");
 
         setFavoriteIcon();
 

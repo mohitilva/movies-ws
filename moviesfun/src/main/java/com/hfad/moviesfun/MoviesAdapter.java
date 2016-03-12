@@ -110,8 +110,8 @@ public class MoviesAdapter extends BaseAdapter{
 
         titleView.setText(title);
 
-        SimpleDateFormat f = new SimpleDateFormat(Utilities.INPUT_DATE_FORMAT);
-        SimpleDateFormat out = new SimpleDateFormat(Utilities.OUTPUT_DATE_FORMAT);
+        SimpleDateFormat f = new SimpleDateFormat(mContext.getString(R.string.input_date_format));
+        SimpleDateFormat out = new SimpleDateFormat(mContext.getString(R.string.output_date_format));
         Date d;
         try {
              d = f.parse(currentMovieObj.releaseDate);
