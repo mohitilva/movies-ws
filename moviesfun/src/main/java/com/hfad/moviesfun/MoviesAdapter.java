@@ -137,25 +137,14 @@ public class MoviesAdapter extends BaseAdapter{
         }
 
         //Actors
-        String actors = getActorsString(currentMovieObj.actors, 2);
+        String actors = Utilities.getActorsString(currentMovieObj.actors, 2);
         actorsTextView.setText(actors);
 
         return view;
 
-
     }
 
-    private String getActorsString(ArrayList<String> actorsList, int limit) {
 
-        String actors = "";
-
-        for(int i=0;i<actorsList.size()-1;i++){
-            actors +=  ", " + actorsList.get(i);
-            if(i==limit-1) break;
-        }
-
-        return Utilities.trimText(actors);
-    }
 
     public String generateGenreText(String[] genreNames){
         String genreText;

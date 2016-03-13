@@ -195,7 +195,23 @@ public class Utilities {
         return str;
     }
 
+    public static String getActorsString(ArrayList<String> list, int limit) {
+
+        String actors = "";
+
+        for(int i=0;i<list.size()-1;i++){
+            actors +=  ", " + list.get(i);
+            if(i==limit-1) break;
+        }
+
+        return Utilities.trimText(actors);
+    }
+
     public String getCreditsUrl(Long id){
+        return getCreditsUrl(String.valueOf(id));
+    }
+
+    public String getCreditsUrl(String id){
         return mContext.getString(R.string.movie_base_url) +id +  "/credits?" + apiKey;
     }
 

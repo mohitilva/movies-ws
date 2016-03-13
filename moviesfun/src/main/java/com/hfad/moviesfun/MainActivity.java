@@ -16,13 +16,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
                         implements OnListItemClickCallback
 
 {
-
     private ListView drawerlist;
     private String TAG = getClass().getName();
     private Context mContext;
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity
         .commit();
 
     }
-    
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
 
         @Override
@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    
     public void setActionBarTitle(int position)
     {
       //  String title = (String) getActionBar().getTitle();

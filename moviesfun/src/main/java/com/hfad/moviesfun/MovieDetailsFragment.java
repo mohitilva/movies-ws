@@ -2,7 +2,6 @@ package com.hfad.moviesfun;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -15,19 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hfad.moviesfun.Utilities.backdropSizes;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.hfad.moviesfun.Utilities.MovieDetailsJSONArray;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
@@ -56,14 +53,14 @@ public class MovieDetailsFragment extends Fragment {
     private String overview;
     private  String title;
     private int runtime;
-    private float votes;
+    private float voteAvg;
     private String posterPath;
 
     private String movieId;
     private String backdropPath;
     private OnFragmentInteractionListener mListener;
     private FavoriteManager favoriteManager;
-
+    private ArrayList<String> actors;
     private ImageView img;
     private TextView titleView;
     private TextView overviewView;
@@ -71,7 +68,10 @@ public class MovieDetailsFragment extends Fragment {
     private TextView runTimeTextView;
     private RatingBar ratingBar;
     private TextView homePage;
+    private TextView actorsTextView;
     private final String TAG = getClass().getName();
+
+    private final int MAX_ACTORS = 3;
 
 
     boolean isFav = false;
@@ -83,7 +83,6 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-       // ((MainActivity) activity).setCurrentFragment(MainActivity.fragmentTags.DETAILS);
     }
 
     public static MovieDetailsFragment newInstance(String id, String backDropPath, String posterPath) {
@@ -100,7 +99,9 @@ public class MovieDetailsFragment extends Fragment {
         this.movieId = id;
         this.backdropPath = backDropPath;
         this.posterPath = posterPath;
+
         Bundle args = new Bundle();
+
         args.putString(ARG_PARAM1, movieId);
         args.putString(ARG_PARAM2,this.backdropPath);
         args.putString(ARG_PARAM3,this.posterPath);
@@ -140,6 +141,7 @@ public class MovieDetailsFragment extends Fragment {
         homePage = (TextView) fragmentView.findViewById(R.id.homepage_textbox);
         homePage.setMovementMethod(LinkMovementMethod.getInstance());
         runTimeTextView = (TextView) fragmentView.findViewById(R.id.runtime);
+        actorsTextView = (TextView) fragmentView.findViewById(R.id.actors_textView);
 
         String requestUrl =  utils.getResourceUrl(String.valueOf(movieId));
         String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w780.toString());
@@ -158,10 +160,13 @@ public class MovieDetailsFragment extends Fragment {
 
 
         String serviceResponse = null;
+        String credits = null;
+        String creditRequestString = utils.getCreditsUrl(movieId);
+        String actors = "";
 
         try {
             serviceResponse = new ServiceResponseAsyncTask(client).execute(requestUrl).get();
-            Log.d(TAG, serviceResponse);
+            credits = new ServiceResponseAsyncTask(client).execute(creditRequestString).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -174,31 +179,39 @@ public class MovieDetailsFragment extends Fragment {
             homepage = responseJSONObj.getString(MovieDetailsJSONArray.HOMEPAGE);
             if (homepage == null | homepage.equals("")) homepage = "Not Available";
             runtime = responseJSONObj.getInt(MovieDetailsJSONArray.RUNTIME);
-            votes = responseJSONObj.getLong(MovieDetailsJSONArray.VOTE_AVERAGE);
+            voteAvg = responseJSONObj.getLong(MovieDetailsJSONArray.VOTE_AVERAGE);
             overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
 
             float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(MovieDetailsJSONArray.VOTE_AVERAGE)));
-            Log.d(TAG, "rating=" + ratings);
-
             ratingBar.setRating(ratings/2);
 
+            //get actors from response
+            JSONArray castJsonArray =  new JSONObject(credits).getJSONArray(Utilities.CAST_ARRAY_NAME);
+
+            for(int i=0; i<castJsonArray.length();i++){
+                String cast = castJsonArray.getJSONObject(i).getString(Utilities.ACTOR_STRING_NAME);
+                actors += ", " + cast;
+                if(i==MAX_ACTORS-1) break;
+            }
+            actors = Utilities.trimText(actors);
         }  catch (JSONException e) {
-            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
 
         //Set values for the views
-
         titleView.setText(title);
         overviewView.setText(overview);
         homePage.setText(homepage);
+        actorsTextView.setText(actors);
+
         int hours = runtime / 60;
         int minutes = runtime % 60;
-        if(minutes!=0)
-             runTimeTextView.setText(hours + " hrs "+ minutes + " minutes");
-        else
-             runTimeTextView.setText(hours + " hrs ");
+
+        if(runtime!=0) {
+            if (minutes != 0)  runTimeTextView.setText(hours + " hrs " + minutes + " minutes");
+            else runTimeTextView.setText(hours + " hrs ");
+        }else runTimeTextView.setText("Not Available");
 
         setFavoriteIcon();
 

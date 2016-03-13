@@ -80,6 +80,7 @@ public class MoviesRecentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         ArrayList<MovieDataModel> display1 = new ArrayList<>();
 
         String fragmentTag = getTag();
@@ -94,16 +95,18 @@ public class MoviesRecentFragment extends Fragment {
         mContext = getActivity().getBaseContext();
         utils = new Utilities(mContext);
 
+
+
         try {
             discover_url = utils.getRecentReleasedMoviesUrl();
             discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
-            Log.d(TAG, "discover_responseString="+discover_responseString);
-
+            Log.d(TAG, "Got response from network");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
 
         fragmentView =  inflater.inflate(R.layout.fragment_list, null);
         movieListView = (ListView)fragmentView.findViewById(R.id.moviesListView);
@@ -115,7 +118,7 @@ public class MoviesRecentFragment extends Fragment {
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
         discover_moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(discover_responseString);
-
+        Log.d(TAG,"Got response from getListFromNetworkResponse()");
         //Sort by date
 
         Collections.sort(discover_moviesArrayList, new Comparator<MovieDataModel>() {
@@ -132,6 +135,7 @@ public class MoviesRecentFragment extends Fragment {
 
         adapter = new MoviesAdapter(mContext,display1);
         movieListView.setAdapter(adapter);
+
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,6 +145,7 @@ public class MoviesRecentFragment extends Fragment {
                         MainActivity.fragmentTags.MAIN);
             }
         });
+
         return fragmentView;
     }
 
@@ -242,11 +247,13 @@ public class MoviesRecentFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
 
         super.onSaveInstanceState(outState);
+
         Log.d(TAG, "In onSaveInstanceState()");
     }
 
     @Override
     public void onDestroyView() {
+
 
         super.onDestroyView();
         Log.d(TAG, "In onDestroyView()");
