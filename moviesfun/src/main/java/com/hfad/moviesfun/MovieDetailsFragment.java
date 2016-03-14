@@ -234,6 +234,7 @@ public class MovieDetailsFragment extends Fragment {
 
             if(!isFav){
                 isFav = true;
+
                 favoriteIcon.setImageResource(R.drawable.ic_star_18pt_3x);
                 favoriteManager.addToFavorites(favStr);
             }
