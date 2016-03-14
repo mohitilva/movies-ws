@@ -95,7 +95,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
         favIconTag.put(1, listCombined.get(position));
 
         favIconImgView.setTag(favIconTag);
-        favIconImgView.setImageResource(android.R.drawable.star_on);
+        favIconImgView.setImageResource(R.drawable.ic_star_18pt_3x);
 
 
         titleView = (TextView)view.findViewById(R.id.fav_movie_title_textview);
@@ -129,7 +129,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
                 if ((Boolean.valueOf(tags.get(0)))) {
 
                     //unfavoriting the item
-                    ((ImageView) view).setImageResource(android.R.drawable.star_off);
+                    ((ImageView) view).setImageResource(R.drawable.ic_star_border_3x);
                     favoriteManager.removeFromFavorites(combinedString);
                     tags.put(0, "false");
 
@@ -137,7 +137,8 @@ public class FavoriteDataAdapter extends BaseAdapter{
                 } else {
 
                     //favoriting the item
-                    ((ImageView) view).setImageResource(android.R.drawable.star_on);
+
+                    ((ImageView) view).setImageResource(R.drawable.ic_star_18pt_3x);
                     favoriteManager.addToFavorites(combinedString);
                     tags.put(0, "true");
                 }

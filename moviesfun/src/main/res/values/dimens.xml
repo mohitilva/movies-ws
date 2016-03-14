@@ -9,5 +9,6 @@
     <dimen name="main_layout_padding_right">4dp</dimen>
 
     <dimen name="list_item_padding">2dp</dimen>
+    <dimen name="details_text_desc_width">75dp</dimen>
 
 </resources>

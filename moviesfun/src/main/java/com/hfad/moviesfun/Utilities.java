@@ -215,6 +215,26 @@ public class Utilities {
         return mContext.getString(R.string.movie_base_url) +id +  "/credits?" + apiKey;
     }
 
+    public  String getRevenueFromLong(long revenue){
+        String revenueStr;
+        if(revenue > 1000000000){
+            float r = revenue / 1000000000f;
+            String s = String.format("%.2f",r);
+            revenueStr = "$" + s + "B";
+        }else if(revenue > 1000000){
+            float r = revenue / 1000000f;
+            String s = String.format("%.2f",r);
+            revenueStr = "$" + s + "M";
+        }else if (revenue>100000){
+            float r = revenue / 1000;
+            int i = (int) r;
+            revenueStr = "$" + String.valueOf(i) + "K";
+        }else{
+            revenueStr = mContext.getString(R.string.not_available) ;
+        }
+        return revenueStr;
+    }
+
     public class DrawerItem{
         String text;
         int image;

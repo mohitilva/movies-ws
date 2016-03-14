@@ -55,6 +55,7 @@ public class MovieDetailsFragment extends Fragment {
     private int runtime;
     private float voteAvg;
     private String posterPath;
+    private long revenue;
 
     private String movieId;
     private String backdropPath;
@@ -70,7 +71,7 @@ public class MovieDetailsFragment extends Fragment {
     private TextView homePage;
     private TextView actorsTextView;
     private final String TAG = getClass().getName();
-
+    private TextView revenueTextView;
     private final int MAX_ACTORS = 3;
 
 
@@ -142,6 +143,7 @@ public class MovieDetailsFragment extends Fragment {
         homePage.setMovementMethod(LinkMovementMethod.getInstance());
         runTimeTextView = (TextView) fragmentView.findViewById(R.id.runtime);
         actorsTextView = (TextView) fragmentView.findViewById(R.id.actors_textView);
+        revenueTextView = (TextView) fragmentView.findViewById(R.id.revenueTextView);
 
         String requestUrl =  utils.getResourceUrl(String.valueOf(movieId));
         String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w780.toString());
@@ -177,11 +179,12 @@ public class MovieDetailsFragment extends Fragment {
         try {
             JSONObject responseJSONObj = new JSONObject(serviceResponse);
             homepage = responseJSONObj.getString(MovieDetailsJSONArray.HOMEPAGE);
-            if (homepage == null | homepage.equals("")) homepage = "Not Available";
+            if (homepage == null | homepage.equals("")) homepage = getString(R.string.not_available);
             runtime = responseJSONObj.getInt(MovieDetailsJSONArray.RUNTIME);
             voteAvg = responseJSONObj.getLong(MovieDetailsJSONArray.VOTE_AVERAGE);
             overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
+            revenue = responseJSONObj.getLong(MovieDetailsJSONArray.REVENUE);
 
             float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(MovieDetailsJSONArray.VOTE_AVERAGE)));
             ratingBar.setRating(ratings/2);
@@ -211,13 +214,18 @@ public class MovieDetailsFragment extends Fragment {
         if(runtime!=0) {
             if (minutes != 0)  runTimeTextView.setText(hours + " hrs " + minutes + " minutes");
             else runTimeTextView.setText(hours + " hrs ");
-        }else runTimeTextView.setText("Not Available");
+        }else runTimeTextView.setText(getString(R.string.not_available));
 
         setFavoriteIcon();
+        String revenueStr = utils.getRevenueFromLong(revenue);
+
+        revenueTextView.setText(revenueStr);
 
         favoriteIcon.setOnClickListener(new FavoriteIconOnClickListener());
         return fragmentView;
     }
+
+
 
     private class FavoriteIconOnClickListener implements View.OnClickListener {
         @Override
@@ -226,12 +234,12 @@ public class MovieDetailsFragment extends Fragment {
 
             if(!isFav){
                 isFav = true;
-                favoriteIcon.setImageResource(android.R.drawable.star_on);
+                favoriteIcon.setImageResource(R.drawable.ic_star_18pt_3x);
                 favoriteManager.addToFavorites(favStr);
             }
             else{
                 isFav = false;
-                favoriteIcon.setImageResource(android.R.drawable.star_off);
+                favoriteIcon.setImageResource(R.drawable.ic_star_border_3x);
                 favoriteManager.removeFromFavorites(favStr);
 
             }
@@ -245,11 +253,11 @@ public class MovieDetailsFragment extends Fragment {
 
         if(favoriteManager.isItemFavorite(favStr)){
             isFav = true;
-            favoriteIcon.setImageResource(android.R.drawable.star_on);
+            favoriteIcon.setImageResource(R.drawable.ic_star_18pt_3x);
 
         }else{
             isFav=false;
-            favoriteIcon.setImageResource(android.R.drawable.star_off);
+            favoriteIcon.setImageResource(R.drawable.ic_star_border_3x);
         }
     }
 
