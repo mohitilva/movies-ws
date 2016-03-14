@@ -116,8 +116,8 @@ public class MoviesAdapter extends BaseAdapter{
 
         //genres
         int[] genresIds = currentMovieObj.genres;
-        String[] genreNames = Utilities.getGenreNames(genresIds);
-        String genreDisplayText = generateGenreText(genreNames);
+        String[] genreNames = Utilities.getGenreNamesFromIds(genresIds);
+        String genreDisplayText = getStringFromStringArray(genreNames,3);
         genresTextView.setText(genreDisplayText);
 
         //rating
@@ -146,17 +146,16 @@ public class MoviesAdapter extends BaseAdapter{
 
 
 
-    public String generateGenreText(String[] genreNames){
-        String genreText;
+    public static String getStringFromStringArray(String[] genreNames, int limit){
+        String genreText = "";
 
         if(genreNames==null || genreNames.length==0){
             return "Not Available";
         }
 
-        if(genreNames.length==1){
-               genreText = genreNames[0];
-        }else{
-             genreText = genreNames[0] + ", " + genreNames[1];
+        for(int i=0;i<genreNames.length;i++){
+            genreText += ", " + genreNames[i];
+            if(i==limit-1) break;
         }
 
         return Utilities.trimText(genreText);

@@ -20,6 +20,8 @@ import com.hfad.moviesfun.Utilities.backdropSizes;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import com.hfad.moviesfun.Utilities.MovieDetailsJSONArray;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -70,6 +72,8 @@ public class MovieDetailsFragment extends Fragment {
     private RatingBar ratingBar;
     private TextView homePage;
     private TextView actorsTextView;
+    private TextView genreTextView;
+    private int[] genres;
     private final String TAG = getClass().getName();
     private TextView revenueTextView;
     private final int MAX_ACTORS = 3;
@@ -144,6 +148,7 @@ public class MovieDetailsFragment extends Fragment {
         runTimeTextView = (TextView) fragmentView.findViewById(R.id.runtime);
         actorsTextView = (TextView) fragmentView.findViewById(R.id.actors_textView);
         revenueTextView = (TextView) fragmentView.findViewById(R.id.revenueTextView);
+        genreTextView = (TextView) fragmentView.findViewById(R.id.genres_textView);
 
         String requestUrl =  utils.getResourceUrl(String.valueOf(movieId));
         String backdropUrl = utils.getImageUrl(backdropPath, backdropSizes.w780.toString());
@@ -165,6 +170,7 @@ public class MovieDetailsFragment extends Fragment {
         String credits = null;
         String creditRequestString = utils.getCreditsUrl(movieId);
         String actors = "";
+        String genresText = "";
 
         try {
             serviceResponse = new ServiceResponseAsyncTask(client).execute(requestUrl).get();
@@ -185,6 +191,10 @@ public class MovieDetailsFragment extends Fragment {
             overview =  responseJSONObj.getString(MovieDetailsJSONArray.OVERVIEW);
             title = responseJSONObj.getString(MovieDetailsJSONArray.TITLE);
             revenue = responseJSONObj.getLong(MovieDetailsJSONArray.REVENUE);
+
+
+            String [] genresArray =getGenreNamesArray(responseJSONObj);
+            genresText = MoviesAdapter.getStringFromStringArray(genresArray,3);
 
             float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(MovieDetailsJSONArray.VOTE_AVERAGE)));
             ratingBar.setRating(ratings/2);
@@ -207,6 +217,7 @@ public class MovieDetailsFragment extends Fragment {
         overviewView.setText(overview);
         homePage.setText(homepage);
         actorsTextView.setText(actors);
+        genreTextView.setText(genresText);
 
         int hours = runtime / 60;
         int minutes = runtime % 60;
@@ -225,7 +236,20 @@ public class MovieDetailsFragment extends Fragment {
         return fragmentView;
     }
 
+    //Get the genre names from the movie JSON object. The name of the genre array is different from the discover object.
+    // The object has genre IDs and name. We do not need ID.
+    public static String[] getGenreNamesArray(JSONObject movieJSONObj) throws JSONException {
 
+
+        JSONArray genresJSONArray = movieJSONObj.getJSONArray(MovieDetailsJSONArray.GENRE_ID_ARRAY);
+        String[] genreNameArray = new String[genresJSONArray.length()];
+         for  (int i=0; i< genresJSONArray.length();i++) {
+
+
+            genreNameArray[i] =genresJSONArray.getJSONObject(i).getString(MovieDetailsJSONArray.GENRE_NAME);
+        }
+        return genreNameArray;
+    }
 
     private class FavoriteIconOnClickListener implements View.OnClickListener {
         @Override

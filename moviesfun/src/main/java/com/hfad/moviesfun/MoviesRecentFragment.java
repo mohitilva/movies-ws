@@ -189,25 +189,20 @@ public class MoviesRecentFragment extends Fragment {
 
         try {
 
-            //This is synchronous call. In case you need async call use enqueue()
 
             JSONObject movieObj = new JSONObject(networkResponse);
+
             JSONArray resultsArray = movieObj.getJSONArray(ITEMS_ARRAY_NAME);
 
-
+            //for each movie
             for(int i=0; i<resultsArray.length();i++){
 
+
+
                 movieObj =resultsArray.getJSONObject(i);
-                JSONArray genresJSONArray = movieObj.getJSONArray(MovieMultipleJSONArray.GENRE_ID_Array);
-                int[] genres = null;
 
-                if(genresJSONArray.length()>0){
-                    genres = new  int[genresJSONArray.length()];
-                    for(int g=0; g<genresJSONArray.length(); g++){
-                        genres[g]= genresJSONArray.getInt(g);
-
-                    }
-                }
+                int[] genres = getGenreArray(movieObj);
+               
                 Long id = movieObj.getLong(Utilities.MovieMultipleJSONArray.ID);
                 String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
                 String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
@@ -228,6 +223,21 @@ public class MoviesRecentFragment extends Fragment {
             e1.printStackTrace();
         }
         return moviesList;
+    }
+
+    //return array of genreIds from single movieJSONObj
+    public static int[] getGenreArray(JSONObject movieJSONObj) throws JSONException {
+
+        int[] genres = null;
+        JSONArray genresJSONArray = movieJSONObj.getJSONArray(MovieMultipleJSONArray.GENRE_ID_Array);
+
+        if (genresJSONArray.length() > 0) {
+            genres = new int[genresJSONArray.length()];
+            for (int g = 0; g < genresJSONArray.length(); g++) {
+                genres[g] = genresJSONArray.getInt(g);
+            }
+        }
+        return genres;
     }
 
     private class LoadMoreOnClickListener implements View.OnClickListener {
@@ -271,4 +281,6 @@ public class MoviesRecentFragment extends Fragment {
         super.onDetach();
         Log.d(TAG, "In onDetach()");
     }
+
+
 }

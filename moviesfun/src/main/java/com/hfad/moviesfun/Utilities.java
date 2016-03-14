@@ -121,7 +121,7 @@ public class Utilities {
         }
     };
 
-    public static String[] getGenreNames(int[] genreIds){
+    public static String[] getGenreNamesFromIds(int[] genreIds){
         if(genreIds ==null || genreIds.length==0) return null;
 
         String[] genreNames= new String[genreIds.length];
@@ -154,7 +154,8 @@ public class Utilities {
         public static final String ADULT = _ADULT;
         public static final String BACKDROP_PATH = _BACKDROP_PATH;
         public static final String BUDJET = _BUDGET;
-        public static final String GENRE_ID_ARRAY = _GENRE_ID_JSONArray;
+        public static final String GENRE_ID_ARRAY = "genres";
+        public static final String GENRE_NAME = "name";
         public static final String HOMEPAGE = _HOMEPAGE;
         public static final String ID = _ID;
         public static final String IMDB_ID = _IMDB_ID;
