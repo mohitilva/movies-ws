@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d(TAG, "In MainActivity:onCreate()");
         mContext = this;
 
 
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
         if(savedInstanceState==null){
 
-            Log.d(TAG, "onCreate(): backstackcount=" + fragmentManager.getBackStackEntryCount());
+
             fragment = new MoviesRecentFragment();
             fragmentManager.beginTransaction()
             .replace(R.id.content_frame, fragment, fragmentTags.MAIN.name())
@@ -93,7 +95,6 @@ public class MainActivity extends AppCompatActivity
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit();
             currentFragment = fragmentTags.MAIN.name();
-            Log.d(TAG, "onCreate(): backstackcount=" + fragmentManager.getBackStackEntryCount());
 
         }
 
@@ -115,15 +116,34 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
+        Log.d(TAG, "In onPostCreate()");
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
+        Log.d(TAG, "In onStop()");
+        super.onStop();
+    }
 
+    @Override
+    protected void onPostResume() {
+        Log.d(TAG, "In onPostResume()");
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "In onDestroy()");
 
         super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "In onPause()");
+        super.onPause();
     }
 
     //when item is clicked on the navigation bar
@@ -147,6 +167,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "onListItemClick(): backstackcount=" + fragmentManager.getBackStackEntryCount());
         fragment = new MovieDetailsFragment(String.valueOf(id),backDropPath,posterPath);
         fragmentManager.beginTransaction()
+
         .replace(R.id.content_frame, fragment, fragmentTags.DETAILS.name())
 
                 .addToBackStack(null)
@@ -218,6 +239,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
 
     private void switchFragment(){
 

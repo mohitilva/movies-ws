@@ -200,6 +200,8 @@ public class Utilities {
 
         String actors = "";
 
+        if(list==null) return "";
+
         for(int i=0;i<list.size()-1;i++){
             actors +=  ", " + list.get(i);
             if(i==limit-1) break;

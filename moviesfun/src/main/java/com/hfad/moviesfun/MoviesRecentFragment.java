@@ -15,7 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,7 +54,6 @@ public class MoviesRecentFragment extends Fragment {
     private int page=1;
     private String discover_url;
 
-
     ArrayList<MovieDataModel> display2 = new ArrayList<>();
 
     private  String TAG = getClass().getName();
@@ -80,61 +81,83 @@ public class MoviesRecentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        ArrayList<MovieDataModel> display1 = new ArrayList<>();
+        Log.d(TAG, "In onCreateView()");
+        mContext = getActivity().getBaseContext();
+        utils = new Utilities(mContext);
 
         String fragmentTag = getTag();
-        Log.d(TAG, "fragmentTag in fragment="+fragmentTag);
-
         if(fragmentTag!=null){
             mCallback.updateActivityUI(fragmentTag);
         }else{
             Log.e(TAG, "fragment was null");
         }
 
-        mContext = getActivity().getBaseContext();
-        utils = new Utilities(mContext);
-
-
-
-        try {
-            discover_url = utils.getRecentReleasedMoviesUrl();
-            discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
-            Log.d(TAG, "Got response from network");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-
         fragmentView =  inflater.inflate(R.layout.fragment_list, null);
         movieListView = (ListView)fragmentView.findViewById(R.id.moviesListView);
 
         loadMore = inflater.inflate(R.layout.load_more,null);
-
-        movieListView.addFooterView(loadMore);
-
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
+        MySingleton singleton = MySingleton.getInstance();
+        ArrayList<MovieDataModel> savedList = singleton.getData();
+        ArrayList<MovieDataModel> display1 = new ArrayList<>();
+        if(savedList==null){
 
-        discover_moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(discover_responseString);
-        Log.d(TAG,"Got response from getListFromNetworkResponse()");
-        //Sort by date
 
-        Collections.sort(discover_moviesArrayList, new Comparator<MovieDataModel>() {
-            @Override
-            public int compare(MovieDataModel lhs, MovieDataModel rhs) {
-                if(lhs.releaseDate==null || rhs.releaseDate==null) return 0;
-                return rhs.releaseDate.compareTo(lhs.releaseDate);
+            try {
+                discover_url = utils.getRecentReleasedMoviesUrl();
+                discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
+                Log.d(TAG, "Got response from network");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
-        });
 
-        for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
+            discover_moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(discover_responseString);
+            Log.d(TAG, "Got response from getListFromNetworkResponse()");
+            //Sort by date
 
-        display1 = addCreditsToList(display1);
+            Collections.sort(discover_moviesArrayList, new Comparator<MovieDataModel>() {
+                @Override
+                public int compare(MovieDataModel lhs, MovieDataModel rhs) {
+                    if (lhs.releaseDate == null || rhs.releaseDate == null) return 0;
+                    return rhs.releaseDate.compareTo(lhs.releaseDate);
+                }
+            });
 
-        adapter = new MoviesAdapter(mContext,display1);
-        movieListView.setAdapter(adapter);
+
+            movieListView.addFooterView(loadMore);
+
+
+            for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
+
+            display1 = addCreditsToList(display1);
+
+            adapter = new MoviesAdapter(mContext,display1);
+            movieListView.setAdapter(adapter);
+
+
+        }else{
+
+            Log.d(TAG, "Using saved list");
+            discover_moviesArrayList = savedList;
+
+            if(singleton.getLoadMore()){
+                Log.d(TAG, "Loaded more data");
+                adapter = new MoviesAdapter(mContext,discover_moviesArrayList);
+            }else{
+                for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
+                display1 = addCreditsToList(display1);
+                movieListView.addFooterView(loadMore);
+                adapter = new MoviesAdapter(mContext,display1);
+            }
+
+            movieListView.setAdapter(adapter);
+        }
+
+
+
+
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -148,6 +171,7 @@ public class MoviesRecentFragment extends Fragment {
 
         return fragmentView;
     }
+
 
     protected ArrayList<MovieDataModel> addCreditsToList(ArrayList<MovieDataModel> list){
 
@@ -202,7 +226,7 @@ public class MoviesRecentFragment extends Fragment {
                 movieObj =resultsArray.getJSONObject(i);
 
                 int[] genres = getGenreArray(movieObj);
-               
+
                 Long id = movieObj.getLong(Utilities.MovieMultipleJSONArray.ID);
                 String title = movieObj.getString(MovieMultipleJSONArray.TITLE);
                 String overview = movieObj.getString(MovieMultipleJSONArray.OVERVIEW);
@@ -244,12 +268,14 @@ public class MoviesRecentFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            for(int i=10; i<19; i++) display2.add(discover_moviesArrayList.get(i));
+            for(int i=10; i<20; i++) display2.add(discover_moviesArrayList.get(i));
 
             display2 = addCreditsToList(display2);
             adapter.addItems(display2);
             movieListView.removeFooterView(loadMore);
             adapter.notifyDataSetChanged();
+            MySingleton mySingleton = MySingleton.getInstance();
+            mySingleton.setLoadMore(true);
         }
     }
 
@@ -259,6 +285,32 @@ public class MoviesRecentFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         Log.d(TAG, "In onSaveInstanceState()");
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "In onPause(). Saving data...");
+        MySingleton singleton = MySingleton.getInstance();
+        singleton.saveData(discover_moviesArrayList);
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "In onStart()");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "In onResume()");
+        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "In onStop()");
+        super.onStop();
     }
 
     @Override
@@ -281,6 +333,5 @@ public class MoviesRecentFragment extends Fragment {
         super.onDetach();
         Log.d(TAG, "In onDetach()");
     }
-
 
 }
