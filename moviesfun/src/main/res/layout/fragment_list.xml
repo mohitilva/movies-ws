@@ -10,7 +10,7 @@
     android:weightSum="1"
     android:name="com.hfad.moviesfun.ItemFragment"
     android:orientation="vertical"
-    class="com.hfad.moviesfun.MoviesRecentFragment"
+    class="com.hfad.moviesfun.view.MoviesRecentFragment"
     android:paddingTop="@dimen/main_layout_padding_top"
     android:paddingBottom="@dimen/main_layout_padding_bottom">
 

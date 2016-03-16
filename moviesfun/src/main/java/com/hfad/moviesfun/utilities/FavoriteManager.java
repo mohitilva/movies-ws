@@ -1,7 +1,9 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.hfad.moviesfun.R;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +24,7 @@ public class FavoriteManager {
         mContext = c;
     }
 
-    private Set<String> getFavoritesSet(){
+    public Set<String> getFavoritesSet(){
 
         favorites = mContext.getSharedPreferences(FAVORITE_PREFERENCES, 0);
         Set<String> setFavorites = favorites.getStringSet(ITEM_CAT_MOVIES, new HashSet<String>());
@@ -66,6 +68,14 @@ public class FavoriteManager {
 
     public static String getFavoriteDelimiter(){
         return "\\" + favorite_delimiter;
+    }
+
+    public static int getUnfavoriteIconId(){
+        return R.drawable.ic_star_border_3x;
+    }
+
+    public static int getFavoriteIcon(){
+        return R.drawable.ic_star_18pt_3x;
     }
 
 }

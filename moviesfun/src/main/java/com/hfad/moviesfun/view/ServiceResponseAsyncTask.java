@@ -1,4 +1,4 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.view;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,14 +12,12 @@ import okhttp3.Response;
 
 class ServiceResponseAsyncTask extends AsyncTask<String, Void, String> {
 
-    private  static String TAG="com.hfad.moviesfun.ServiceResponseAsyncTask";
+    private  String TAG = getClass().getName();
     OkHttpClient mClient;
-
 
     public ServiceResponseAsyncTask(OkHttpClient client) {
         super();
         mClient = client;
-
     }
 
     @Override

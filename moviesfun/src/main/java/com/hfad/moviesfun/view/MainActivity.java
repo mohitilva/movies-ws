@@ -1,4 +1,4 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
 
 public class MainActivity extends AppCompatActivity
@@ -112,18 +113,13 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     //when item is clicked on the navigation bar
-
-
     private void selectItem(int position) {
 
         drawerItemSelected = position;
 
         mDrawerLayout.closeDrawer(drawerlist);
     }
-
-
 
 
     /* Implementing the callback for movie clicked. Called from two places, Main Fragment and Favorites Fragment */

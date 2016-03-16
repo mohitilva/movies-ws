@@ -1,4 +1,4 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.adapters;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,6 +11,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.hfad.moviesfun.model.MovieDataModel;
+import com.hfad.moviesfun.R;
+import com.hfad.moviesfun.model.WSMetaData;
+import com.hfad.moviesfun.utilities.Utilities;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -87,7 +91,7 @@ public class MoviesAdapter extends BaseAdapter{
         imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
         utils = new Utilities(mContext);
-        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, Utilities.posterSizes.w342.toString());
+        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, WSMetaData.posterSizes.w342.toString());
 
         Picasso.with(mContext)
                 .load(fullImageUrl)
@@ -137,7 +141,7 @@ public class MoviesAdapter extends BaseAdapter{
         }
 
         //Actors
-        String actors = Utilities.getActorsString(currentMovieObj.actors, 2);
+        String actors = Utilities.getStringFromArrayList(currentMovieObj.actors, 2);
         actorsTextView.setText(actors);
 
         return view;

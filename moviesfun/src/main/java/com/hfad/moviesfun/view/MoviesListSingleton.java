@@ -1,20 +1,22 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.view;
 
+
+import com.hfad.moviesfun.model.MovieDataModel;
 
 import java.util.ArrayList;
 
-public class MySingleton {
+public class MoviesListSingleton {
 
-    private static MySingleton instance = null;
+    private static MoviesListSingleton instance = null;
     private  ArrayList<MovieDataModel> networkResponse = null;
     private boolean loadMore = false;
-    void saveData(ArrayList<MovieDataModel> data) {
+    public void saveData(ArrayList<MovieDataModel> data) {
         networkResponse = data;
     }
 
-    public static MySingleton getInstance() {
+    public static MoviesListSingleton getInstance() {
         if (instance == null) {
-            instance = new MySingleton();
+            instance = new MoviesListSingleton();
         }
 
         return instance;

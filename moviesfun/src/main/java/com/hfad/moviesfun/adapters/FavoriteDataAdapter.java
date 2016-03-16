@@ -1,23 +1,20 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
+import com.hfad.moviesfun.utilities.FavoriteManager;
+import com.hfad.moviesfun.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class FavoriteDataAdapter extends BaseAdapter{
@@ -30,8 +27,6 @@ public class FavoriteDataAdapter extends BaseAdapter{
     private Context mContext;
     private LayoutInflater inflater;
 
-
-
     public FavoriteDataAdapter(Context context, List<String> favStrList){
 
         mContext = context;
@@ -41,16 +36,12 @@ public class FavoriteDataAdapter extends BaseAdapter{
         listIconUrls = new ArrayList<>();
         for(int i=0 ; i< favStrList.size(); i++){
 
-
             String[] components = favStrList.get(i).split(FavoriteManager.getFavoriteDelimiter());
-
             listFavoriteIds.add(components[0]);
             listTitles.add(components[1]);
             listIconUrls.add(components[2]);
 
         }
-
-
     }
 
     @Override
@@ -129,7 +120,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
                 if ((Boolean.valueOf(tags.get(0)))) {
 
                     //unfavoriting the item
-                    ((ImageView) view).setImageResource(R.drawable.ic_star_border_3x);
+                    ((ImageView) view).setImageResource(FavoriteManager.getUnfavoriteIconId());
                     favoriteManager.removeFromFavorites(combinedString);
                     tags.put(0, "false");
 
@@ -137,8 +128,7 @@ public class FavoriteDataAdapter extends BaseAdapter{
                 } else {
 
                     //favoriting the item
-
-                    ((ImageView) view).setImageResource(R.drawable.ic_star_18pt_3x);
+                    ((ImageView) view).setImageResource(FavoriteManager.getFavoriteIcon());
                     favoriteManager.addToFavorites(combinedString);
                     tags.put(0, "true");
                 }

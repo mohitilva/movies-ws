@@ -1,13 +1,10 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by mtilva on 2/13/16.
- */
+
 public class MovieDataModel {
 
-    String overview;
     public Long id;
     public String title;
     public String posterPath;
@@ -16,8 +13,9 @@ public class MovieDataModel {
     public double voteAvg;
     public int[] genres;
     public ArrayList<String> actors;
+    String overview;
 
-    public MovieDataModel(Long l, String overview, String title, String posterPath, String backdrop){
+    public MovieDataModel(Long l, String overview, String title, String posterPath, String backdrop) {
         this.overview = overview;
         this.id = l;
         this.title = title;

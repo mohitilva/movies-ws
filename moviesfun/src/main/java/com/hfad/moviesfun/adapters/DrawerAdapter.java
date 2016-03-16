@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.Utilities;
+import com.hfad.moviesfun.utilities.Utilities;
 
 import java.util.ArrayList;
 

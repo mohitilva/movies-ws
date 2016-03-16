@@ -34,4 +34,5 @@
     <string name="input_date_format">yyyy-MM-dd</string>
     <string name="output_date_format">MMM dd, yyyy</string>
     <string name="not_available">N/A</string>
+    <string name="no_favorites_msg">You haven\'t added any favorites. \n To add favorites tap the favorite icon in the movie description.</string>
 </resources>
