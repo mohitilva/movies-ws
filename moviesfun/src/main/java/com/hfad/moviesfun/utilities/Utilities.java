@@ -13,13 +13,36 @@ import java.util.Date;
 
 public class Utilities {
 
+
     private Context mContext;
     private static String apiKey;
     private  String TAG = getClass().getName();
 
+
+    public static final long BILLION = 1000000000;
+    public static final long MILLION = 1000000;
+    public static final long HUNDRED_THOUSAND = 100000;
+    private static final int THOUSAND = 1000;
+
     public Utilities(Context context){
         mContext = context;
         apiKey = mContext.getResources().getString(R.string.api_key_movies_db);
+    }
+
+    public  String getStringFromStringArray(String[] genreNames, int limit){
+
+        String genreText = "";
+
+        if(genreNames==null || genreNames.length==0){
+            return mContext.getString(R.string.not_available);
+        }
+
+        for(int i=0;i<genreNames.length;i++){
+            genreText += ", " + genreNames[i];
+            if(i==limit-1) break;
+        }
+
+        return trimText(genreText);
     }
 
     public  String getImageUrl(String imageRelPath, String size){
@@ -94,19 +117,21 @@ public class Utilities {
 
     public  String getRevenueFromLong(long revenue){
         String revenueStr;
-        if(revenue > 1000000000){
-            float r = revenue / 1000000000f;
+        float r;
+        if(revenue >= BILLION){
+             r = (float) revenue / BILLION;
             String s = String.format("%.2f",r);
             revenueStr = "$" + s + "B";
-        }else if(revenue > 1000000){
-            float r = revenue / 1000000f;
+        }else if(revenue >= MILLION){
+             r = (float) revenue / MILLION;
             String s = String.format("%.2f",r);
             revenueStr = "$" + s + "M";
-        }else if (revenue>100000){
-            float r = revenue / 1000;
+        }else if (revenue>=HUNDRED_THOUSAND){
+             r = (float) revenue / THOUSAND;
             int i = (int) r;
             revenueStr = "$" + String.valueOf(i) + "K";
         }else{
+            //Do not display if less than 100K
             revenueStr = mContext.getString(R.string.not_available) ;
         }
         return revenueStr;

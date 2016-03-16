@@ -18,6 +18,8 @@ import android.widget.ListView;
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
 
+import java.text.SimpleDateFormat;
+
 public class MainActivity extends AppCompatActivity
                         implements OnListItemClickCallback
 
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private int drawerItemSelected;
-
+    public static final SimpleDateFormat outputDateFormat =  new SimpleDateFormat("MMM dd, yyyy");
     public   enum  fragmentTags {
         MAIN,
         FAVORITES,

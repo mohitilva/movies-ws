@@ -14,7 +14,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.adapters.MoviesAdapter;
 import com.hfad.moviesfun.model.WSMetaData;
 import com.hfad.moviesfun.utilities.FavoriteManager;
 import com.hfad.moviesfun.utilities.Utilities;
@@ -177,7 +176,7 @@ public class MovieDetailsFragment extends Fragment {
             revenue = responseJSONObj.getLong(WSMetaData.MovieDetailsJSONArray.REVENUE);
 
             String[] genresArray = getGenreNamesArray(responseJSONObj);
-            genresText = MoviesAdapter.getStringFromStringArray(genresArray, 3);
+            genresText = utils.getStringFromStringArray(genresArray, 3);
 
             float ratings = Float.parseFloat(String.valueOf(responseJSONObj.getDouble(WSMetaData.MovieDetailsJSONArray.VOTE_AVERAGE)));
             ratingBar.setRating(ratings / 2);
@@ -206,7 +205,7 @@ public class MovieDetailsFragment extends Fragment {
         int minutes = runtime % 60;
 
         if (runtime != 0) {
-            if (minutes != 0) runTimeTextView.setText(hours + " hr. " + minutes + "min.");
+            if (minutes != 0) runTimeTextView.setText(hours + " hr. " + minutes + " min.");
             else runTimeTextView.setText(hours + " hr.");
         } else runTimeTextView.setText(getString(R.string.not_available));
 

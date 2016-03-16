@@ -1,9 +1,16 @@
 package com.hfad.moviesfun.model;
 
 
+import com.hfad.moviesfun.R;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 public class WSMetaData {
+
+    public static final SimpleDateFormat wsDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
+
 
     public static final String _BACKDROP_PATH = "backdrop_path";
     public static final String ITEMS_ARRAY_NAME = "results";
