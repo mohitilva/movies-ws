@@ -1,4 +1,4 @@
-package com.hfad.moviesfun;
+package com.hfad.moviesfun.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -7,21 +7,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hfad.moviesfun.R;
+import com.hfad.moviesfun.Utilities;
+
 import java.util.ArrayList;
 
-/**
- * Created by mtilva on 3/5/16.
- */
+
 public class DrawerAdapter extends BaseAdapter{
 
 
     Context mContext;
     Utilities utilities;
-    ArrayList<Utilities.DrawerItem> drawerItems;
+    //static ArrayList<DrawerItem> drawerItems
     public DrawerAdapter(Context c) {
         mContext = c;
         utilities = new Utilities(mContext);
-        drawerItems = utilities.drawerItems;
+
+    }
+
+    public static ArrayList<DrawerItem> drawerItems = new ArrayList<>();
+    {
+        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.icon));
+        drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
+        drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
+
     }
 
     @Override
@@ -46,7 +55,7 @@ public class DrawerAdapter extends BaseAdapter{
         TextView textView;
 
         if(position==0){
-            view = View.inflate(mContext,R.layout.nav_drawer_header,null);
+            view = View.inflate(mContext, R.layout.nav_drawer_header,null);
         }else {
             view = View.inflate(mContext,R.layout.nav_drawer_item,null);
 
@@ -59,6 +68,16 @@ public class DrawerAdapter extends BaseAdapter{
         textView.setText(drawerItems.get(position).text);
         return view;
 
+
+    }
+    public class DrawerItem{
+        String text;
+        int image;
+
+        DrawerItem(String t, int i){
+            text = t;
+            image = i;
+        }
 
     }
 }

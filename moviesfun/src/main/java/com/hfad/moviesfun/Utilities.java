@@ -173,13 +173,7 @@ public class Utilities {
         public static final String OVERVIEW = _OVERVIEW;
     }
 
-    public  ArrayList<DrawerItem> drawerItems = new ArrayList<>();
-    {
-        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.icon));
-        drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
-        drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
 
-    }
 
     public static String trimText(String str){
 
@@ -238,16 +232,7 @@ public class Utilities {
         return revenueStr;
     }
 
-    public class DrawerItem{
-        String text;
-        int image;
 
-        DrawerItem(String t, int i){
-            text = t;
-            image = i;
-        }
-
-    }
 
 
 }
