@@ -18,11 +18,11 @@
 
     <ListView
         android:id="@+id/drawer"
-        android:layout_width="200dp"
+        android:layout_width="@dimen/drawer_width"
         android:layout_gravity="start"
         android:layout_height="fill_parent"
         android:divider="@android:color/transparent"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/white"
         android:fitsSystemWindows="true"
         android:choiceMode="singleChoice"
         android:drawSelectorOnTop="false"

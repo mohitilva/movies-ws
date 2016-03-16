@@ -49,11 +49,13 @@ public class DrawerAdapter extends BaseAdapter{
             view = View.inflate(mContext,R.layout.nav_drawer_header,null);
         }else {
             view = View.inflate(mContext,R.layout.nav_drawer_item,null);
+
         }
 
         icon = (ImageView) view.findViewById(R.id.drawer_icon);
-        textView = (TextView) view.findViewById(R.id.drawer_item_text);
         icon.setImageResource(drawerItems.get(position).image);
+        textView = (TextView) view.findViewById(R.id.drawer_item_text);
+
         textView.setText(drawerItems.get(position).text);
         return view;
 

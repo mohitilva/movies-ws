@@ -11,4 +11,5 @@
     <dimen name="list_item_padding">2dp</dimen>
     <dimen name="details_text_desc_width">75dp</dimen>
 
+    <dimen name="drawer_width">200dp</dimen>
 </resources>

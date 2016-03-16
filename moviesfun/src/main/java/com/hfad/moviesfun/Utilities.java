@@ -175,7 +175,7 @@ public class Utilities {
 
     public  ArrayList<DrawerItem> drawerItems = new ArrayList<>();
     {
-        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.ic_local_movies_black_48dp));
+        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.icon));
         drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
         drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
 

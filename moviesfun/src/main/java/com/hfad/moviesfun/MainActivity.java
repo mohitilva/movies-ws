@@ -114,37 +114,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState){
-        Log.d(TAG, "In onPostCreate()");
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
 
-    @Override
-    protected void onStop() {
-        Log.d(TAG, "In onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPostResume() {
-        Log.d(TAG, "In onPostResume()");
-        super.onPostResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "In onDestroy()");
-
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "In onPause()");
-        super.onPause();
-    }
 
     //when item is clicked on the navigation bar
 
@@ -163,7 +133,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags callingFragment) {
 
-        //fragment = MovieDetailsFragment.newInstance(String.valueOf(id), backDropPath, posterPath);
+
         Log.d(TAG, "onListItemClick(): backstackcount=" + fragmentManager.getBackStackEntryCount());
         fragment = new MovieDetailsFragment(String.valueOf(id),backDropPath,posterPath);
         fragmentManager.beginTransaction()
@@ -173,6 +143,9 @@ public class MainActivity extends AppCompatActivity
                 .addToBackStack(null)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         .commit();
+        fragmentManager.executePendingTransactions();
+        currentFragment = fragmentTags.DETAILS.name();
+
 
     }
 
@@ -233,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         if (fragmentManager.getBackStackEntryCount() > 1) {
 
 
-            fragmentManager.popBackStack();
+            fragmentManager.popBackStackImmediate();
 
         } else {
             super.onBackPressed();
@@ -272,7 +245,40 @@ public class MainActivity extends AppCompatActivity
 
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+        fragmentManager.executePendingTransactions();
         setActionBarTitle(drawerItemSelected);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState){
+        Log.d(TAG, "In onPostCreate()");
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "In onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d(TAG, "In onPostResume()");
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "In onDestroy()");
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "In onPause()");
+        super.onPause();
     }
 
     private class MyDrawerListener implements DrawerLayout.DrawerListener {
