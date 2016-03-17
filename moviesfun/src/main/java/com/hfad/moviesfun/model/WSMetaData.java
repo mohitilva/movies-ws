@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class WSMetaData {
 
     public static final SimpleDateFormat wsDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
-
+    public static final String REL_DATE_LTE_FILTER = "release_date.lte";
 
     public static final String _BACKDROP_PATH = "backdrop_path";
     public static final String ITEMS_ARRAY_NAME = "results";

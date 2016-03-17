@@ -60,10 +60,10 @@ public class Utilities {
     public String getRecentReleasedMoviesUrl() {
      String url = mContext.getResources().getText(R.string.popular_movies_url)
                 + "&" + apiKey;
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat f = WSMetaData.wsDateFormat;
         Date today = Calendar.getInstance().getTime();
         String currentDate = f.format(today);
-        url = url + "&release_date.lte=" + currentDate;
+        url = url + "&" + WSMetaData.REL_DATE_LTE_FILTER +"=" + currentDate;
         return url;
     }
 

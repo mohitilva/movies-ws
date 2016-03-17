@@ -98,12 +98,14 @@ public class MoviesRecentFragment extends Fragment {
                 }
             });
 
+            //Get the actors name and add to list.
+            discover_moviesArrayList = addCreditsToList(discover_moviesArrayList);
+
+
             movieListView.addFooterView(loadMore);
 
             for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
 
-            //Get the actors name and add to list.
-            display1 = addCreditsToList(display1);
 
             adapter = new MoviesAdapter(mContext,display1);
             movieListView.setAdapter(adapter);
@@ -116,7 +118,7 @@ public class MoviesRecentFragment extends Fragment {
                 adapter = new MoviesAdapter(mContext,discover_moviesArrayList);
             }else{
                 for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
-                display1 = addCreditsToList(display1);
+              //  display1 = addCreditsToList(display1);
                 movieListView.addFooterView(loadMore);
                 adapter = new MoviesAdapter(mContext,display1);
             }
