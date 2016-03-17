@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
+import com.hfad.moviesfun.model.WSMetaData;
+import com.hfad.moviesfun.utilities.Utilities;
 
 import java.text.SimpleDateFormat;
 
@@ -25,6 +27,10 @@ public class MainActivity extends AppCompatActivity
 
 {
     public static final SimpleDateFormat outputDateFormat = new SimpleDateFormat("MMM dd, yyyy");
+
+
+    private static String APP_TITLE = "MoviesFun";
+    private static String FAV_TITLE = "My Favorites";
     private ListView drawerList;
     private String TAG = getClass().getName();
     private Context mContext;
@@ -34,17 +40,11 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private int drawerItemSelected;
-    private static String APP_TITLE = "MoviesFun";
-    private static String FAV_TITLE = "My Favorites";
-    public  enum fragmentTags {
-        MAIN,
-        FAVORITES,
-        DETAILS
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Log.d(TAG, "In onCreate()");
         mContext = this;
 
         super.onCreate(savedInstanceState);
@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(mContext);
 
-        Log.d(TAG,"Setting adapter for drawer");
         drawerList.setAdapter(drawerAdapter);
 
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity
         drawerItemSelected = position;
         mDrawerLayout.closeDrawer(drawerList);
     }
-
 
     public void setActionBarTitle(String currentFragment) {
 
@@ -219,6 +217,61 @@ public class MainActivity extends AppCompatActivity
         setActionBarTitle(drawerItemSelected);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "In onPostCreate()");
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "In onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPostResume() {
+        Log.d(TAG, "In onPostResume()");
+        super.onPostResume();
+    }
+
+
+  /*
+      When the user exits thru the back button clear the saved data so that the user gets fresh data when uses the app again.
+      onDestroy is not called when user presses the home button on android,  onPause() and onStop() is called.
+      When the user exits thru back button onDestroy() is also called.
+      If the data is singleton is not cleared here, then the app uses the same data even after onDestroy() is called.
+      In this case user would have to swipe the app out from the recent apps list to refresh the content.
+  */
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "In onDestroy(). Clearing saved data");
+        MoviesListSingleton singleton = MoviesListSingleton.getInstance();
+        singleton.clearData();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+
+        Log.d(TAG, "In onPause()");
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "In onResume()");
+        super.onResume();
+    }
+
+    public  enum fragmentTags {
+        MAIN,
+        FAVORITES,
+        DETAILS
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -250,38 +303,5 @@ public class MainActivity extends AppCompatActivity
         public void onDrawerStateChanged(int newState) {
 
         }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "In onPostCreate()");
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d(TAG, "In onStop()");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPostResume() {
-        Log.d(TAG, "In onPostResume()");
-        super.onPostResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "In onDestroy()");
-
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-
-        Log.d(TAG, "In onPause()");
-        super.onPause();
     }
 }

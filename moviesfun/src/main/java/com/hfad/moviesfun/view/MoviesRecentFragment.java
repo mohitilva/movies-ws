@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,7 @@ public class MoviesRecentFragment extends Fragment {
         ArrayList<MovieDataModel> savedList = singleton.getData();
         ArrayList<MovieDataModel> display1 = new ArrayList<>();
         if(savedList==null){
-
+            Log.d(TAG, "Getting response from network");
             try {
                 String discover_url = utils.getRecentReleasedMoviesUrl();
                 discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
@@ -111,7 +112,7 @@ public class MoviesRecentFragment extends Fragment {
             movieListView.setAdapter(adapter);
 
         }else{
-
+            Log.d(TAG, "Using saved response");
             discover_moviesArrayList = savedList;
 
             if(singleton.getLoadMore()){

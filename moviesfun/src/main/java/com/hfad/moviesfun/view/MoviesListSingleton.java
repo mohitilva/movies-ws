@@ -33,5 +33,11 @@ public class MoviesListSingleton {
     public boolean getLoadMore(){
         return this.loadMore;
     }
+
+    public void clearData(){
+        networkResponse = null;
+        loadMore = false;
+
+    }
 }
 
