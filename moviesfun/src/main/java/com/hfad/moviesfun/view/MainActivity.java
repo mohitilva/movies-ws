@@ -45,16 +45,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG, "In MainActivity:onCreate()");
         mContext = this;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         instantiateDrawer();
-
-
-
 
         if (savedInstanceState == null) {
 
@@ -91,6 +87,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(mContext);
 
+        Log.d(TAG,"Setting adapter for drawer");
         drawerList.setAdapter(drawerAdapter);
 
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
@@ -119,7 +116,6 @@ public class MainActivity extends AppCompatActivity
         currentFragment = fragmentTag;
 
     }
-
 
     //when item is clicked on the navigation bar
     private void selectItem(int position) {
@@ -180,17 +176,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-
         if (mDrawerLayout.isDrawerOpen(drawerList)) {
             mDrawerLayout.closeDrawer(drawerList);
             return;
         }
 
         if (fragmentManager.getBackStackEntryCount() > 1) {
-
-
             fragmentManager.popBackStackImmediate();
-
         } else {
             super.onBackPressed();
         }
@@ -251,9 +243,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onDrawerClosed(View drawerView) {
-
             switchFragment();
-
         }
 
         @Override
@@ -290,6 +280,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
+
         Log.d(TAG, "In onPause()");
         super.onPause();
     }

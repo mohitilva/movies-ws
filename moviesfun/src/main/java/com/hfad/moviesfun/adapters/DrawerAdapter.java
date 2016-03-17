@@ -1,6 +1,7 @@
 package com.hfad.moviesfun.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,6 +19,7 @@ public class DrawerAdapter extends BaseAdapter{
 
     Context mContext;
     Utilities utilities;
+    private  String TAG = getClass().getName();
     //static ArrayList<DrawerItem> drawerItems
     public DrawerAdapter(Context c) {
         mContext = c;
@@ -25,16 +27,18 @@ public class DrawerAdapter extends BaseAdapter{
 
     }
 
-    public static ArrayList<DrawerItem> drawerItems = new ArrayList<>();
+    //Text and icons in the drawer.
+    public  ArrayList<DrawerItem> drawerItems = new ArrayList<>();
     {
         drawerItems.add(new DrawerItem("MoviesFun",R.drawable.icon));
-        drawerItems.add(new DrawerItem("Home",R.drawable.ic_home));
-        drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star));
+        drawerItems.add(new DrawerItem("Home",R.drawable.ticket_icon));
+        drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star_18pt_3x));
 
     }
 
     @Override
     public int getCount() {
+
         return drawerItems.size();
     }
 
@@ -54,6 +58,7 @@ public class DrawerAdapter extends BaseAdapter{
         ImageView icon;
         TextView textView;
 
+        //We have a different layout for the first item in the drawer. A larger ImageView and text.
         if(position==0){
             view = View.inflate(mContext, R.layout.nav_drawer_header,null);
         }else {
