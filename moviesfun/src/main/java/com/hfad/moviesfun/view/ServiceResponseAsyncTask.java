@@ -35,8 +35,8 @@ class ServiceResponseAsyncTask extends AsyncTask<String, Void, String> {
             response = mClient.newCall(request).execute();
             responseString = response.body().string();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            return null;
         }
 
         return responseString;

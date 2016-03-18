@@ -64,70 +64,74 @@ public class MoviesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-         mContext = container.getContext();
+        mContext = container.getContext();
 
 
-        if(getTag()!=null){
+        if (getTag() != null) {
             mCallback.updateActivityUI(getTag());
         }
         mContext = container.getContext();
 
         View fragmentView = inflater.inflate(R.layout.fragment_list, null);
         movieListView = (ListView) fragmentView.findViewById(R.id.moviesListView);
-        loadMore = inflater.inflate(R.layout.load_more,null);
+        loadMore = inflater.inflate(R.layout.load_more, null);
         loadMore.setOnClickListener(new LoadMoreOnClickListener());
 
         //Check if we have response saved in singleton.
         MoviesListSingleton singleton = MoviesListSingleton.getInstance();
         ArrayList<MovieDataModel> savedList = singleton.getData();
         ArrayList<MovieDataModel> display1 = new ArrayList<>();
-        if(savedList==null){
+
+        try {
+
+        if (savedList == null) {
             Log.d(TAG, "Getting response from network");
-            try {
+
                 String discover_url = WSMetaData.getRecentReleasedMoviesUrl();
                 discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            discover_moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(discover_responseString);
-
-            //Sort by date
-            Collections.sort(discover_moviesArrayList, new Comparator<MovieDataModel>() {
-                @Override
-                public int compare(MovieDataModel lhs, MovieDataModel rhs) {
-                    if (lhs.releaseDate == null || rhs.releaseDate == null) return 0;
-                    return rhs.releaseDate.compareTo(lhs.releaseDate);
-                }
-            });
-
-            //Get the actors name and add to list.
-            discover_moviesArrayList = addCreditsToList(discover_moviesArrayList);
 
 
-            movieListView.addFooterView(loadMore);
+                discover_moviesArrayList = (ArrayList<MovieDataModel>) getListFromNetworkResponse(discover_responseString);
 
-            for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
+                //Sort by date
+                Collections.sort(discover_moviesArrayList, new Comparator<MovieDataModel>() {
+                    @Override
+                    public int compare(MovieDataModel lhs, MovieDataModel rhs) {
+                        if (lhs.releaseDate == null || rhs.releaseDate == null) return 0;
+                        return rhs.releaseDate.compareTo(lhs.releaseDate);
+                    }
+                });
+
+                //Get the actors name and add to list.
+                discover_moviesArrayList = addCreditsToList(discover_moviesArrayList);
 
 
-            adapter = new MoviesAdapter(mContext,display1);
-            movieListView.setAdapter(adapter);
-
-        }else{
-            Log.d(TAG, "Using saved response");
-            discover_moviesArrayList = savedList;
-
-            if(singleton.getLoadMore()){
-                adapter = new MoviesAdapter(mContext,discover_moviesArrayList);
-            }else{
-                for(int i=0; i<10; i++) display1.add(discover_moviesArrayList.get(i));
-              //  display1 = addCreditsToList(display1);
                 movieListView.addFooterView(loadMore);
-                adapter = new MoviesAdapter(mContext,display1);
+
+                for (int i = 0; i < 10; i++) display1.add(discover_moviesArrayList.get(i));
+
+
+                adapter = new MoviesAdapter(mContext, display1);
+                movieListView.setAdapter(adapter);
+
+            } else {
+                Log.d(TAG, "Using saved response");
+                discover_moviesArrayList = savedList;
+
+                if (singleton.getLoadMore()) {
+                    adapter = new MoviesAdapter(mContext, discover_moviesArrayList);
+                } else {
+                    for (int i = 0; i < 10; i++) display1.add(discover_moviesArrayList.get(i));
+                    //  display1 = addCreditsToList(display1);
+                    movieListView.addFooterView(loadMore);
+                    adapter = new MoviesAdapter(mContext, display1);
+                }
+                movieListView.setAdapter(adapter);
             }
-            movieListView.setAdapter(adapter);
+        }
+        //Here we are just catching all exceptions and throwables and displaying message. Individual exceptions should be handled.
+        catch (Throwable t){
+            Utilities.showGeneralErrorToast(mContext);
         }
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,33 +149,35 @@ public class MoviesListFragment extends Fragment {
     protected ArrayList<MovieDataModel> addCreditsToList(ArrayList<MovieDataModel> list){
 
         String credits;
-        for(int k=0; k< list.size()   ;k++){
+        try{
+            for(int k=0; k< list.size()   ;k++){
 
-            MovieDataModel currentMovieObj = list.get(k);
-            String creditRequestString = WSMetaData.getCreditsUrl(String.valueOf(currentMovieObj.id));
-            try {
+                MovieDataModel currentMovieObj = list.get(k);
+                String creditRequestString = WSMetaData.getCreditsUrl(String.valueOf(currentMovieObj.id));
 
-                //credits for each movie.
-                credits = new ServiceResponseAsyncTask(client).execute(creditRequestString).get();
-                ArrayList<String> actors = new ArrayList<>();
-                JSONArray castJsonArray =  new JSONObject(credits).getJSONArray(WSMetaData.CAST_ARRAY_NAME);
 
-                for(int i=0; i<castJsonArray.length();i++){
-                    String cast = castJsonArray.getJSONObject(i).getString(WSMetaData.ACTOR_STRING_NAME);
-                    actors.add(cast);
+                    //credits for each movie.
+                    credits = new ServiceResponseAsyncTask(client).execute(creditRequestString).get();
+
+                    ArrayList<String> actors = new ArrayList<>();
+                    JSONArray castJsonArray =  new JSONObject(credits).getJSONArray(WSMetaData.CAST_ARRAY_NAME);
+
+                    for(int i=0; i<castJsonArray.length();i++){
+                        String cast = castJsonArray.getJSONObject(i).getString(WSMetaData.ACTOR_STRING_NAME);
+                        actors.add(cast);
+                    }
+
+                    list.get(k).actors = actors;
                 }
-
-                list.get(k).actors = actors;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }  catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
 
 
         }
+        //Here we are just catching all exceptions and throwables and displaying message. Individual exceptions should be handled.
+        catch (Throwable t){
+            Utilities.showGeneralErrorToast(mContext);
+
+        }
+
         return list;
     }
 
@@ -223,6 +229,8 @@ public class MoviesListFragment extends Fragment {
             }
         } catch (JSONException e1) {
             e1.printStackTrace();
+        } catch (Throwable t){
+            Utilities.showGeneralErrorToast(mContext);
         }
         return moviesList;
     }

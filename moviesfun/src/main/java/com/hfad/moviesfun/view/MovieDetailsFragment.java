@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.model.WSMetaData;
@@ -159,10 +160,16 @@ public class MovieDetailsFragment extends Fragment {
         try {
             serviceResponse = new ServiceResponseAsyncTask(client).execute(requestUrl).get();
             credits = new ServiceResponseAsyncTask(client).execute(creditRequestString).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+
+            if(serviceResponse==null || credits==null){
+                Utilities.showGeneralErrorToast(mContext);
+                return null;
+            }
+
+        }
+        //Here we are just catching all exceptions and throwables and displaying message. Individual exceptions should be handled.
+        catch (Throwable t){
+           Utilities.showGeneralErrorToast(mContext);
         }
 
         //Parse the network response
@@ -191,8 +198,10 @@ public class MovieDetailsFragment extends Fragment {
                 if (i == MAX_ACTORS - 1) break;
             }
             actors = Utilities.trimText(actors);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }
+        //Here we are just catching all exceptions and throwables and displaying message. Individual exceptions should be handled.
+        catch (Throwable t){
+            Utilities.showGeneralErrorToast(mContext);
         }
 
         //Set values for the views

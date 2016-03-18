@@ -324,10 +324,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(mContext,mContext.getString(R.string.no_internet_msg_short),Toast.LENGTH_SHORT).show();
                 return;
             }
-
-
             selectItem(position);
-
         }
     }
 

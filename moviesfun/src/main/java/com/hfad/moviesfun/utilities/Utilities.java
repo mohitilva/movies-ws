@@ -1,6 +1,7 @@
 package com.hfad.moviesfun.utilities;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.model.WSMetaData;
@@ -105,6 +106,10 @@ public class Utilities {
             revenueStr = mContext.getString(R.string.not_available) ;
         }
         return revenueStr;
+    }
+
+    public static void showGeneralErrorToast(Context c){
+        Toast.makeText(c, c.getString(R.string.general_error_message), Toast.LENGTH_SHORT).show();
     }
 
 
