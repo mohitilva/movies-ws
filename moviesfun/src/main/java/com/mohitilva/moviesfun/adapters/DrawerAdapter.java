@@ -17,12 +17,11 @@ public class DrawerAdapter extends BaseAdapter{
 
 
     Context mContext;
-    Utilities utilities;
     private  String TAG = getClass().getName();
     //static ArrayList<DrawerItem> drawerItems
     public DrawerAdapter(Context c) {
         mContext = c;
-      //  utilities = new Utilities(mContext);
+
 
     }
 
