@@ -1,5 +1,12 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="drawer_width">240dp</dimen>
+    <dimen name="nav_header_textview_top_bottom_margin">5dp</dimen>
+    <dimen name="nav_header_textview_height">25dp</dimen>
+    <dimen name="nav_drawer_items_padding_left">16dp</dimen>
+    <dimen name="nav_drawer_item_imageview_width">46dp</dimen>
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
@@ -13,7 +20,7 @@
     <dimen name="list_view_padding_right">4dp</dimen>
     <dimen name="details_text_desc_width">75dp</dimen>
 
-    <dimen name="drawer_width">240dp</dimen>
+
     <dimen name="movie_list_item_component">20dp</dimen>
 
     <dimen name="rating_bar_border_width">1dp</dimen>

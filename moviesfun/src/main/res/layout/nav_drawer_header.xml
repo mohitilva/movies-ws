@@ -17,12 +17,12 @@
     <TextView
         android:id="@+id/drawer_item_text"
         android:layout_width="@dimen/drawer_width"
-        android:paddingLeft="16dp"
+        android:paddingLeft="@dimen/nav_drawer_items_padding_left"
         android:textStyle="bold"
         android:background="@color/light_grey"
         android:textColor="@color/black"
-        android:layout_height="25dp"
+        android:layout_height="@dimen/nav_header_textview_height"
         android:gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginTop="@dimen/nav_header_textview_top_bottom_margin"
+        android:layout_marginBottom="@dimen/nav_header_textview_top_bottom_margin"/>
 </LinearLayout>
