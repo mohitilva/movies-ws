@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.MoviesAdapter;
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 import okhttp3.OkHttpClient;
 
 
-public class MoviesRecentFragment extends Fragment {
+public class MoviesListFragment extends Fragment {
 
     private ArrayList<MovieDataModel> display2 = new ArrayList<>();
     private OnListItemClickCallback mCallback;
@@ -43,7 +44,7 @@ public class MoviesRecentFragment extends Fragment {
     private  String TAG = getClass().getName();
 
 
-    public MoviesRecentFragment() {
+    public MoviesListFragment() {
     }
 
 

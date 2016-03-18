@@ -16,8 +16,6 @@ import android.widget.ListView;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
-import com.hfad.moviesfun.model.WSMetaData;
-import com.hfad.moviesfun.utilities.Utilities;
 
 import java.text.SimpleDateFormat;
 
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
 
 
-            fragment = new MoviesRecentFragment();
+            fragment = new MoviesListFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment, fragmentTags.MAIN.name())
                     .addToBackStack(null)
@@ -197,7 +195,7 @@ public class MainActivity extends AppCompatActivity
             case 1:
 
                 if (currentFragment == fragmentTags.MAIN.name()) return;
-                fragment = new MoviesRecentFragment();
+                fragment = new MoviesListFragment();
                 ft.replace(R.id.content_frame, fragment, fragmentTags.MAIN.name());
                 ft.addToBackStack(null);
                 break;
