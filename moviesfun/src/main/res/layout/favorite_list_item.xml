@@ -12,8 +12,8 @@
 
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/favorite_list_movie_icon_width"
+            android:layout_height="@dimen/favorite_list_movie_icon_height"
             android:background="@color/list_background"
             android:id="@+id/fav_movie_icon_ImageView"
             android:paddingLeft="@dimen/main_layout_padding_left"/>

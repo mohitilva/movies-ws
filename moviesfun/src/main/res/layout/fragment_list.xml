@@ -21,7 +21,7 @@
         android:id="@+id/moviesListView"
         android:background="@color/list_background"
         android:footerDividersEnabled="true"
-        android:paddingRight="4dp">
+        android:paddingRight="@dimen/main_layout_padding_right">
     </ListView>
 
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="@color/list_background"
-        android:paddingRight="4dp"
+        android:paddingRight="@dimen/list_view_padding_right"
 
         android:id="@+id/favoriteMoviesListView"
         >
