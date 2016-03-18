@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d(TAG, "In onCreate()");
+        //Log.d(TAG, "In onCreate()");
         mContext = this;
         connectivityManager = new ConnectivityManager(this);
 
@@ -259,20 +259,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "In onPostCreate()");
+        //Log.d(TAG, "In onPostCreate()");
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "In onStop()");
+       // Log.d(TAG, "In onStop()");
         super.onStop();
     }
 
     @Override
     protected void onPostResume() {
-        Log.d(TAG, "In onPostResume()");
+     //   Log.d(TAG, "In onPostResume()");
         super.onPostResume();
     }
 
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "In onDestroy(). Clearing saved data");
+       // Log.d(TAG, "In onDestroy(). Clearing saved data");
         MoviesListSingleton singleton = MoviesListSingleton.getInstance();
         singleton.clearData();
         super.onDestroy();
@@ -296,13 +296,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
 
-        Log.d(TAG, "In onPause()");
+      //  Log.d(TAG, "In onPause()");
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "In onResume()");
+      //  Log.d(TAG, "In onResume()");
         super.onResume();
     }
 
