@@ -1,15 +1,12 @@
-package com.hfad.moviesfun.utilities;
+package com.mohitilva.moviesfun.utilities;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.model.WSMetaData;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.model.WSMetaData;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class Utilities {

@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.adapters;
+package com.mohitilva.moviesfun.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -7,8 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.utilities.Utilities;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.utilities.Utilities;
 
 import java.util.ArrayList;
 

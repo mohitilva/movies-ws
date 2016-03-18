@@ -1,9 +1,9 @@
-package com.hfad.moviesfun.utilities;
+package com.mohitilva.moviesfun.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.hfad.moviesfun.R;
+import com.mohitilva.moviesfun.R;
 
 import java.util.HashSet;
 import java.util.Set;

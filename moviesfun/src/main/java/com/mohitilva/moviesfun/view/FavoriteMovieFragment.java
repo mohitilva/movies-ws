@@ -1,27 +1,22 @@
-package com.hfad.moviesfun.view;
+package com.mohitilva.moviesfun.view;
 
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.adapters.FavoriteDataAdapter;
-import com.hfad.moviesfun.utilities.FavoriteManager;
-import com.hfad.moviesfun.utilities.Utilities;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.adapters.FavoriteDataAdapter;
+import com.mohitilva.moviesfun.utilities.FavoriteManager;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

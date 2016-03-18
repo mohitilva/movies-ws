@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.adapters;
+package com.mohitilva.moviesfun.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.model.MovieDataModel;
-import com.hfad.moviesfun.model.WSMetaData;
-import com.hfad.moviesfun.utilities.Utilities;
-import com.hfad.moviesfun.view.MainActivity;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.model.MovieDataModel;
+import com.mohitilva.moviesfun.model.WSMetaData;
+import com.mohitilva.moviesfun.utilities.Utilities;
+import com.mohitilva.moviesfun.view.MainActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

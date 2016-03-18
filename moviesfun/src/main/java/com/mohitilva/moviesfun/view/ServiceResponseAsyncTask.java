@@ -1,9 +1,6 @@
-package com.hfad.moviesfun.view;
+package com.mohitilva.moviesfun.view;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
-import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -1,4 +1,4 @@
-package com.hfad.moviesfun;
+package com.mohitilva.moviesfun;
 
 import org.junit.Test;
 

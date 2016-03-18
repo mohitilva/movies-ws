@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.view;
+package com.mohitilva.moviesfun.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,9 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.adapters.DrawerAdapter;
-import com.hfad.moviesfun.utilities.ConnectivityManager;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.adapters.DrawerAdapter;
+import com.mohitilva.moviesfun.utilities.ConnectivityManager;
 
 import java.text.SimpleDateFormat;
 

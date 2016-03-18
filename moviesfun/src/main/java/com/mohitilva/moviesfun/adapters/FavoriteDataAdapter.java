@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.adapters;
+package com.mohitilva.moviesfun.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hfad.moviesfun.model.WSMetaData;
-import com.hfad.moviesfun.utilities.FavoriteManager;
-import com.hfad.moviesfun.R;
+import com.mohitilva.moviesfun.model.WSMetaData;
+import com.mohitilva.moviesfun.utilities.FavoriteManager;
+import com.mohitilva.moviesfun.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.utilities;
+package com.mohitilva.moviesfun.utilities;
 
 import android.content.Context;
 import android.net.NetworkInfo;

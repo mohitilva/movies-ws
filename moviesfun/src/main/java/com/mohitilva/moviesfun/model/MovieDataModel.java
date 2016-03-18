@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.model;
+package com.mohitilva.moviesfun.model;
 
 import java.util.ArrayList;
 

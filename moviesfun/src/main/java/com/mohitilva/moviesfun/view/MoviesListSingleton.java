@@ -1,7 +1,7 @@
-package com.hfad.moviesfun.view;
+package com.mohitilva.moviesfun.view;
 
 
-import com.hfad.moviesfun.model.MovieDataModel;
+import com.mohitilva.moviesfun.model.MovieDataModel;
 
 import java.util.ArrayList;
 

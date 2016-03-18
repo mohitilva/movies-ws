@@ -1,4 +1,4 @@
-package com.hfad.moviesfun.view;
+package com.mohitilva.moviesfun.view;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,30 +6,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.hfad.moviesfun.R;
-import com.hfad.moviesfun.model.WSMetaData;
-import com.hfad.moviesfun.utilities.FavoriteManager;
-import com.hfad.moviesfun.utilities.Utilities;
+import com.mohitilva.moviesfun.R;
+import com.mohitilva.moviesfun.model.WSMetaData;
+import com.mohitilva.moviesfun.utilities.FavoriteManager;
+import com.mohitilva.moviesfun.utilities.Utilities;
 
-import static com.hfad.moviesfun.utilities.FavoriteManager.getFavoriteIcon;
-import static com.hfad.moviesfun.utilities.FavoriteManager.getUnfavoriteIconId;
+import static com.mohitilva.moviesfun.utilities.FavoriteManager.getFavoriteIcon;
+import static com.mohitilva.moviesfun.utilities.FavoriteManager.getUnfavoriteIconId;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 
