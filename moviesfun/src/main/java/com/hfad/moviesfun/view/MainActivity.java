@@ -4,14 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +18,7 @@ import android.widget.Toast;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
+import com.hfad.moviesfun.utilities.ConnectivityManager;
 
 import java.text.SimpleDateFormat;
 
@@ -44,19 +42,21 @@ public class MainActivity extends AppCompatActivity
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private int drawerItemSelected;
     boolean isConnectedToInternet;
-
+    ConnectivityManager connectivityManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Log.d(TAG, "In onCreate()");
         mContext = this;
+        connectivityManager = new ConnectivityManager(this);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         instantiateDrawer();
 
-         isConnectedToInternet = checkConnectivity();
+         isConnectedToInternet = connectivityManager.checkConnectivity();
         if(!isConnectedToInternet)
         {
             displayNoInternetMessage();
@@ -80,17 +80,6 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-    }
-
-    private boolean checkConnectivity() {
-        ConnectivityManager cm =
-                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnected();
-        Log.d(TAG,"Connected? "+isConnected);
-        return isConnected;
     }
 
     private void displayNoInternetMessage(){
@@ -191,7 +180,7 @@ public class MainActivity extends AppCompatActivity
     public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags callingFragment) {
 
 
-         isConnectedToInternet = checkConnectivity();
+         isConnectedToInternet = connectivityManager.checkConnectivity();
         if(!isConnectedToInternet)
         {
             displayNoInternetMessage();
@@ -213,7 +202,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        isConnectedToInternet = checkConnectivity();
+        isConnectedToInternet = connectivityManager.checkConnectivity();
         if(!isConnectedToInternet)
         {
             Toast.makeText(this,getString(R.string.no_internet_msg_short),Toast.LENGTH_LONG).show();
@@ -328,7 +317,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            boolean isConnectedToInternet = checkConnectivity();
+            boolean isConnectedToInternet = connectivityManager.checkConnectivity();
             if(!isConnectedToInternet)
             {
                 displayNoInternetMessage();

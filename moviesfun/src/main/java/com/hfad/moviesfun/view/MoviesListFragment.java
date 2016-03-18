@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.MoviesAdapter;
 import com.hfad.moviesfun.model.MovieDataModel;
 import com.hfad.moviesfun.model.WSMetaData;
+import com.hfad.moviesfun.utilities.ConnectivityManager;
 import com.hfad.moviesfun.utilities.Utilities;
 
 import org.json.JSONArray;
@@ -42,7 +44,7 @@ public class MoviesListFragment extends Fragment {
     private MoviesAdapter adapter;
     private ArrayList<MovieDataModel> discover_moviesArrayList;
     private  String TAG = getClass().getName();
-
+    private Context mContext;
 
     public MoviesListFragment() {
     }
@@ -62,12 +64,13 @@ public class MoviesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Context mContext = getActivity().getBaseContext();
+         mContext = container.getContext();
 
 
         if(getTag()!=null){
             mCallback.updateActivityUI(getTag());
         }
+        mContext = container.getContext();
 
         View fragmentView = inflater.inflate(R.layout.fragment_list, null);
         movieListView = (ListView) fragmentView.findViewById(R.id.moviesListView);
@@ -229,9 +232,16 @@ public class MoviesListFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    private class LoadMoreOnClickListener implements View.OnClickListener {
+     class LoadMoreOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+
+            ConnectivityManager connectivityManager = new ConnectivityManager(mContext);
+            if(!connectivityManager.checkConnectivity()){
+                Toast.makeText(mContext,mContext.getString(R.string.no_internet_msg_short),Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             for(int i=10; i<20; i++) display2.add(discover_moviesArrayList.get(i));
 
