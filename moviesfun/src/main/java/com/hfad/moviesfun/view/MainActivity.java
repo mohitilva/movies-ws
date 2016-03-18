@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
          isConnectedToInternet = connectivityManager.checkConnectivity();
         if(!isConnectedToInternet)
         {
-            displayNoInternetMessage();
+            Toast.makeText(mContext,mContext.getString(R.string.no_internet_msg_short),Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -320,7 +320,8 @@ public class MainActivity extends AppCompatActivity
             boolean isConnectedToInternet = connectivityManager.checkConnectivity();
             if(!isConnectedToInternet)
             {
-                displayNoInternetMessage();
+                mDrawerLayout.closeDrawer(drawerList);
+                Toast.makeText(mContext,mContext.getString(R.string.no_internet_msg_short),Toast.LENGTH_SHORT).show();
                 return;
             }
 
