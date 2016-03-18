@@ -24,4 +24,6 @@
     <string name="load_more_text">LOAD MORE </string>
     <string name="not_available">N/A</string>
     <string name="no_favorites_msg">You haven\'t added any favorites. \n To add favorites tap the favorite icon in the movie description.</string>
+    <string name="no_internet_msg">The device is not connected to internet. Please connect to internet and try again.</string>
+    <string name="no_internet_msg_short">No internet detected</string>
 </resources>

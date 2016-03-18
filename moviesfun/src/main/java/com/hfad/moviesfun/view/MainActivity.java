@@ -4,15 +4,20 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hfad.moviesfun.R;
 import com.hfad.moviesfun.adapters.DrawerAdapter;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private int drawerItemSelected;
+    boolean isConnectedToInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         instantiateDrawer();
+
+         isConnectedToInternet = checkConnectivity();
+        if(!isConnectedToInternet)
+        {
+            displayNoInternetMessage();
+            return;
+        }
+
 
         if (savedInstanceState == null) {
 
@@ -66,6 +80,24 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+    }
+
+    private boolean checkConnectivity() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnected();
+        Log.d(TAG,"Connected? "+isConnected);
+        return isConnected;
+    }
+
+    private void displayNoInternetMessage(){
+        setContentView(R.layout.no_items_found);
+        TextView textView = (TextView) findViewById(R.id.message);
+        textView.setText(getString(R.string.no_internet_msg));
+        return;
     }
 
     @Override
@@ -158,6 +190,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListItemClick(long id, String backDropPath, String posterPath, fragmentTags callingFragment) {
 
+
+         isConnectedToInternet = checkConnectivity();
+        if(!isConnectedToInternet)
+        {
+            displayNoInternetMessage();
+            return;
+        }
+
+
         fragment = new MovieDetailsFragment(String.valueOf(id), backDropPath, posterPath);
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment, fragmentTags.DETAILS.name())
@@ -172,10 +213,22 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
-        if (mDrawerLayout.isDrawerOpen(drawerList)) {
+        isConnectedToInternet = checkConnectivity();
+        if(!isConnectedToInternet)
+        {
+            Toast.makeText(this,getString(R.string.no_internet_msg_short),Toast.LENGTH_LONG).show();
+            finish();
+            return;
+            //super.onBackPressed();
+        }
+
+
+        if (mDrawerLayout!=null && drawerList!=null && mDrawerLayout.isDrawerOpen(drawerList)) {
             mDrawerLayout.closeDrawer(drawerList);
             return;
         }
+
+
 
         if (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStackImmediate();
@@ -274,6 +327,14 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            boolean isConnectedToInternet = checkConnectivity();
+            if(!isConnectedToInternet)
+            {
+                displayNoInternetMessage();
+                return;
+            }
+
 
             selectItem(position);
 
