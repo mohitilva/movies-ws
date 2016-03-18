@@ -2,47 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:clickable="false"
               android:background="@color/list_background"
-              android:id="@+id/favoriteMovieItemLinearLayout"
-              android:layout_height="75dp"
+              android:id="@+id/movieItemLinearLayout"
               android:paddingBottom="@dimen/list_item_padding"
               android:paddingTop="@dimen/list_item_padding">
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:contentDescription="Description"
-        android:background="@color/list_background"
-        android:id="@+id/fav_movie_icon_ImageView"
-        android:padding="2dp"/>
+
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="75dp"
+            android:background="@color/list_background"
+            android:id="@+id/fav_movie_icon_ImageView"
+            android:paddingLeft="@dimen/main_layout_padding_left"/>
+
+
 
     <LinearLayout
         android:background="@color/list_background"
         android:layout_width="fill_parent"
-        android:layout_height="75dp"
+        android:layout_height="@dimen/favorite_list_item_height"
         android:orientation="horizontal"
         android:focusable="false"
         android:paddingLeft="@dimen/abc_button_padding_horizontal_material"
         android:paddingRight="@dimen/abc_dialog_list_padding_vertical_material">
 
         <TextView
-            android:layout_width="230dp"
+            android:layout_width="@dimen/favorite_list_textview_width"
             android:layout_height="fill_parent"
-            android:text="Title"
+            android:text="@string/title"
             android:id="@+id/fav_movie_title_textview"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-
-            />
+            android:gravity="center_vertical"/>
 
         <ImageView
-            android:layout_width="25dp"
+            android:layout_width="@dimen/favorite_list_item_fav_icon_width"
             android:layout_height="fill_parent"
             android:id="@+id/fav_icon"
-            android:contentDescription="Favorite Icon"
             android:clickable="false"
-            android:foregroundGravity="left"/>
+            android:foregroundGravity="left"
+            android:layout_marginLeft="20dp"/>
 
     </LinearLayout>
 

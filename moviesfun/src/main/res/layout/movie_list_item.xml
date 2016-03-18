@@ -2,28 +2,29 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="horizontal"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:clickable="false"
-android:background="@color/list_background"
-android:id="@+id/movieItemLinearLayout"
-              android:paddingBottom="@dimen/list_item_padding"
-              android:paddingTop="@dimen/list_item_padding">
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:background="@color/list_background"
+    android:id="@+id/movieItemLinearLayout"
+    android:paddingBottom="@dimen/list_item_padding"
+    android:paddingTop="@dimen/list_item_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/list_background"
         android:showDividers="none">
-
+        <!--Image View -->
         <ImageView
             android:layout_width="75dp"
             android:layout_height="110dp"
             android:contentDescription="Description"
             android:id="@+id/movieIconImageView"
             android:background="@color/list_background"
-            android:padding="2dp"/>
+            android:paddingLeft="@dimen/main_layout_padding_left"/>
+
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -37,14 +38,14 @@ android:id="@+id/movieItemLinearLayout"
 
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="20dp"
+                android:layout_height="@dimen/movie_list_item_component"
                 android:id="@+id/movie_title_textview"
                 android:textColor="@color/black"
                 android:textStyle="bold"
 
                 />
 
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -54,10 +55,9 @@ android:id="@+id/movieItemLinearLayout"
                                         android:stepSize="0.5"
                                        android:layout_gravity="center_horizontal"
                                        android:layout_width="wrap_content"
-                                       android:layout_height="20dip"
+                                       android:layout_height="@dimen/movie_list_item_component"
                                        android:progressTint="@color/yellow"
-                                       android:numStars="5"
-                                       />
+                                       android:numStars="5"/>
             </LinearLayout>
 
             <LinearLayout

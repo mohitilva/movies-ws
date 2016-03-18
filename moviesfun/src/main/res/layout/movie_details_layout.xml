@@ -33,8 +33,7 @@
         android:paddingLeft="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_horizontal_margin"
-        android:layout_height="wrap_content"
-        android:text="Title"/>
+        android:layout_height="wrap_content"/>
 
 
 
@@ -66,18 +65,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginTop="15dp"
-        android:background="#AAAAAA"
+        android:background="@color/ratings_bar_border"
         android:layout_height="64dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
-            android:background="#DDDDDD"
-            android:padding="1dp"
+            android:layout_marginRight="@dimen/rating_bar_border_width"
+            android:layout_marginTop="@dimen/rating_bar_border_width"
+            android:layout_marginBottom="@dimen/rating_bar_border_width"
+            android:background="@color/light_grey"
+            android:padding="@dimen/rating_bar_border_width"
             android:layout_height="match_parent">
 
             <!--android:progressTint="@color/yellow"-->
@@ -92,9 +91,9 @@
                        android:numStars="5"
                        android:foregroundGravity="center_vertical|center_horizontal"/>
             <TextView
-                android:text="Ratings"
-                android:layout_width="95dp"
-                android:layout_height="36dp"
+                android:text="@string/ratings"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:textColor="@color/text_description"
                 android:gravity="center_vertical|center_horizontal"
@@ -106,10 +105,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="#DDDDDD"
-            android:padding="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
+            android:background="@color/light_grey"
+            android:padding="@dimen/rating_bar_border_width"
+            android:layout_marginTop="@dimen/rating_bar_border_width"
+            android:layout_marginBottom="@dimen/rating_bar_border_width"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -127,7 +126,7 @@
                     />
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="36dp"
+                    android:layout_height="fill_parent"
 
                     android:text="@string/favorite"
                     android:gravity="center_vertical|center_horizontal"
@@ -156,7 +155,7 @@
             android:layout_width="@dimen/details_text_desc_width"
             android:layout_height="wrap_content"
             android:textColor="@color/text_description"
-            android:text="Genre"
+            android:text="@string/genres"
             />
 
         <TextView
@@ -203,7 +202,7 @@
           android:layout_width="@dimen/details_text_desc_width"
           android:layout_height="wrap_content"
           android:textColor="@color/text_description"
-          android:text="Runtime"
+          android:text="@string/runtime"
           />
 
       <TextView
@@ -226,7 +225,7 @@
             android:layout_width="@dimen/details_text_desc_width"
             android:layout_height="wrap_content"
             android:textColor="@color/text_description"
-            android:text="Revenue"
+            android:text="@string/revenue"
             />
 
         <TextView
@@ -249,7 +248,7 @@
         android:paddingTop="@dimen/abc_button_padding_horizontal_material">
 
 
-        <!--favorite icon-->
+
 
     </LinearLayout>
 

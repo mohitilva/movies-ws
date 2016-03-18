@@ -10,4 +10,5 @@
     <color name="list_background">@color/white</color>
     <color name="yellow">#FFFF00</color>
     <color name="text_description">#888888</color>
+    <color name="ratings_bar_border">#AAAAAA</color>
 </resources>

@@ -8,8 +8,17 @@
     <dimen name="main_layout_padding_left">4dp</dimen>
     <dimen name="main_layout_padding_right">4dp</dimen>
 
+
     <dimen name="list_item_padding">2dp</dimen>
     <dimen name="details_text_desc_width">75dp</dimen>
 
     <dimen name="drawer_width">240dp</dimen>
+    <dimen name="movie_list_item_component">20dp</dimen>
+
+    <dimen name="rating_bar_border_width">1dp</dimen>
+    <dimen name="favorite_list_item_height">75dp</dimen>
+    <dimen name="favorite_list_movie_icon_width">75dp</dimen>
+    <dimen name="favorite_list_item_fav_icon_width">25dp</dimen>
+    <dimen name="favorite_list_textview_width">230dp</dimen>
+    <dimen name="favorite_list_imageview_padding">2dp</dimen>
 </resources>

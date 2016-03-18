@@ -17,6 +17,9 @@
     <string name="release_date">Release Date</string>
     <string name="genres">Genres</string>
     <string name="item_movies">movies</string>
+    <string name="title">Title</string>
+    <string name="revenue">Revenue</string>
+    <string name="runtime">Runtime</string>
 
 
     <string name="not_available">N/A</string>
