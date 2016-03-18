@@ -41,7 +41,7 @@ public class MoviesRecentFragment extends Fragment {
     private MoviesAdapter adapter;
     private ArrayList<MovieDataModel> discover_moviesArrayList;
     private  String TAG = getClass().getName();
-    private Utilities utils;
+
 
     public MoviesRecentFragment() {
     }
@@ -62,7 +62,7 @@ public class MoviesRecentFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         Context mContext = getActivity().getBaseContext();
-        utils = new Utilities(mContext);
+
 
         if(getTag()!=null){
             mCallback.updateActivityUI(getTag());
@@ -80,7 +80,7 @@ public class MoviesRecentFragment extends Fragment {
         if(savedList==null){
             Log.d(TAG, "Getting response from network");
             try {
-                String discover_url = utils.getRecentReleasedMoviesUrl();
+                String discover_url = WSMetaData.getRecentReleasedMoviesUrl();
                 discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -144,7 +144,7 @@ public class MoviesRecentFragment extends Fragment {
         for(int k=0; k< list.size()   ;k++){
 
             MovieDataModel currentMovieObj = list.get(k);
-            String creditRequestString = utils.getCreditsUrl(currentMovieObj.id);
+            String creditRequestString = WSMetaData.getCreditsUrl(String.valueOf(currentMovieObj.id));
             try {
 
                 //credits for each movie.

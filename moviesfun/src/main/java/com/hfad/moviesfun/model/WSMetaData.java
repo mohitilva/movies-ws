@@ -1,16 +1,21 @@
 package com.hfad.moviesfun.model;
 
 
-import com.hfad.moviesfun.R;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class WSMetaData {
 
     public static final SimpleDateFormat wsDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
-    public static final String REL_DATE_LTE_FILTER = "release_date.lte";
+
+    private static final String SORT_POPULARITY_DESC_FILTER = "sort_by=popularity.desc";
+    private static final String REL_DATE_LTE_FILTER = "release_date.lte";
+    private static final String POPULAR_MOVIES_URL = "https://api.themoviedb.org/3/discover/movie?" + SORT_POPULARITY_DESC_FILTER;
+    private static final String MOVIE_BASE_URL =     "https://api.themoviedb.org/3/movie";
+    private static final String POSTER_PREFIX_PATH = "http://image.tmdb.org/t/p";
+    private static final String API_KEY_PARAM =      "api_key=4eec6698891c4b89358a3779d7f2d212";
 
     public static final String _BACKDROP_PATH = "backdrop_path";
     public static final String ITEMS_ARRAY_NAME = "results";
@@ -62,11 +67,37 @@ public class WSMetaData {
         }
     };
 
-    public static enum backdropSizes {
+    public static String getCreditsUrl(String id){
+        return MOVIE_BASE_URL + "/" +id +  "/credits?" + API_KEY_PARAM;
+    }
+
+    public static  String getImageUrl(String imageRelPath, String size){
+        return POSTER_PREFIX_PATH + "/" + size + imageRelPath + "?" +API_KEY_PARAM;
+    }
+
+    public static String getResourceUrl(String resourceRelPath){
+        return MOVIE_BASE_URL + "/" + resourceRelPath + "?" + API_KEY_PARAM;
+    }
+
+    public static String getPopularMoviesUrl(){
+        return POPULAR_MOVIES_URL + "&" + API_KEY_PARAM;
+    }
+
+    //Unused now. But it returns different set of movies which can be displayed.
+    public static String getRecentReleasedMoviesUrl() {
+        String url = POPULAR_MOVIES_URL + "&" + API_KEY_PARAM;
+        SimpleDateFormat f = wsDateFormat;
+        Date today = Calendar.getInstance().getTime();
+        String currentDate = f.format(today);
+        url = url + "&" + REL_DATE_LTE_FILTER +"=" + currentDate;
+        return url;
+    }
+
+    public  enum backdropSizes {
         w300,w780,w1280,original
     }
 
-    public static  enum posterSizes{
+    public  enum posterSizes{
         w45,w92,w154,w185,w342, w500,w780,original
     }
 
@@ -110,4 +141,6 @@ public class WSMetaData {
         public static final String VOTE_COUNT = _VOTE_COUNT;
         public  static final String GENRE_ID_Array = _GENRE_ID_JSONArray;
     }
+
+
 }

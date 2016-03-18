@@ -15,9 +15,8 @@ public class Utilities {
 
 
     private Context mContext;
-    private static String apiKey;
-    private  String TAG = getClass().getName();
 
+    private  String TAG = getClass().getName();
 
     public static final long BILLION = 1000000000;
     public static final long MILLION = 1000000;
@@ -26,7 +25,6 @@ public class Utilities {
 
     public Utilities(Context context){
         mContext = context;
-        apiKey = mContext.getResources().getString(R.string.api_key_movies_db);
     }
 
     public  String getStringFromStringArray(String[] genreNames, int limit){
@@ -45,27 +43,6 @@ public class Utilities {
         return trimText(genreText);
     }
 
-    public  String getImageUrl(String imageRelPath, String size){
-        String prefix =  mContext.getResources().getString(R.string.poster_prefix_path);
-
-        return prefix + "/" + size + imageRelPath + "?" + apiKey;
-    }
-
-    public String getResourceUrl(String resourceRelPath){
-        String prefix =  mContext.getResources().getString(R.string.movie_prefix_path);
-
-        return prefix + "/" + resourceRelPath + "?" + apiKey;
-    }
-
-    public String getRecentReleasedMoviesUrl() {
-     String url = mContext.getResources().getText(R.string.popular_movies_url)
-                + "&" + apiKey;
-        SimpleDateFormat f = WSMetaData.wsDateFormat;
-        Date today = Calendar.getInstance().getTime();
-        String currentDate = f.format(today);
-        url = url + "&" + WSMetaData.REL_DATE_LTE_FILTER +"=" + currentDate;
-        return url;
-    }
 
     public static String[] getGenreNamesFromIds(int[] genreIds){
         if(genreIds ==null || genreIds.length==0) return null;
@@ -107,15 +84,8 @@ public class Utilities {
         return Utilities.trimText(actors);
     }
 
-    public String getCreditsUrl(Long id){
-        return getCreditsUrl(String.valueOf(id));
-    }
 
-    public String getCreditsUrl(String id){
-        return mContext.getString(R.string.movie_base_url) +id +  "/credits?" + apiKey;
-    }
-
-    public  String getRevenueFromLong(long revenue){
+    public   String getRevenueFromLong(long revenue){
         String revenueStr;
         float r;
         if(revenue >= BILLION){

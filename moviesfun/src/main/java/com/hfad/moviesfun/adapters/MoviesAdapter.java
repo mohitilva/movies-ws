@@ -69,8 +69,7 @@ public class MoviesAdapter extends BaseAdapter{
 
         ImageView imageView = (ImageView) view.findViewById(R.id.movieIconImageView);
 
-        Utilities utils = new Utilities(mContext);
-        String fullImageUrl = utils.getImageUrl(moviesArrayList.get(position).posterPath, WSMetaData.posterSizes.w342.toString());
+        String fullImageUrl = WSMetaData.getImageUrl(moviesArrayList.get(position).posterPath, WSMetaData.posterSizes.w185.toString());
 
         Picasso.with(mContext)
                 .load(fullImageUrl)
@@ -97,9 +96,10 @@ public class MoviesAdapter extends BaseAdapter{
         titleView.setText(title);
 
         //genres
+        Utilities utilities = new Utilities(mContext);
         int[] genresIds = currentMovieObj.genres;
         String[] genreNames = Utilities.getGenreNamesFromIds(genresIds);
-        String genreDisplayText = new Utilities(mContext).getStringFromStringArray(genreNames, 3);
+        String genreDisplayText = utilities.getStringFromStringArray(genreNames, 3);
         genresTextView.setText(genreDisplayText);
 
         //rating

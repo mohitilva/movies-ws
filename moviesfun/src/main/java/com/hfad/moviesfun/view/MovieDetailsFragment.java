@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,8 +135,8 @@ public class MovieDetailsFragment extends Fragment {
         revenueTextView = (TextView) fragmentView.findViewById(R.id.revenueTextView);
         genreTextView = (TextView) fragmentView.findViewById(R.id.genres_textView);
 
-        String requestUrl = utils.getResourceUrl(String.valueOf(movieId));
-        String backdropUrl = utils.getImageUrl(backdropPath, WSMetaData.backdropSizes.w780.toString());
+        String requestUrl = WSMetaData.getResourceUrl(String.valueOf(movieId));
+        String backdropUrl = WSMetaData.getImageUrl(backdropPath, WSMetaData.backdropSizes.w780.toString());
         Picasso.with(mContext).load(backdropUrl)
                 .into(img, new Callback() {
                     @Override
@@ -151,7 +152,7 @@ public class MovieDetailsFragment extends Fragment {
 
         String serviceResponse = null;
         String credits = null;
-        String creditRequestString = utils.getCreditsUrl(movieId);
+        String creditRequestString = WSMetaData.getCreditsUrl(movieId);
         String actors = "";
         String genresText = "";
 

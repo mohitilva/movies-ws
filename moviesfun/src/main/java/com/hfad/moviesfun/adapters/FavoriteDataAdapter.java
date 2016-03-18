@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hfad.moviesfun.model.WSMetaData;
 import com.hfad.moviesfun.utilities.FavoriteManager;
 import com.hfad.moviesfun.R;
 import com.squareup.picasso.Picasso;
@@ -91,10 +92,10 @@ public class FavoriteDataAdapter extends BaseAdapter{
 
         titleView = (TextView)view.findViewById(R.id.fav_movie_title_textview);
 
-        String fullIconUrl = mContext.getResources().getString(R.string.poster_prefix_path) + "/"
-                + mContext.getResources().getString(R.string.image_size_w300)
-                + listIconUrls.get(position) + "?"
-                + mContext.getResources().getString(R.string.api_key_movies_db);
+
+
+        // WSMetaData.getImageUrl(moviesArrayList.get(position).posterPath, WSMetaData.posterSizes.w342.toString());
+        String fullIconUrl = WSMetaData.getImageUrl(listIconUrls.get(position), WSMetaData.posterSizes.w185.toString());
 
         Picasso.with(mContext)
                 .load(fullIconUrl)
