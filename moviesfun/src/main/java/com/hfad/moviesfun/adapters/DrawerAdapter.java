@@ -29,7 +29,7 @@ public class DrawerAdapter extends BaseAdapter{
     //Text and icons in the drawer.
     public  ArrayList<DrawerItem> drawerItems = new ArrayList<>();
     {
-        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.drawer_app_image));
+        drawerItems.add(new DrawerItem("MoviesFun",R.drawable.movie_shooting_camera_drawer_icon));
         drawerItems.add(new DrawerItem("Home",R.drawable.ticket_icon));
         drawerItems.add(new DrawerItem("Favorites",R.drawable.ic_star_18pt_3x));
 
