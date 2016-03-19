@@ -1,1 +1,1 @@
-include ':app', ':fragmentsdemo', ':navdrawer', ':moviesfun'
+include  ':moviesfun'
