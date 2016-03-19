@@ -5,7 +5,10 @@ import com.mohitilva.moviesfun.model.MovieDataModel;
 
 import java.util.ArrayList;
 
+
+//Used to temporary store data. Data is cleared every time user exits the app.
 public class MoviesListSingleton {
+
 
     private static MoviesListSingleton instance = null;
     private  ArrayList<MovieDataModel> networkResponse = null;

@@ -10,13 +10,16 @@ public class WSMetaData {
 
     public static final SimpleDateFormat wsDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
 
+    //The urls in this class has been replace. These urls do not exists. Replace with working API urls.
+    //Get your own API key. The API key here is just a place holder.
     private static final String SORT_POPULARITY_DESC_FILTER = "sort_by=popularity.desc";
     private static final String REL_DATE_LTE_FILTER = "release_date.lte";
-    private static final String POPULAR_MOVIES_URL = "https://api.themoviedb.org/3/discover/movie?" + SORT_POPULARITY_DESC_FILTER;
-    private static final String MOVIE_BASE_URL =     "https://api.themoviedb.org/3/movie";
-    private static final String POSTER_PREFIX_PATH = "http://image.tmdb.org/t/p";
-    private static final String API_KEY_PARAM =      "api_key=4eec6698891c4b89358a3779d7f2d212";
+    private static final String POPULAR_MOVIES_URL = "https://api.placeholder.moviesws.com/3/discover/movie?" + SORT_POPULARITY_DESC_FILTER;
+    private static final String MOVIE_BASE_URL =     "https://api.api.placeholder.moviesws.com/movie";
+    private static final String POSTER_PREFIX_PATH = "http://api.placeholder.moviesws.com/p";
+    private static final String API_KEY_PARAM =      "api_key=1234567890";
 
+    //The meta data for the JSON object in the Response that we receive form the WS.
     public static final String _BACKDROP_PATH = "backdrop_path";
     public static final String ITEMS_ARRAY_NAME = "results";
     static final String _ADULT = "adult";
@@ -79,11 +82,12 @@ public class WSMetaData {
         return MOVIE_BASE_URL + "/" + resourceRelPath + "?" + API_KEY_PARAM;
     }
 
+    //Gets a different set of URLs. It can be combined with other results to produce comprehensive list.
     public static String getPopularMoviesUrl(){
         return POPULAR_MOVIES_URL + "&" + API_KEY_PARAM;
     }
 
-    //Unused now. But it returns different set of movies which can be displayed.
+
     public static String getRecentReleasedMoviesUrl() {
         String url = POPULAR_MOVIES_URL + "&" + API_KEY_PARAM;
         SimpleDateFormat f = wsDateFormat;

@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         instantiateDrawer();
 
-         isConnectedToInternet = connectivityManager.checkConnectivity();
+        // Check if internet is connected. Otherwise display message.
+        isConnectedToInternet = connectivityManager.checkConnectivity();
         if(!isConnectedToInternet)
         {
             displayNoInternetMessage();
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity
 
 
         if (savedInstanceState == null) {
-
 
             fragment = new MoviesListFragment();
             fragmentManager.beginTransaction()
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    //Callback from fragment. Any updates to Activity can be done here according to the parameters passed by the fragment.
     @Override
     public void updateActivityUI(String fragmentTag) {
 
@@ -211,13 +212,11 @@ public class MainActivity extends AppCompatActivity
             //super.onBackPressed();
         }
 
-
+        //If the drawer is open, close it. Do not do anything else.
         if (mDrawerLayout!=null && drawerList!=null && mDrawerLayout.isDrawerOpen(drawerList)) {
             mDrawerLayout.closeDrawer(drawerList);
             return;
         }
-
-
 
         if (fragmentManager.getBackStackEntryCount() > 1) {
             fragmentManager.popBackStackImmediate();
@@ -226,6 +225,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Depending on the item clicked in the drawer, display the corrosponding fragment.
     private void switchFragment() {
 
         FragmentTransaction ft;
@@ -283,6 +283,10 @@ public class MainActivity extends AppCompatActivity
       When the user exits thru back button onDestroy() is also called.
       If the data is singleton is not cleared here, then the app uses the same data even after onDestroy() is called.
       In this case user would have to swipe the app out from the recent apps list to refresh the content.
+
+      No need to override these callback if nothing extra needs to be implemented. Included here for completeness.
+      You can print log messages in each callback to see when each of them is called.
+      MAKE SURE YOU CALL THE SUPER METHODS.
   */
 
     @Override

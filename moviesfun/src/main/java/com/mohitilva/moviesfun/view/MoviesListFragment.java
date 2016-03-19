@@ -83,7 +83,8 @@ public class MoviesListFragment extends Fragment {
         try {
 
         if (savedList == null) {
-            //Log.d(TAG, "Getting response from network");
+
+            //Getting response from network
 
                 String discover_url = WSMetaData.getRecentReleasedMoviesUrl();
                 discover_responseString = new ServiceResponseAsyncTask(client).execute(discover_url).get();
@@ -113,7 +114,8 @@ public class MoviesListFragment extends Fragment {
                 movieListView.setAdapter(adapter);
 
             } else {
-                //Log.d(TAG, "Using saved response");
+
+                //Using saved response in Singleton
                 discover_moviesArrayList = savedList;
 
                 if (singleton.getLoadMore()) {
@@ -194,7 +196,7 @@ public class MoviesListFragment extends Fragment {
         return genres;
     }
 
-
+    //Parses the network response String and creates list of MovieDataModel.
     protected List<MovieDataModel> getListFromNetworkResponse(String networkResponse){
 
         List<MovieDataModel> moviesList = new ArrayList<>();
