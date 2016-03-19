@@ -10,14 +10,13 @@ public class WSMetaData {
 
     public static final SimpleDateFormat wsDateFormat =  new SimpleDateFormat("yyyy-MM-dd");
 
-    //The urls in this class has been replace. These urls do not exists. Replace with working API urls.
     //Get your own API key. The API key here is just a place holder.
     private static final String SORT_POPULARITY_DESC_FILTER = "sort_by=popularity.desc";
     private static final String REL_DATE_LTE_FILTER = "release_date.lte";
-    private static final String POPULAR_MOVIES_URL = "https://api.placeholder.moviesws.com/3/discover/movie?" + SORT_POPULARITY_DESC_FILTER;
-    private static final String MOVIE_BASE_URL =     "https://api.api.placeholder.moviesws.com/movie";
-    private static final String POSTER_PREFIX_PATH = "http://api.placeholder.moviesws.com/p";
-    private static final String API_KEY_PARAM =      "api_key=1234567890";
+    private static final String POPULAR_MOVIES_URL = "https://api.themoviedb.org/3/discover/movie?" + SORT_POPULARITY_DESC_FILTER;
+    private static final String MOVIE_BASE_URL =     "https://api.themoviedb.org/3/movie";
+    private static final String POSTER_PREFIX_PATH = "http://image.tmdb.org/t/p";
+    private static final String API_KEY_PARAM =      "api_key=PLACEHOLDER";
 
     //The meta data for the JSON object in the Response that we receive form the WS.
     public static final String _BACKDROP_PATH = "backdrop_path";
