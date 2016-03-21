@@ -1,4 +1,4 @@
-# movies-ws
+# movies-ws-android
 This application is for Android mobile devices. It uses webservice to get data about movies.
 There is only one activity (at the time of repo creation) MainActivity. The fragments in the activity get replaced.
 The libraries used for networking and picture managment are OkHttp and Picasso.
